@@ -1,0 +1,37 @@
+{
+  "expo": {
+    "name": "Juste Debout School",
+    "slug": "juste-debout-school",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "jdschool",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#100F0C",
+    "android": {
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "output": "single"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Juste Debout School accède à tes photos pour les fiches profs et ta photo de profil."
+        }
+      ],
+      "expo-notifications",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Juste Debout School utilise la caméra pour scanner les QR de présence à l'accueil."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}
