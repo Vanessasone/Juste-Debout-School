@@ -14,8 +14,8 @@ jobs:
       - uses: oven-sh/setup-bun@v2
       - name: Fetch pinned School website source
         env:
-          SOURCE_URL: 'https://d2ol7oe51mr4n9.cloudfront.net/user_3DmKqFGm3dD6DZhfXTWsmDsb9QY/fb423d3a-a346-4ab2-9f70-f8fa02d8e458.zip'
-          SOURCE_SHA256: 'f582453d51fd5a6c10a07931d40394b54e93b788423b868530657ab7856e9eae'
+          SOURCE_URL: 'https://d2ol7oe51mr4n9.cloudfront.net/user_3DmKqFGm3dD6DZhfXTWsmDsb9QY/851e7100-1444-46ff-ba22-56c5be15f986.zip'
+          SOURCE_SHA256: '8f74d7092202d3be30976be36ebde37f4756d2e595b6ace363e89b2ea17862f0'
         run: |
           python3 - <<'PY'
           import os,urllib.request,hashlib,zipfile,io,pathlib
