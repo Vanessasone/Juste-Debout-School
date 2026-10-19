@@ -65,7 +65,7 @@ export function FadeInView({ children, delay = 0, style }: { children: React.Rea
 
 /**
  * Toggle entre l'app School (active) et l'app événement Juste Debout.
- * Un clic sur « Juste Debout » ouvre l'app événement (deep link).
+ * Un clic sur « Juste Debout » ouvre le site événement, sans transfert de session.
  */
 export function AppSwitch() {
   return (
@@ -73,7 +73,7 @@ export function AppSwitch() {
       <LinearGradient colors={['#FF6A16', '#FF2E7E']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={sw.active}>
         <Text style={sw.activeText}>JD School</Text>
       </LinearGradient>
-      <Pressable style={sw.inactive} onPress={() => { tap(); Linking.openURL('justedebout://'); }}>
+      <Pressable style={sw.inactive} onPress={() => { tap(); Linking.openURL('https://www.justedeboutapp.com'); }}>
         <Text style={sw.inactiveText}>Juste Debout</Text>
       </Pressable>
     </View>
