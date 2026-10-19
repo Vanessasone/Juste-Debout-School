@@ -13,7 +13,7 @@ import { Palette, Radius, Space, Type } from '@/constants/brand';
 import { useCampus } from '@/lib/campus';
 import { useI18n } from '@/lib/i18n';
 import { goBack } from '@/lib/nav';
-import { getMyProfile, isAdmin } from '@/lib/profile';
+import {getSchoolAccess} from '@/lib/school-access';
 import { isSupabaseConfigured } from '@/lib/supabase';
 
 const INK = '#1B1917';
@@ -50,13 +50,15 @@ export default function AdminHub() {
   const { t } = useI18n();
   const { accent } = useCampus();
   // Garde d'accès : en réel, réservé admin/staff (défense en profondeur, la RLS bloque déjà côté serveur).
+  const [central,setCentral]=useState(false);
   const [allowed, setAllowed] = useState<boolean | null>(!isSupabaseConfigured ? true : null);
 
   useEffect(() => {
     if (!isSupabaseConfigured) return;
-    getMyProfile()
-      .then((p) => {
-        const ok = isAdmin(p) || !!p?.roles?.includes('staff');
+    getSchoolAccess()
+      .then((access) => {
+        const ok=access.campuses.length>0;
+        setCentral(access.admin);
         setAllowed(ok);
         if (!ok) router.replace('/(tabs)');
       })
@@ -96,12 +98,15 @@ export default function AdminHub() {
         )}
         <Tool icon="school" color="#2F40E6" title="Formation & promotions" sub="Groupes, planning, appel, documents et annonces" onPress={() => router.push('/admin-training')} />
         <Tool icon="lock-closed" color="#2F40E6" title="Annuaire privé" sub="Élèves, professeurs et import des coordonnées" onPress={() => router.push('/admin-directory')} />
+        {central&&<>
+        <Tool icon="shield-checkmark" color="#2F40E6" title="Responsables des écoles" sub="Périmètres préparés et état des accès" onPress={()=>router.push('/admin-responsibilities')}/>
         <Tool icon="people" color="#2F40E6" title={t('admin.people')} sub={t('admin.peopleSub')} onPress={() => router.push('/admin-people')} />
         <Tool icon="ribbon" color="#FF6A16" title={t('admin.points')} sub={t('admin.pointsSub')} onPress={() => router.push('/admin-points')} />
         <Tool icon="megaphone" color="#FF2E7E" title={t('admin.poll')} sub={t('admin.pollSub')} onPress={() => router.push('/admin-poll')} />
         <Tool icon="notifications" color="#7C3AED" title={t('admin.notif')} sub={t('admin.notifSub')} onPress={() => router.push('/admin-notif')} />
         <Tool icon="calendar" color="#1D9E75" title={t('admin.planning')} sub={t('admin.planningSub')} onPress={() => router.push('/admin-planning')} />
         <Tool icon="qr-code" color="#E4520A" title={t('admin.kiosk')} sub={t('admin.kioskSub')} onPress={() => router.push('/kiosk')} />
+        </>}
       </ScrollView>
     </View>
   );

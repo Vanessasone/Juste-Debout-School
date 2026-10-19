@@ -19,6 +19,7 @@ import { useAuth } from '@/lib/auth';
 import { useCampus } from '@/lib/campus';
 import { useI18n } from '@/lib/i18n';
 import { getMyProfile, isAdmin, Profile } from '@/lib/profile';
+import {getSchoolAccess} from '@/lib/school-access';
 
 const INK = '#1B1917';
 
@@ -50,7 +51,9 @@ export default function ProfileScreen() {
   const sub = subParts.join(' · ') || '—';
   const chips = profile?.styles ?? [];
   // Espace staff visible en démo (preview) ou si admin/staff en réel.
-  const canStaff = !configured || isAdmin(profile) || !!profile?.roles?.includes('staff');
+  const [schoolManager,setSchoolManager]=useState(false);
+  useFocusEffect(useCallback(()=>{let active=true;getSchoolAccess().then(a=>{if(active)setSchoolManager(a.campuses.length>0);}).catch(()=>{if(active)setSchoolManager(false);});return()=>{active=false};},[profile?.id]));
+  const canStaff = !configured || schoolManager || isAdmin(profile) || !!profile?.roles?.includes('staff');
 
   return (
     <View style={{ flex: 1, backgroundColor: Palette.bg }}>

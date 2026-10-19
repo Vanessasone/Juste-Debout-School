@@ -4,7 +4,7 @@ import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, TextInput, 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Palette, Radius, Space } from '@/constants/brand';
 import { goBack } from '@/lib/nav';
-import { getMyProfile, isAdmin } from '@/lib/profile';
+import {getSchoolAccess} from '@/lib/school-access';
 import { DirectoryInput, DirectoryPerson, getPrivateDirectory, importPrivateDirectory, parseDirectoryCsv, verifyDirectoryPerson, updateDirectoryPerson } from '@/lib/private-directory';
 
 export default function AdminDirectory() {
@@ -26,7 +26,8 @@ export default function AdminDirectory() {
     let mounted = true;
     (async () => {
       try {
-        const ok = isAdmin(await getMyProfile());
+        const access=await getSchoolAccess();
+        const ok=access.campuses.length>0;
         if (!mounted) return;
         setAllowed(ok);
         if (ok) await load();
@@ -50,12 +51,12 @@ export default function AdminDirectory() {
   };
   const verify = async (id: string) => { setVerifying(id); setError(''); try { await verifyDirectoryPerson(id); await load(); } catch { setError('Vérification impossible.'); } finally { setVerifying(null); } };
   if (allowed === null) return <View style={styles.center}><ActivityIndicator color={Palette.core} /></View>;
-  if (!allowed) return <View style={styles.center}><Text style={styles.title}>Accès administrateur requis</Text><Text style={styles.body}>Cet annuaire contient des coordonnées privées.</Text><Pressable onPress={() => goBack(router)}><Text style={styles.action}>Retour</Text></Pressable></View>;
+  if (!allowed) return <View style={styles.center}><Text style={styles.title}>Accès responsable requis</Text><Text style={styles.body}>Cet annuaire contient des coordonnées privées.</Text><Pressable onPress={() => goBack(router)}><Text style={styles.action}>Retour</Text></Pressable></View>;
   return <View style={{flex:1,backgroundColor:Palette.bg}}>
     <ScrollView ref={scrollRef} keyboardShouldPersistTaps="handled" contentContainerStyle={{padding:Space.lg,paddingTop:insets.top+Space.lg,paddingBottom:insets.bottom+40,gap:16}}>
       <Pressable accessibilityRole="button" onPress={() => goBack(router)}><Text style={styles.action}>← Administration</Text></Pressable>
       <Text style={styles.title}>Annuaire privé</Text>
-      <Text style={styles.body}>Élèves et professeurs · Accès administrateur uniquement. Les fiches restent distinctes des comptes de connexion et des profils publics.</Text>
+      <Text style={styles.body}>Élèves et professeurs · Accès limité à votre école. Les fiches restent distinctes des comptes de connexion et des profils publics.</Text>
       <TextInput accessibilityLabel="Rechercher dans l’annuaire privé" placeholder="Prénom, nom, email, promo ou dossier…" value={search} onChangeText={setSearch} style={styles.input}/>
       <View style={{flexDirection:'row',gap:8}}>{['ALL','CORE','INDUSTRY'].map(c => <Pressable key={c} accessibilityRole="button" accessibilityState={{selected:campus===c}} onPress={() => setCampus(c)} style={[styles.chip,campus===c&&styles.selected]}><Text style={{color:campus===c?'#fff':Palette.text,fontWeight:'700'}}>{c==='ALL'?'Tous':c}</Text></Pressable>)}</View>
       <Text style={styles.body}>{people.filter(p=>p.review_status==='pending').length} à vérifier · {people.filter(p=>p.review_status==='verified').length} vérifiées</Text>
