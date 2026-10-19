@@ -13,7 +13,7 @@ import { GradientBtn } from '@/components/ui';
 import { Palette, Radius, Space, Type } from '@/constants/brand';
 import { useCampus } from '@/lib/campus';
 import { useI18n } from '@/lib/i18n';
-import { pickAndUploadAvatar } from '@/lib/photos';
+import { pickAndUploadAvatar, resolveProfilePhoto } from '@/lib/photos';
 import { getMyProfile, updateMyProfile } from '@/lib/profile';
 import { isSupabaseConfigured } from '@/lib/supabase';
 
@@ -71,7 +71,7 @@ export default function EditProfile() {
     setUploading(true);
     try {
       const url = await pickAndUploadAvatar();
-      if (url) { await updateMyProfile({ photo_url: url }); setPhotoUrl(url); }
+      if (url) { await updateMyProfile({ photo_url: url }); setPhotoUrl(await resolveProfilePhoto(url)); }
     } catch (e: any) {
       setErr(e?.message ?? 'Erreur');
     } finally {

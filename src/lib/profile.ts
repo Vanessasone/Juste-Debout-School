@@ -1,5 +1,6 @@
 /** Profil réservé à Juste Debout School, sans partage avec les applications événement. */
 import { supabase } from '@/lib/supabase';
+import { resolveProfilePhoto } from '@/lib/photos';
 
 export type Profile = {
   id: string;
@@ -26,7 +27,7 @@ export async function getMyProfile(): Promise<Profile | null> {
     if (error.code === 'PGRST116') return null; // aucune ligne
     throw error;
   }
-  return data as Profile;
+  return { ...data, photo_url: await resolveProfilePhoto(data.photo_url) } as Profile;
 }
 
 export async function updateMyProfile(fields: Partial<Profile>): Promise<void> {

@@ -5,6 +5,7 @@
  * Table jds_checkins (voir supabase/schema-checkin.sql). Mode démo : mock.
  */
 import { isSupabaseConfigured, supabase } from '@/lib/supabase';
+import { resolveProfilePhoto } from '@/lib/photos';
 
 export type Member = { id: string; name: string; alias: string | null; photoUrl: string | null };
 
@@ -36,7 +37,7 @@ export async function searchMembers(q: string): Promise<Member[]> {
     .or(`full_name.ilike.%${query}%,alias.ilike.%${query}%`)
     .limit(8);
   if (error || !data) return [];
-  return data.map((r: any) => ({ id: r.id, name: r.full_name ?? r.alias ?? '—', alias: r.alias ?? null, photoUrl: r.photo_url ?? null }));
+  return Promise.all(data.map(async (r: any) => ({ id: r.id, name: r.full_name ?? r.alias ?? '—', alias: r.alias ?? null, photoUrl: await resolveProfilePhoto(r.photo_url) })));
 }
 
 /** Retrouve un membre par son id (QR carte membre = JDS-MB-<id>). */
@@ -49,7 +50,7 @@ export async function getMemberById(id: string): Promise<Member | null> {
     .maybeSingle();
   if (error || !data) return null;
   const r = data as any;
-  return { id: r.id, name: r.full_name ?? r.alias ?? '—', alias: r.alias ?? null, photoUrl: r.photo_url ?? null };
+  return { id: r.id, name: r.full_name ?? r.alias ?? '—', alias: r.alias ?? null, photoUrl: await resolveProfilePhoto(r.photo_url) };
 }
 
 /** Valide la présence. En démo : renvoie true. En réel : insert best-effort. */
