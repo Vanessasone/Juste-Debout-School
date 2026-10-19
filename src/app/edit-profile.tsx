@@ -3,6 +3,7 @@
  */
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import * as Linking from 'expo-linking';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -127,6 +128,8 @@ export default function EditProfile() {
         <ActivityIndicator color={accent} style={{ marginTop: Space.xxxl }} />
       ) : (
         <ScrollView contentContainerStyle={{ padding: Space.lg, paddingBottom: Space.xxxl }}>
+          <Text style={{color:Palette.textMute,fontSize:13,lineHeight:20,marginBottom:12}}>Les informations de présentation sont facultatives. Elles servent à ton espace School et ne sont pas automatiquement publiées sur le site vitrine.</Text>
+          <Pressable accessibilityRole="link" onPress={()=>Linking.openURL('https://justedeboutschoolapp.netlify.app/confidentialite.html')}><Text style={{color:accent,fontSize:13,marginBottom:20}}>Confidentialité et droits sur mes données ↗</Text></Pressable>
           <View style={styles.shared}>
             <Ionicons name="shield-checkmark-outline" size={14} color={Palette.textDim} />
             <Text style={styles.sharedText}>{t('ep.shared')}</Text>

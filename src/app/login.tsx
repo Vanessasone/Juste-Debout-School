@@ -5,6 +5,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
+import * as Linking from 'expo-linking';
 import { useState } from 'react';
 import {
   ActivityIndicator,
@@ -112,6 +113,9 @@ export default function LoginScreen() {
             <TextInput style={styles.input} placeholder="Code de parrainage (optionnel)" placeholderTextColor="rgba(255,255,255,0.4)" autoCapitalize="characters" autoCorrect={false} value={refCode} onChangeText={setRefCode} />
           )}
           {error && <Text accessibilityRole="alert" style={styles.error}>{error}</Text>}
+          <Text style={styles.help}>Ton email et ton identité servent à gérer ton compte School. Les champs complémentaires du profil sont facultatifs. La création du compte ne t’abonne pas à une newsletter commerciale.</Text>
+          <Pressable accessibilityRole="link" onPress={()=>Linking.openURL('https://justedeboutschoolapp.netlify.app/confidentialite.html')}><Text style={styles.swap}>Confidentialité et droits sur mes données ↗</Text></Pressable>
+          <Pressable accessibilityRole="link" onPress={()=>Linking.openURL('https://justedeboutschoolapp.netlify.app/mentions-legales.html')}><Text style={styles.swap}>Mentions légales ↗</Text></Pressable>
           {info && <Text accessibilityRole="alert" style={styles.info}>{info}</Text>}
 
           {busy ? (
