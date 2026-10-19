@@ -1,11 +1,4 @@
-/**
- * Client Supabase — backend PARTAGÉ avec l'app événement Juste Debout.
- *
- * L'app école pointe sur le MÊME projet Supabase que l'app événement
- * (mêmes auth.users + table profiles) → le compte / la session sont communs.
- * Les identifiants sont lus depuis le .env (voir .env.example) :
- *   EXPO_PUBLIC_SUPABASE_URL, EXPO_PUBLIC_SUPABASE_ANON_KEY (clé publique).
- */
+/** Client réservé au projet Supabase indépendant de Juste Debout School. */
 import 'react-native-url-polyfill/auto';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -14,6 +7,12 @@ import { Platform } from 'react-native';
 
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
+
+// School must never reconnect to the event/TOTF backend.
+const schoolProjectUrl = 'https://zmzunjphubbdumowcurk.supabase.co';
+if (supabaseUrl && supabaseUrl !== schoolProjectUrl) {
+  throw new Error('School requires its dedicated backend configuration.');
+}
 
 /** Vrai quand le .env est renseigné. Sinon, l'app tourne en mode démo (mock). */
 export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
@@ -24,6 +23,7 @@ export const supabase = createClient(
   {
     auth: {
       storage: AsyncStorage,
+      storageKey: 'jds-school-auth-v1',
       autoRefreshToken: true,
       persistSession: true,
       // Sur le web : lire la session dans l'URL (retour du lien de confirmation

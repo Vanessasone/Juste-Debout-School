@@ -16,7 +16,6 @@ import { Wavetruv } from '@/components/Logo';
 import { Palette, Radius, Space, Type } from '@/constants/brand';
 import { useAuth } from '@/lib/auth';
 import { useCampus } from '@/lib/campus';
-import { openEventApp } from '@/lib/eventapp';
 import { useI18n } from '@/lib/i18n';
 import { getMyProfile, isAdmin, Profile } from '@/lib/profile';
 
@@ -141,13 +140,6 @@ export default function ProfileScreen() {
                 <Ionicons name="chevron-forward" size={14} color="#fff" />
               </View>
             </LinearGradient>
-          </Pressable>
-
-          {/* Bascule vers l'app Juste Debout (événement) — transfert de session SSO */}
-          <Pressable style={styles.linkRow} onPress={() => openEventApp()}>
-            <Ionicons name="swap-horizontal" size={18} color={Palette.pink} />
-            <Text style={[styles.linkTitle, { flex: 1 }]}>{t('profile.eventApp')}</Text>
-            <Ionicons name="open-outline" size={14} color={Palette.textMute} />
           </Pressable>
 
           {/* Mes favoris */}

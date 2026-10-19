@@ -1,5 +1,5 @@
 /**
- * Connexion — même compte que l'app événement Juste Debout (Supabase Auth).
+ * Connexion — compte indépendant Juste Debout School.
  * Écran atteint uniquement quand Supabase est configuré. Style immersif sombre.
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -45,12 +45,12 @@ export default function LoginScreen() {
     setInfo(null);
     try {
       if (mode === 'signup') {
-        const { data, error } = await supabase.auth.signUp({ email: email.trim(), password });
+        const { data, error } = await supabase.auth.signUp({ email: email.trim(), password, options: { emailRedirectTo: 'https://justedeboutschoolapp.netlify.app/' } });
         if (error) throw error;
         // Confirmation d'email activée → pas de session : on informe au lieu de renvoyer sans rien.
         if (!data.session) {
           if (refCode.trim()) await AsyncStorage.setItem('jds_pending_ref', refCode.trim());
-          setInfo('Compte créé. Confirme ton email (ou désactive la confirmation dans Supabase), puis connecte-toi.');
+          setInfo('Compte créé. Confirme ton email, puis connecte-toi.');
           setMode('signin');
           return;
         }

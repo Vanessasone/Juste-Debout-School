@@ -1,8 +1,4 @@
-/**
- * Profil utilisateur — MÊME table `profiles` que l'app événement Juste Debout.
- * Le profil est donc PARTAGÉ : modifié ici → visible sur l'app événement, et
- * inversement (même compte, même identifiant, mêmes champs).
- */
+/** Profil réservé à Juste Debout School, sans partage avec les applications événement. */
 import { supabase } from '@/lib/supabase';
 
 export type Profile = {

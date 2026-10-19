@@ -1,6 +1,5 @@
 /**
- * Upload de photos vers Supabase Storage (bucket public « photos », partagé
- * avec l'app événement). Réservé au staff/admin pour les fiches (RLS).
+ * Upload de photos vers Supabase Storage (bucket public « photos » du projet School). Réservé au staff/admin pour les fiches (RLS).
  */
 import { decode } from 'base64-arraybuffer';
 import * as ImagePicker from 'expo-image-picker';
