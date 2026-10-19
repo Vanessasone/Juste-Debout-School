@@ -21,7 +21,8 @@ import { checkIn, demoMember, getMemberById, Member, searchMembers } from '@/lib
 import { success, tap } from '@/lib/haptics';
 import { useI18n } from '@/lib/i18n';
 import { goBack } from '@/lib/nav';
-import { getUpcomingSessions, LEVEL_LABEL, Session } from '@/lib/schools';
+import { getSessions, LEVEL_LABEL, Session } from '@/lib/schools';
+import { isSupabaseConfigured } from '@/lib/supabase';
 
 const INK = '#0f0b16';
 const hhmm = (d: Date) => `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
@@ -42,6 +43,12 @@ export default function Kiosk() {
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [perm, requestPerm] = useCameraPermissions();
   const scanLock = useRef(false);
+  const savingLock = useRef(false);
+  const memberRequest = useRef(0);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [loadingClasses,setLoadingClasses] = useState(false);
+  useEffect(() => () => { if (resetTimer.current) clearTimeout(resetTimer.current); memberRequest.current++; }, []);
 
   useEffect(() => {
     let alive = true;
@@ -52,6 +59,9 @@ export default function Kiosk() {
   const reset = () => {
     if (resetTimer.current) clearTimeout(resetTimer.current);
     scanLock.current = false;
+    memberRequest.current++;
+    setLoadingClasses(false);
+    setSaveError(null);
     setDone(null); setSelected(null); setQuery(''); setResults([]); setClasses([]); setMode('scan');
   };
 
@@ -65,19 +75,30 @@ export default function Kiosk() {
     if (who) { await pickMember(who); } else { scanLock.current = false; }
   };
 
-  const pickMember = async (m: Member) => {
+  const pickMember = async (m: Member, campus: CampusCode = school) => {
+    if (savingLock.current) return;
+    const request = ++memberRequest.current;
     tap();
-    setSelected(m);
-    const all = await getUpcomingSessions(school, 8).catch(() => [] as Session[]);
-    const today = new Date().toDateString();
-    setClasses(all.filter((s) => s.startsAt.toDateString() === today));
+    setSaveError(null); setSelected(m); setClasses([]); setLoadingClasses(true);
+    const all = await getSessions(campus, new Date()).catch(() => null);
+    if (request !== memberRequest.current) return;
+    setLoadingClasses(false);
+    if (!all) { setSaveError(t('kiosk.loadError')); return; }
+    setClasses(all);
   };
 
   const confirm = async (sessionId: string | null, who: Member) => {
-    success();
-    await checkIn(who.id, sessionId);
-    setDone(firstName(who));
-    resetTimer.current = setTimeout(reset, 4200);
+    if (savingLock.current) return;
+    savingLock.current = true; setSaving(true); setSaveError(null);
+    try {
+      const recorded = await checkIn(who.id, sessionId, school);
+      if (!recorded) { setSaveError(t('kiosk.saveError')); return; }
+      success();
+      setDone(firstName(who));
+      resetTimer.current = setTimeout(reset, 4200);
+    } finally {
+      savingLock.current = false; setSaving(false);
+    }
   };
 
   // Simuler le scan d'un QR de réservation → cours connu (1 seul) → l'accueil
@@ -105,7 +126,7 @@ export default function Kiosk() {
             {CAMPUS.map((c) => {
               const on = school === c;
               return (
-                <Pressable key={c} onPress={() => { tap(); setSchool(c); if (selected) pickMember(selected); }} style={[styles.pill, on && { backgroundColor: accentFor(c) }]}>
+                <Pressable key={c} disabled={saving} onPress={() => { tap(); setSchool(c); if (selected) pickMember(selected, c); }} style={[styles.pill, on && { backgroundColor: accentFor(c) }]}>
                   <Text style={[styles.pillTxt, on && { color: '#fff' }]}>{c}</Text>
                 </Pressable>
               );
@@ -122,13 +143,13 @@ export default function Kiosk() {
         <View style={styles.center}>
           <View style={styles.okCircle}><Ionicons name="checkmark" size={64} color="#fff" /></View>
           <Text style={styles.okTitle}>{t('kiosk.done', { name: done })}</Text>
-          <Text style={styles.okSub}>{t('kiosk.doneSub')}</Text>
+          <Text style={styles.okSub}>{t(isSupabaseConfigured ? 'kiosk.doneSub' : 'kiosk.demoDone')}</Text>
           <Pressable onPress={reset} style={styles.nextBtn}><Text style={styles.nextTxt}>{t('kiosk.another')}</Text></Pressable>
         </View>
       ) : selected ? (
         /* ÉTAT : choix du cours (carte membre / repli) */
         <ScrollView contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
-          <Pressable onPress={() => { setSelected(null); setClasses([]); }} hitSlop={8} style={styles.back}>
+          <Pressable disabled={saving} onPress={reset} hitSlop={8} style={styles.back}>
             <Ionicons name="chevron-back" size={20} color="rgba(255,255,255,0.6)" />
             <Text style={styles.backTxt}>{t('kiosk.scanTitle')}</Text>
           </Pressable>
@@ -142,11 +163,13 @@ export default function Kiosk() {
             <Text style={styles.hi}>{t('kiosk.hi', { name: firstName(selected) })}</Text>
           </View>
 
-          <Text style={styles.pickLbl}>{classes.length ? t('kiosk.pickClass') : t('kiosk.noClass')}</Text>
+          {saveError && <Text accessibilityRole="alert" style={{color:'#ffb4a8',marginTop:16}}>{saveError}</Text>}
+          {saving && <Text accessibilityLiveRegion="polite" style={{color:'#fff',marginTop:16}}>{t('kiosk.saving')}</Text>}
+          <Text style={styles.pickLbl}>{loadingClasses ? t('kiosk.loadingClasses') : classes.length ? t('kiosk.pickClass') : t('kiosk.noClass')}</Text>
           {classes.length > 1 && <Text style={styles.pickHint}>{t('kiosk.pickHint')}</Text>}
           <View style={{ gap: 12, marginTop: Space.md }}>
             {classes.map((s) => (
-              <Pressable key={s.id} onPress={() => confirm(s.id, selected)} style={styles.classBtn}>
+              <Pressable key={s.id} disabled={saving} accessibilityState={{disabled:saving,busy:saving}} onPress={() => confirm(s.id, selected)} style={styles.classBtn}>
                 <Text style={styles.classTime}>{hhmm(s.startsAt)}</Text>
                 <View style={{ flex: 1 }}>
                   <Text style={styles.classStyle}>{s.style}</Text>
@@ -155,8 +178,8 @@ export default function Kiosk() {
                 <Ionicons name="checkmark-circle" size={26} color={accentFor(school)} />
               </Pressable>
             ))}
-            {classes.length === 0 && (
-              <Pressable onPress={() => confirm(null, selected)}>
+            {!loadingClasses && classes.length === 0 && (
+              <Pressable disabled={saving} accessibilityState={{disabled:saving,busy:saving}} onPress={() => confirm(null, selected)}>
                 <LinearGradient colors={gradientFor(school)} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.freeBtn}>
                   <Text style={styles.freeTxt}>{t('kiosk.freeCheck')}</Text>
                 </LinearGradient>
@@ -212,7 +235,7 @@ export default function Kiosk() {
             <Pressable onPress={requestPerm} style={styles.camBtn}><Text style={styles.camBtnTxt}>Activer la caméra</Text></Pressable>
           )}
 
-          <View style={styles.simRow}>
+          {!isSupabaseConfigured && <View style={styles.simRow}>
             <Pressable onPress={simBooking} style={styles.simBtn}>
               <Ionicons name="ticket-outline" size={20} color="#fff" />
               <Text style={styles.simTxt}>{t('kiosk.simBooking')}</Text>
@@ -221,7 +244,8 @@ export default function Kiosk() {
               <Ionicons name="card-outline" size={20} color="#fff" />
               <Text style={styles.simTxt}>{t('kiosk.simCard')}</Text>
             </Pressable>
-          </View>
+          </View>}
+          {Platform.OS === 'web' && <Text style={styles.tagline}>{t('kiosk.webSearch')}</Text>}
 
           <Pressable onPress={() => setMode('search')} hitSlop={8} style={styles.manual}>
             <Ionicons name="search" size={16} color="rgba(255,255,255,0.55)" />

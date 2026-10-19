@@ -4,6 +4,7 @@
  * les JD Coins, les classements et le suivi « Mes enfants » (Phase B).
  * Table jds_checkins (voir supabase/schema-checkin.sql). Mode démo : mock.
  */
+import type { CampusCode } from '@/constants/brand';
 import { isSupabaseConfigured, supabase } from '@/lib/supabase';
 import { resolveProfilePhoto } from '@/lib/photos';
 
@@ -53,13 +54,25 @@ export async function getMemberById(id: string): Promise<Member | null> {
   return { id: r.id, name: r.full_name ?? r.alias ?? '—', alias: r.alias ?? null, photoUrl: await resolveProfilePhoto(r.photo_url) };
 }
 
-/** Valide la présence. En démo : renvoie true. En réel : insert best-effort. */
-export async function checkIn(memberId: string, sessionId: string | null): Promise<boolean> {
+/** Confirme uniquement une présence effectivement enregistrée dans School. */
+export async function checkIn(memberId: string, sessionId: string | null, campus: CampusCode): Promise<boolean> {
   if (!isSupabaseConfigured) return true;
   try {
-    await supabase.from('jds_checkins').insert({ member_id: memberId, session_id: sessionId });
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) return false;
+    const { data: school, error: schoolError } = await supabase.from('jds_schools')
+      .select('id').eq('code', campus).single();
+    if (schoolError || !school) return false;
+    if (sessionId) {
+      const { data: lesson, error: lessonError } = await supabase.from('jds_sessions')
+        .select('school_id').eq('id', sessionId).single();
+      if (lessonError || !lesson || lesson.school_id !== school.id) return false;
+    }
+    const { data, error } = await supabase.from('jds_checkins').insert({
+      member_id: memberId, session_id: sessionId, school_id: school.id, by_staff: user.id,
+    }).select('id').single();
+    return !error && !!data?.id;
   } catch {
-    /* table pas encore migrée → sans blocage (le geste reste validé côté borne) */
+    return false;
   }
-  return true;
 }
