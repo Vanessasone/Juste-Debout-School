@@ -1,17 +1,21 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import { useRouter } from 'expo-router';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Palette, Radius, Space } from '@/constants/brand';
 import { goBack } from '@/lib/nav';
 import { getMyProfile, isAdmin } from '@/lib/profile';
-import { DirectoryInput, DirectoryPerson, getPrivateDirectory, importPrivateDirectory, parseDirectoryCsv, verifyDirectoryPerson } from '@/lib/private-directory';
+import { DirectoryInput, DirectoryPerson, getPrivateDirectory, importPrivateDirectory, parseDirectoryCsv, verifyDirectoryPerson, updateDirectoryPerson } from '@/lib/private-directory';
 
 export default function AdminDirectory() {
+  const scrollRef=useRef<ScrollView>(null);
   const router = useRouter(); const insets = useSafeAreaInsets();
   const [allowed, setAllowed] = useState<boolean | null>(null);
   const [people, setPeople] = useState<DirectoryPerson[]>([]);
   const [search, setSearch] = useState('');
+  const [editing,setEditing]=useState<DirectoryPerson|null>(null);
+  const [kind,setKind]=useState('ALL'); const [status,setStatus]=useState('ALL');
+  const [editingBusy,setEditingBusy]=useState(false);
   const [campus, setCampus] = useState('ALL');
   const [csv, setCsv] = useState(''); const [preview, setPreview] = useState<DirectoryInput[]>([]);
   const [importing, setImporting] = useState(false); const [showImport, setShowImport] = useState(false);
@@ -33,9 +37,10 @@ export default function AdminDirectory() {
   const filtered = useMemo(() => {
     const norm = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     const q = norm(search.trim());
-    return people.filter(p => (campus === 'ALL' || p.campus === campus) && norm([p.first_name,p.last_name,p.email,p.phone,p.cohort,p.file_code].join(' ')).includes(q))
+    return people.filter(p => (campus === 'ALL' || p.campus === campus) && (kind==='ALL'||p.person_type===kind) && (status==='ALL'||p.review_status===status) && norm([p.first_name,p.last_name,p.email,p.phone,p.cohort,p.file_code].join(' ')).includes(q))
       .sort((a,b) => a.first_name.localeCompare(b.first_name,'fr',{sensitivity:'base'}) || a.last_name.localeCompare(b.last_name,'fr',{sensitivity:'base'}));
-  }, [people, search, campus]);
+  }, [people, search, campus,kind,status]);
+  const saveEdit=async()=>{if(!editing)return;setEditingBusy(true);setError('');try{await updateDirectoryPerson(editing.id,editing);setEditing(null);await load();setMessage('Fiche corrigée. Elle reste à vérifier avant validation.');}catch(e){setError(e instanceof Error?e.message:'Correction impossible.');}finally{setEditingBusy(false);}};
   const analyze = () => { setError(''); setMessage(''); try { setPreview(parseDirectoryCsv(csv)); } catch(e) { setPreview([]); setError(e instanceof Error ? e.message : 'Fichier invalide.'); } };
   const save = async () => {
     setImporting(true); setError('');
@@ -47,12 +52,16 @@ export default function AdminDirectory() {
   if (allowed === null) return <View style={styles.center}><ActivityIndicator color={Palette.core} /></View>;
   if (!allowed) return <View style={styles.center}><Text style={styles.title}>Accès administrateur requis</Text><Text style={styles.body}>Cet annuaire contient des coordonnées privées.</Text><Pressable onPress={() => goBack(router)}><Text style={styles.action}>Retour</Text></Pressable></View>;
   return <View style={{flex:1,backgroundColor:Palette.bg}}>
-    <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{padding:Space.lg,paddingTop:insets.top+Space.lg,paddingBottom:insets.bottom+40,gap:16}}>
+    <ScrollView ref={scrollRef} keyboardShouldPersistTaps="handled" contentContainerStyle={{padding:Space.lg,paddingTop:insets.top+Space.lg,paddingBottom:insets.bottom+40,gap:16}}>
       <Pressable accessibilityRole="button" onPress={() => goBack(router)}><Text style={styles.action}>← Administration</Text></Pressable>
       <Text style={styles.title}>Annuaire privé</Text>
       <Text style={styles.body}>Élèves et professeurs · Accès administrateur uniquement. Les fiches restent distinctes des comptes de connexion et des profils publics.</Text>
       <TextInput accessibilityLabel="Rechercher dans l’annuaire privé" placeholder="Prénom, nom, email, promo ou dossier…" value={search} onChangeText={setSearch} style={styles.input}/>
       <View style={{flexDirection:'row',gap:8}}>{['ALL','CORE','INDUSTRY'].map(c => <Pressable key={c} accessibilityRole="button" accessibilityState={{selected:campus===c}} onPress={() => setCampus(c)} style={[styles.chip,campus===c&&styles.selected]}><Text style={{color:campus===c?'#fff':Palette.text,fontWeight:'700'}}>{c==='ALL'?'Tous':c}</Text></Pressable>)}</View>
+      <Text style={styles.body}>{people.filter(p=>p.review_status==='pending').length} à vérifier · {people.filter(p=>p.review_status==='verified').length} vérifiées</Text>
+      <View style={{flexDirection:'row',gap:8,flexWrap:'wrap'}}>{[['ALL','Tous les profils'],['student','Élèves'],['teacher','Intervenants']].map(([v,label])=><Pressable key={v} accessibilityRole="button" accessibilityState={{selected:kind===v}} onPress={()=>setKind(v)} style={styles.chip}><Text style={styles.body}>{kind===v?'✓ ':''}{label}</Text></Pressable>)}</View>
+      <View style={{flexDirection:'row',gap:8,flexWrap:'wrap'}}>{[['ALL','Tous les statuts'],['pending','À vérifier'],['verified','Vérifiées']].map(([v,label])=><Pressable key={v} accessibilityRole="button" accessibilityState={{selected:status===v}} onPress={()=>setStatus(v)} style={styles.chip}><Text style={styles.body}>{status===v?'✓ ':''}{label}</Text></Pressable>)}</View>
+      {editing&&<View style={styles.card}><Text style={styles.heading}>Corriger : {editing.first_name} {editing.last_name}</Text>{([['first_name','Prénom / pseudonyme'],['last_name','Nom'],['email','Email'],['phone','Téléphone'],['cohort','Promotion / groupe'],['file_code','Numéro de dossier']] as const).map(([key,label])=><View key={key}><Text style={styles.body}>{label}</Text><TextInput accessibilityLabel={label} value={editing[key]??''} autoCapitalize={key==='email'?'none':'sentences'} onChangeText={value=>setEditing({...editing,[key]:value})} style={styles.input}/></View>)}<Text style={styles.body}>Toute correction remet la fiche au statut « À vérifier ».</Text><Pressable accessibilityRole="button" disabled={editingBusy} onPress={saveEdit} style={styles.button}><Text style={styles.buttonText}>{editingBusy?'Enregistrement…':'Enregistrer les corrections'}</Text></Pressable><Pressable accessibilityRole="button" disabled={editingBusy} onPress={()=>setEditing(null)}><Text style={styles.action}>Annuler</Text></Pressable></View>}
       <Pressable accessibilityRole="button" onPress={() => setShowImport(!showImport)}><Text style={styles.action}>{showImport?'Fermer l’import':'Importer une liste CSV'}</Text></Pressable>
       {showImport && <View style={styles.card}>
         <Text style={styles.heading}>1. Coller la liste</Text>
@@ -81,6 +90,10 @@ export default function AdminDirectory() {
         {!p.phone && <Text style={styles.badge}>Téléphone à compléter</Text>}
         {!!p.phone && <Text selectable style={styles.body}>{p.phone}</Text>}
         {!!p.file_code && <Text style={styles.body}>Dossier {p.file_code}</Text>}
+        {p.person_type==='student'&&!p.cohort&&<Text style={styles.badge}>Promotion à confirmer</Text>}
+        {!!p.source_details?.issues&&<Text style={styles.body}>{p.source_details.issues}</Text>}
+        {!!p.reviewed_at&&<Text style={styles.body}>Vérifiée le {new Date(p.reviewed_at).toLocaleString('fr-FR')}</Text>}
+        <Pressable accessibilityRole="button" onPress={()=>{setEditing({...p});setError('');setMessage('');scrollRef.current?.scrollTo({y:0,animated:true});}}><Text style={styles.action}>Corriger cette fiche (formulaire en haut de page)</Text></Pressable>
         <Text style={styles.badge}>{p.review_status==='verified'?'Vérifiée':'À vérifier'}</Text>
         {p.review_status==='pending' && <Pressable accessibilityRole="button" disabled={verifying!==null} onPress={() => verify(p.id)}><Text style={styles.action}>{verifying===p.id?'Enregistrement…':'Marquer cette fiche comme vérifiée'}</Text></Pressable>}
       </View>)}

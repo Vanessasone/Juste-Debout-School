@@ -4,6 +4,7 @@
  */
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as Linking from 'expo-linking';
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -31,7 +32,7 @@ export default function Rentals() {
   useEffect(() => {
     let alive = true;
     setLoading(true);
-    getRentalRates(school).then((r) => alive && setRates(r)).finally(() => alive && setLoading(false));
+    getRentalRates(school).then((r) => alive && setRates(r.filter(room=>!room.combo))).catch(()=>{if(alive){setRates([]);setMsg('Tarifs temporairement indisponibles. Contacte contact@juste-debout.com pour un devis.');}}).finally(() => alive && setLoading(false));
     return () => { alive = false; };
   }, [school]);
 
@@ -58,20 +59,7 @@ export default function Rentals() {
       </View>
 
       <ScrollView contentContainerStyle={{ padding: Space.lg, paddingBottom: Space.xxxl }}>
-        {school === 'INDUSTRY' && (
-          <LinearGradient
-            colors={[accent, '#1B2AA0'] as const}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.badge247}>
-            <View style={styles.badge247Left}>
-              <Text style={styles.badge247Big}>24/7</Text>
-              <Text style={styles.badge247Small}>OUVERT 24H/24 · 7J/7</Text>
-            </View>
-            <Text style={styles.badge247Note}>{t('rent.industryNote')}</Text>
-          </LinearGradient>
-        )}
-
+        <Text style={styles.empty}>Location sur demande et sous réserve de disponibilité. Tarifs à reconfirmer avec le devis. Pour combiner plusieurs salles, contacte l’équipe.</Text>
         {msg && (
           <View style={[styles.msgBanner, { borderLeftColor: accent }]}>
             <Text style={styles.msgText}>{msg}</Text>
@@ -107,9 +95,9 @@ export default function Rentals() {
                 </View>
                 <Pressable
                   style={[styles.reserve, { backgroundColor: accent }]}
-                  onPress={() => setMsg(t('rent.reserveMsg', { room: r.label }))}>
+                  onPress={async () => {try {await Linking.openURL('mailto:contact@juste-debout.com?subject='+encodeURIComponent(`Location ${school} · ${r.label}`)+'&body='+encodeURIComponent('Bonjour, je souhaite un devis.\nDate :\nHoraires :\nUsage :\nNombre de personnes :'));setMsg('Ta demande doit être envoyée depuis ta messagerie.');}catch{setMsg('Écris à contact@juste-debout.com en précisant la salle, la date et les horaires.');}}}>
                   <Ionicons name="calendar" size={15} color="#fff" />
-                  <Text style={styles.reserveText}>{t('rent.reserve')}</Text>
+                  <Text style={styles.reserveText}>Demander un devis</Text>
                 </Pressable>
               </View>
             ))}

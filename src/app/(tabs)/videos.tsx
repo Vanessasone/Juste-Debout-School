@@ -148,7 +148,7 @@ export default function VideosScreen() {
         </ScrollView>
 
         {/* Contenu */}
-        {filtering ? (
+        {(!filtered.length || filtering) ? (
           filtered.length === 0 ? (
             <View style={styles.empty}>
               <Ionicons name="videocam-outline" size={28} color={Palette.textMute} />

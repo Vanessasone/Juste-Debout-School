@@ -11,6 +11,7 @@ import { useCallback, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { getMyAttendance } from '@/lib/member-data';
 import { Coin } from '@/components/Coin';
 import { Wavetruv } from '@/components/Logo';
 import { Palette, Radius, Space, Type } from '@/constants/brand';
@@ -21,30 +22,6 @@ import { getMyProfile, isAdmin, Profile } from '@/lib/profile';
 
 const INK = '#1B1917';
 
-const STYLES_PRACTICED = ['House', 'Popping', 'Waacking', 'Hip-Hop'];
-const PROGRESS = [
-  { style: 'House', n: 18, pct: 90 },
-  { style: 'Popping', n: 12, pct: 62 },
-  { style: 'Waacking', n: 9, pct: 46 },
-  { style: 'Hip-Hop', n: 8, pct: 40 },
-];
-const HISTORY = [
-  { style: 'House', when: 'Mar. 9 · Soulz' },
-  { style: 'Popping', when: 'Lun. 8 · Nelson' },
-  { style: 'Waacking', when: 'Sam. 6 · Malika' },
-];
-
-const BAR_COLORS = [Palette.core, Palette.industry, Palette.pink, Palette.success];
-
-function Stat({ n, label, color }: { n: string; label: string; color: string }) {
-  return (
-    <View style={styles.stat}>
-      <Text style={[styles.statNum, { color }]}>{n}</Text>
-      <Text style={styles.statLabel}>{label}</Text>
-    </View>
-  );
-}
-
 export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
   const { t, locale, setLocale } = useI18n();
@@ -53,11 +30,14 @@ export default function ProfileScreen() {
   const router = useRouter();
   const [profile, setProfile] = useState<Profile | null>(null);
 
+  const [attendance,setAttendance]=useState<Awaited<ReturnType<typeof getMyAttendance>>>([]);
+  const [attendanceError,setAttendanceError]=useState(false);
   // Recharge le profil School à chaque fois qu'on revient sur l'onglet.
   useFocusEffect(
     useCallback(() => {
       let active = true;
-      setProfile(null);
+      setProfile(null); setAttendance([]); setAttendanceError(false);
+      if(session?.user.id) getMyAttendance().then(r=>{if(active)setAttendance(r)}).catch(()=>{if(active)setAttendanceError(true)});
       if (session?.user.id) getMyProfile().then(p => { if (active) setProfile(p); }).catch(() => {});
       return () => { active = false; };
     }, [session?.user.id]),
@@ -68,7 +48,7 @@ export default function ProfileScreen() {
     ? [profile.instagram ? `@${profile.instagram}` : null, profile.city].filter(Boolean)
     : [];
   const sub = subParts.join(' · ') || '—';
-  const chips = profile?.styles?.length ? profile.styles : STYLES_PRACTICED;
+  const chips = profile?.styles ?? [];
   // Espace staff visible en démo (preview) ou si admin/staff en réel.
   const canStaff = !configured || isAdmin(profile) || !!profile?.roles?.includes('staff');
 
@@ -108,43 +88,9 @@ export default function ProfileScreen() {
 
         <View style={styles.body}>
           {isAdmin(profile) && <Pressable accessibilityRole="button" style={styles.linkRow} onPress={() => router.push('/admin')}><Ionicons name="shield-checkmark" size={22} color={Palette.core} /><Text style={[styles.linkTitle, { flex: 1 }]}>Administration School</Text><Ionicons name="chevron-forward" size={18} color={Palette.text} /></Pressable>}
-          {/* Stats */}
-          <View style={styles.statRow}>
-            <Stat n="12" label={t('profile.statStreak')} color={Palette.core} />
-            <Stat n="47" label={t('profile.statClasses')} color={Palette.industry} />
-            <Stat n="6" label={t('profile.statStyles')} color={Palette.pink} />
-          </View>
-
-          {/* Progression */}
-          <Text style={styles.secTitle}>{t('profile.progression')}</Text>
-          <View style={styles.card}>
-            {PROGRESS.map((p, i) => (
-              <View key={p.style} style={styles.barRow}>
-                <View style={styles.barLabel}>
-                  <Text style={styles.barStyle}>{p.style}</Text>
-                  <Text style={styles.barN}>{p.n}</Text>
-                </View>
-                <View style={styles.track}>
-                  <View style={[styles.fill, { width: `${p.pct}%`, backgroundColor: BAR_COLORS[i % BAR_COLORS.length] }]} />
-                </View>
-              </View>
-            ))}
-          </View>
-
-          {/* Ma carte */}
-          <Text style={styles.secTitle}>{t('profile.myCard')}</Text>
-          <Pressable onPress={() => router.push('/wallet')}>
-            <LinearGradient colors={['#2F40E6', '#7C3AED']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.cardRow}>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.cardName}>Carte 20 cours · CORE</Text>
-                <Text style={styles.cardLeft}>{t('profile.cardLeft', { n: 12 })} · 04/2027</Text>
-              </View>
-              <View style={styles.manage}>
-                <Text style={styles.manageText}>{t('profile.manageCard')}</Text>
-                <Ionicons name="chevron-forward" size={14} color="#fff" />
-              </View>
-            </LinearGradient>
-          </Pressable>
+          <Text style={styles.secTitle}>Mes cours suivis</Text>
+          <View style={styles.card}><Text style={styles.linkTitle}>{attendanceError ? 'Historique temporairement indisponible.' : `${attendance.length} présence${attendance.length>1?'s':''} enregistrée${attendance.length>1?'s':''}`}</Text></View>
+          <Pressable style={styles.linkRow} onPress={()=>router.push('/wallet')}><Ionicons name="card-outline" size={22} color={Palette.industry}/><Text style={styles.linkTitle}>Mes cartes de cours</Text></Pressable>
 
           {/* Mes favoris */}
           <Pressable style={styles.linkRow} onPress={() => router.push('/favorites')}>
@@ -193,17 +139,8 @@ export default function ProfileScreen() {
             </Pressable>
           )}
 
-          {/* Historique */}
           <Text style={styles.secTitle}>{t('profile.history')}</Text>
-          <View style={styles.card}>
-            {HISTORY.map((h, i) => (
-              <View key={i} style={[styles.histRow, i > 0 && styles.histBorder]}>
-                <Ionicons name="checkmark-circle" size={18} color={Palette.success} />
-                <Text style={styles.histStyle}>{h.style}</Text>
-                <Text style={styles.histWhen}>{h.when}</Text>
-              </View>
-            ))}
-          </View>
+          <View style={styles.card}>{attendance.length ? attendance.slice(0,10).map(a=><Text key={a.id} style={styles.linkTitle}>{(a.jds_sessions as unknown as {style:string}|null)?.style??'Cours'} · {new Date(a.checked_at).toLocaleDateString(locale)}</Text>) : <Text style={styles.linkSub}>{attendanceError?'Impossible de charger les présences.':'Aucune présence enregistrée pour le moment.'}</Text>}</View>
 
           {/* Réglages */}
           <View style={styles.langHeaderRow}>

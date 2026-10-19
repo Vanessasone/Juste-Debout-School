@@ -4,7 +4,8 @@
  * les stats savent lequel des cours simultanés est suivi).
  * Démo : dérive quelques cours à venir. Réel (Phase B) : jointure jds_bookings.
  */
-import { getUpcomingSessions, type Session } from '@/lib/schools';
+import type { Session } from '@/lib/schools';
+import {supabase} from '@/lib/supabase';
 
 export type Booking = { id: string; session: Session; qr: string };
 
@@ -18,6 +19,8 @@ export function memberQr(id: string): string {
 }
 
 export async function getMyBookings(): Promise<Booking[]> {
-  const sessions = await getUpcomingSessions('ALL', 3).catch(() => [] as Session[]);
-  return sessions.map((s) => ({ id: s.id, session: s, qr: bookingQr(s.id) }));
+  const {data:{user},error:authError}=await supabase.auth.getUser();if(authError)throw authError;if(!user)return [];
+  const {data,error}=await supabase.from('jds_bookings').select('id,status,jds_sessions(*,jds_schools(code),jds_studios(name),jds_teachers(name))').eq('profile_id',user.id).order('created_at',{ascending:false});
+  if(error)throw error;
+  return (data??[]).filter((r:any)=>['booked','confirmed','paid','checked_in'].includes(r.status)&&r.jds_sessions).map((r:any)=>{const s=r.jds_sessions;return {id:r.id,qr:bookingQr(r.id),session:{id:s.id,schoolCode:s.jds_schools?.code,style:s.style,level:s.level,kind:s.kind,startsAt:new Date(s.starts_at),durationMin:s.duration_min,capacity:s.capacity,booked:0,studioName:s.jds_studios?.name??null,teacherName:s.jds_teachers?.name??null,priceCents:s.price_cents}};});
 }

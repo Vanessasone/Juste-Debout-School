@@ -5,7 +5,7 @@ export type DirectoryInput = {
   first_name: string; last_name: string; email: string | null; phone: string | null;
   cohort: string | null; file_code: string | null;
 };
-export type DirectoryPerson = DirectoryInput & { id: string; review_status: 'pending' | 'verified'; source_details?: { emails_raw?: string; subject?: string; birth_date?: string; issues?: string } };
+export type DirectoryPerson = DirectoryInput & { id: string; review_status: 'pending' | 'verified'; reviewed_at?: string | null; reviewed_by?: string | null; updated_at?: string; source_details?: { emails_raw?: string; subject?: string; birth_date?: string; issues?: string } };
 
 /** CSV paste accepts comma, semicolon or spreadsheet tabs, including quoted cells. */
 export function parseDirectoryCsv(input: string): DirectoryInput[] {
@@ -60,6 +60,17 @@ export async function importPrivateDirectory(rows: DirectoryInput[]): Promise<vo
 }
 
 export async function verifyDirectoryPerson(id: string): Promise<void> {
-  const { error } = await supabase.from('jds_private_directory').update({ review_status: 'verified' }).eq('id', id);
+  const { error } = await supabase.from('jds_private_directory').update({ review_status: 'verified' }).eq('id', id).select('id').single();
   if (error) throw error;
+}
+
+export async function updateDirectoryPerson(id:string, fields:Pick<DirectoryInput,'first_name'|'last_name'|'email'|'phone'|'cohort'|'file_code'>):Promise<void> {
+ const first_name=fields.first_name.trim(),last_name=fields.last_name.trim();
+ if(!first_name||first_name.length>200||last_name.length>200) throw new Error('Prénom requis (200 caractères maximum).');
+ const email=fields.email?.trim().toLowerCase()||null;
+ if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error('Adresse email invalide.');
+ const phone=fields.phone?.trim()||null,cohort=fields.cohort?.trim()||null,file_code=fields.file_code?.trim()||null;
+ if([phone,cohort,file_code].some(v=>v&&v.length>100)) throw new Error('Champ limité à 100 caractères.');
+ const {data,error}=await supabase.from('jds_private_directory').update({first_name,last_name,email,phone,cohort,file_code,review_status:'pending'}).eq('id',id).select('id').single();
+ if(error) throw error; if(!data) throw new Error('Fiche introuvable ou accès refusé.');
 }

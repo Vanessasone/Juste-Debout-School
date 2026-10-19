@@ -10,6 +10,7 @@ import { useCallback, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { getMyCards, type MemberCard } from '@/lib/member-data';
 import { Wavetruv } from '@/components/Logo';
 import { QR } from '@/components/QR';
 import { Palette, Radius, Space, Type } from '@/constants/brand';
@@ -18,8 +19,6 @@ import { useI18n } from '@/lib/i18n';
 import { getMyProfile, type Profile } from '@/lib/profile';
 
 const INK = '#14101c';
-const CARD_TOTAL = 20; // démo
-const CARD_LEFT = 12; // démo
 
 export default function WalletScreen() {
   const insets = useSafeAreaInsets();
@@ -27,6 +26,9 @@ export default function WalletScreen() {
   const { t } = useI18n();
   const [profile, setProfile] = useState<Profile | null>(null);
 
+  const [cards,setCards]=useState<MemberCard[]>([]);
+  const [cardError,setCardError]=useState(false);
+  useFocusEffect(useCallback(()=>{let active=true;getMyCards().then(r=>{if(active){setCards(r);setCardError(false);}}).catch(()=>{if(active)setCardError(true)});return()=>{active=false;};},[]));
   useFocusEffect(useCallback(() => { getMyProfile().then(setProfile).catch(() => {}); }, []));
 
   const name = profile?.alias || profile?.full_name || 'Membre';
@@ -40,32 +42,13 @@ export default function WalletScreen() {
       </View>
 
       <ScrollView contentContainerStyle={{ padding: Space.lg, paddingBottom: Space.xxxl }}>
-        {/* Carte virtuelle */}
-        <LinearGradient colors={['#2F40E6', '#7C3AED'] as const} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.card}>
-          <View style={styles.cardTop}>
-            <Text style={styles.cardType}>{t('wallet.card', { n: CARD_TOTAL })}</Text>
-            <Wavetruv size={26} tint="#fff" />
-          </View>
-          <Text style={styles.cardNum}>{CARD_LEFT}<Text style={styles.cardNumTot}> / {CARD_TOTAL}</Text></Text>
-          <Text style={styles.cardLeft}>{t('wallet.left')}</Text>
-          <View style={styles.track}><View style={[styles.fill, { width: `${(CARD_LEFT / CARD_TOTAL) * 100}%` }]} /></View>
-          <View style={styles.idRow}>
-            {photoUrl ? (
-              <Image source={{ uri: photoUrl }} style={styles.idPhoto} />
-            ) : (
-              <View style={[styles.idPhoto, styles.idPhotoFallback]}><Text style={styles.idInit}>{name.charAt(0)}</Text></View>
-            )}
-            <View>
-              <Text style={styles.cardName}>{name}</Text>
-              <Text style={styles.memberLbl}>{t('wallet.member')}</Text>
-            </View>
-          </View>
-        </LinearGradient>
+        <Text style={styles.sec}>Mes cartes de cours</Text>
+        {cardError ? <Text style={styles.linkSub}>Impossible de charger tes cartes. Réessaie en revenant sur cet écran.</Text> : cards.length ? cards.map(c=><LinearGradient key={c.id} colors={['#2F40E6','#7C3AED']} style={styles.card}><Text style={styles.cardType}>{c.jds_card_types?.name??'Carte de cours'}</Text><Text style={styles.cardNum}>{c.credits_left}<Text style={styles.cardNumTot}> / {c.credits_total}</Text></Text><Text style={styles.cardLeft}>cours restants{c.expires_at?` · valable jusqu’au ${new Date(c.expires_at).toLocaleDateString('fr-FR')}`:''}</Text></LinearGradient>) : <Text style={styles.linkSub}>Aucune carte active associée à ton compte. Renseigne-toi auprès de l’accueil pour les cartes et les paiements.</Text>}
 
         {/* QR membre */}
         <Text style={styles.sec}>{t('wallet.scanTitle')}</Text>
         <View style={styles.qrCard}>
-          <QR value={memberQr(profile?.id ?? 'demo')} size={180} />
+          {profile?.id ? <QR value={memberQr(profile.id)} size={180} /> : <Text style={styles.linkSub}>Chargement de ton identifiant membre…</Text>}
           <Text style={styles.qrHint}>{t('wallet.scanHint')}</Text>
         </View>
 
@@ -79,14 +62,6 @@ export default function WalletScreen() {
           <Ionicons name="chevron-forward" size={16} color={Palette.textMute} />
         </Pressable>
 
-        {/* Recharger */}
-        <Pressable style={styles.link} onPress={() => router.push('/shop')}>
-          <View style={[styles.linkIcon, { backgroundColor: Palette.coreTint }]}><Ionicons name="add-circle" size={20} color={Palette.core} /></View>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.linkTitle}>{t('wallet.topup')}</Text>
-          </View>
-          <Ionicons name="chevron-forward" size={16} color={Palette.textMute} />
-        </Pressable>
       </ScrollView>
     </View>
   );

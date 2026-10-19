@@ -21,6 +21,7 @@ function RootNavigator() {
 
   useEffect(() => {
     if (initializing || !ready) return;
+    if(segments[0]==='update-password') return;
     const inOnboarding = segments[0] === 'onboarding';
 
     // 1) Premier lancement → onboarding
@@ -50,6 +51,7 @@ function RootNavigator() {
         }}>
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="login" />
+        <Stack.Screen name="update-password" />
         <Stack.Screen name="onboarding" />
         <Stack.Screen name="rankings" />
         <Stack.Screen name="admin" />

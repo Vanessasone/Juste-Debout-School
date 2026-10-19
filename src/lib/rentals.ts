@@ -46,7 +46,8 @@ export async function getRentalRates(school: CampusCode): Promise<RentalRate[]> 
     .select('id, label, area_m2, combo, sort_order, jds_schools!inner(code), jds_rental_prices(slot_label, slot_order, price_cents)')
     .eq('jds_schools.code', school)
     .order('sort_order');
-  if (error || !data) return [];
+  if(error)throw error;
+  if(!data?.length) return school==='INDUSTRY'?MOCK.INDUSTRY.filter(r=>!r.combo):[];
   return data.map((r: any) => ({
     id: r.id,
     label: r.label,

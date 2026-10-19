@@ -15,28 +15,6 @@ import { useI18n } from '@/lib/i18n';
 import { goBack } from '@/lib/nav';
 import { getMyPoints, tierInfo, TIERS } from '@/lib/points';
 
-const EARN = [
-  { icon: 'body', label: 'Suivre un cours', pts: '+5' },
-  { icon: 'star', label: 'Noter un cours', pts: '+5' },
-  { icon: 'megaphone', label: 'Voter', pts: '+5' },
-  { icon: 'flame', label: 'Assiduité (mensuel)', pts: '+50' },
-  { icon: 'gift', label: 'Parrainer un téléchargement', pts: '+10' },
-  { icon: 'happy', label: 'Rejoindre via un code', pts: '+5' },
-  { icon: 'ticket', label: 'Cours à l’unité', pts: '+10' },
-  { icon: 'card', label: 'Carte 5 / 10 cours', pts: '+30 / +65' },
-  { icon: 'card', label: 'Carte 20 / 50 cours', pts: '+150 / +400' },
-  { icon: 'flash', label: 'Un stage', pts: '+40' },
-] as const;
-
-const REWARDS = [
-  { label: '−10% en boutique', cost: '250 pts', g: ['#FF2E7E', '#7a1440'] as const },
-  { label: 'Pass invité', cost: '400 pts', g: ['#2F7D4E', '#123B23'] as const },
-  { label: 'Un cours offert', cost: '700 pts', g: ['#FF6A16', '#B23C06'] as const },
-  { label: 'Place de stage', cost: '900 pts', g: ['#7C3AED', '#3a1f6b'] as const },
-  { label: 'Réservation prioritaire', cost: 'Rise & Shine', g: ['#2F40E6', '#171F7A'] as const },
-  { label: 'Cadeau du mois', cost: 'Surprise', g: ['#E4520A', '#7A2F06'] as const },
-];
-
 export default function Points() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
@@ -63,80 +41,16 @@ export default function Points() {
           <View style={styles.balanceTop}>
             <View style={styles.tierRow}>
               <Text style={styles.tierName}>{info.current.name}</Text>
-              <View style={styles.multBadge}><Text style={styles.multText}>{t('pts.mult', { m: String(info.current.mult).replace('.', ',') })}</Text></View>
+
             </View>
             <Coin size={34} />
           </View>
           <Text style={styles.balanceLabel}>{t('pts.balance')}</Text>
           <Text style={styles.balanceNum}>{total.toLocaleString('fr-FR')} <Text style={styles.balanceUnit}>coins</Text></Text>
-          <View style={styles.track}><View style={[styles.fill, { width: `${info.progress * 100}%` }]} /></View>
-          <Text style={styles.toNext}>
-            {info.next ? t('pts.toNext', { n: info.toNext, tier: info.next.name }) : t('pts.maxTier')}
-          </Text>
           <Text style={styles.shared}>♻︎ {t('pts.shared')}</Text>
         </LinearGradient>
 
-        {/* Paliers */}
-        <View style={styles.tiers}>
-          {TIERS.map((tr) => {
-            const on = tr.name === info.current.name;
-            return (
-              <View key={tr.name} style={styles.tierPill}>
-                <View style={[styles.tierDot, { backgroundColor: tr.color, opacity: total >= tr.min ? 1 : 0.3 }]} />
-                <Text style={[styles.tierLabel, on && { color: Palette.text, fontWeight: '800' }]}>{tr.name}</Text>
-              </View>
-            );
-          })}
-        </View>
-
-        {/* Avantages par statut */}
-        <Text style={styles.sec}>{t('pts.benefits')}</Text>
-        <View style={{ gap: 8 }}>
-          {TIERS.map((tr) => {
-            const on = tr.name === info.current.name;
-            const reached = total >= tr.min;
-            return (
-              <View key={tr.name} style={[styles.ben, on && { borderColor: tr.color, borderWidth: 1.5 }]}>
-                <View style={[styles.benDot, { backgroundColor: tr.color, opacity: reached ? 1 : 0.35 }]} />
-                <View style={{ flex: 1 }}>
-                  <View style={styles.benHead}>
-                    <Text style={styles.benName}>{tr.name}</Text>
-                    <Text style={[styles.benMult, { color: tr.color }]}>{t('pts.mult', { m: String(tr.mult).replace('.', ',') })}</Text>
-                  </View>
-                  <Text style={styles.benPerks}>{t(tr.benefitKey)}</Text>
-                </View>
-              </View>
-            );
-          })}
-        </View>
-
-        {/* Gagner */}
-        <Text style={styles.sec}>{t('pts.earn')}</Text>
-        <View style={{ gap: 8 }}>
-          {EARN.map((e) => (
-            <View key={e.label} style={styles.earnRow}>
-              <View style={styles.earnIcon}><Ionicons name={e.icon} size={16} color={Palette.core} /></View>
-              <Text style={styles.earnLabel}>{e.label}</Text>
-              <Text style={styles.earnPts}>{e.pts}</Text>
-            </View>
-          ))}
-        </View>
-
-        {/* Récompenses */}
-        <Text style={styles.sec}>{t('pts.rewards')}</Text>
-        <View style={styles.grid}>
-          {REWARDS.map((r) => (
-            <View key={r.label} style={styles.reward}>
-              <LinearGradient colors={r.g} style={styles.rewardThumb}>
-                <View style={styles.soon}><Text style={styles.soonText}>{t('pts.soon')}</Text></View>
-              </LinearGradient>
-              <View style={styles.rewardInfo}>
-                <Text style={styles.rewardLabel}>{r.label}</Text>
-                <Text style={styles.rewardCost}>{r.cost}</Text>
-              </View>
-            </View>
-          ))}
-        </View>
+        <Text style={styles.sec}>Programme School</Text><Text style={{color:Palette.textDim,lineHeight:22}}>Le solde ci-dessus correspond aux crédits enregistrés sur ton compte School. Les conditions et récompenses du programme seront publiées après validation par l’école.</Text>
       </ScrollView>
     </View>
   );

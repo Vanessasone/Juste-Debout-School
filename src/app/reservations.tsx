@@ -25,9 +25,10 @@ export default function Reservations() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { t } = useI18n();
+  const [error,setError]=useState(false);
   const [bookings, setBookings] = useState<Booking[] | null>(null);
 
-  useEffect(() => { getMyBookings().then(setBookings).catch(() => setBookings([])); }, []);
+  useEffect(() => { getMyBookings().then(setBookings).catch(() => {setError(true);setBookings([]);}); }, []);
 
   return (
     <View style={{ flex: 1, backgroundColor: Palette.bg }}>
@@ -43,7 +44,7 @@ export default function Reservations() {
         ) : bookings.length === 0 ? (
           <View style={styles.empty}>
             <Ionicons name="calendar-outline" size={34} color={Palette.textMute} />
-            <Text style={styles.emptyText}>{t('resv.empty')}</Text>
+            <Text style={styles.emptyText}>{error?'Impossible de charger les réservations. Réessaie plus tard.':t('resv.empty')}</Text>
           </View>
         ) : (
           <View style={{ gap: 16 }}>

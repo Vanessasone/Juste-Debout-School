@@ -31,11 +31,6 @@ import { getUpcomingSessions, LEVEL_LABEL, Session } from '@/lib/schools';
 const AV: readonly [string, string][] = [
   ['#FF6A16', '#B23C06'], ['#8A5A2A', '#4D3312'], ['#2F40E6', '#20309A'], ['#444', '#222'],
 ];
-const STAGES = [
-  { style: 'Amapiano', when: 'Sam. 13', spots: '4 places', likes: 37, g: ['#FF6A16', '#7A2F06'] as const },
-  { style: 'Waacking', when: 'Dim. 14', spots: 'Complet', likes: 60, g: ['#2F7D4E', '#123B23'] as const },
-  { style: 'House', when: 'Sam. 20', spots: '6 places', likes: 22, g: ['#2F40E6', '#171F7A'] as const },
-];
 const CAMPUS_TABS: { key: CampusCode | 'ALL'; label: string }[] = [
   { key: 'CORE', label: 'CORE' }, { key: 'INDUSTRY', label: 'Industry' }, { key: 'ALL', label: 'Tout' },
 ];
@@ -141,10 +136,6 @@ export default function HomeScreen() {
               <Wordmark width={116} tint="#fff" />
             </View>
             <View style={styles.heroTopR}>
-              <View style={styles.streak}>
-                <Text style={{ fontSize: 12 }}>🔥</Text>
-                <Text style={styles.streakNum}>12</Text>
-              </View>
               <Pressable style={styles.bell} onPress={() => router.push('/notifications')}>
                 <Ionicons name="notifications" size={18} color="#fff" />
                 {hasUnread && <View style={styles.bellDot} />}
@@ -220,7 +211,7 @@ export default function HomeScreen() {
               <Text style={styles.coinsBal}>{coins.toLocaleString('fr-FR')} <Text style={styles.coinsUnit}>coins</Text></Text>
               <View style={styles.coinsTrack}><View style={[styles.coinsFill, { width: `${coinInfo.progress * 100}%` }]} /></View>
               <Text style={styles.coinsTier}>
-                {coinInfo.current.name}{coinInfo.next ? ` · ${t('pts.toNext', { n: coinInfo.toNext, tier: coinInfo.next.name })}` : ` · ${t('pts.maxTier')}`}
+                Solde School indépendant
               </Text>
             </View>
             <Ionicons name="chevron-forward" size={18} color="rgba(255,255,255,0.5)" />
@@ -260,26 +251,6 @@ export default function HomeScreen() {
               </Pressable>
             </>
           )}
-
-          {/* Stages */}
-          <Sec title={t('home.stagesFeatured')} action={t('home.seeAll')} />
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.rail}>
-            {STAGES.map((st) => (
-              <View key={st.style} style={styles.stg}>
-                <LinearGradient colors={st.g} style={StyleSheet.absoluteFill} />
-                <LinearGradient colors={['transparent', 'rgba(15,10,20,0.86)'] as const} style={StyleSheet.absoluteFill} />
-                <View style={styles.lk}><Ionicons name="heart" size={11} color={Palette.core} /><Text style={styles.lkN}>{st.likes}</Text></View>
-                <View style={styles.stgFav}>
-                  <FavHeart fav={{ key: `stage:${st.style}`, kind: 'stage', label: st.style, subtitle: st.when }} size={16} />
-                </View>
-                <View style={styles.stgCap}>
-                  <Text style={styles.stgStyle}>{st.style}</Text>
-                  <Text style={styles.stgWhen}>{st.when}</Text>
-                  <View style={styles.stgP}><Text style={styles.stgPText}>{st.spots}</Text></View>
-                </View>
-              </View>
-            ))}
-          </ScrollView>
 
           {/* Prochains cours */}
           <Sec title={t('home.nextClass')} action={t('common.planning')} onPress={() => router.push('/planning')} />

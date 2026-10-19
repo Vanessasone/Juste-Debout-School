@@ -11,7 +11,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CoreOpenCatalogue } from '@/components/CoreOpenCatalogue';
 import { Wavetruv } from '@/components/Logo';
-import { SavingsNudge } from '@/components/SavingsNudge';
 import { FavHeart } from '@/components/ui';
 import { accentFor, CampusCode, gradientFor, Palette, Radius, Space, tintFor, Type } from '@/constants/brand';
 import { useCampus } from '@/lib/campus';
@@ -62,16 +61,7 @@ export default function PlanningScreen() {
   }, [campus, dayIndex, days]);
 
   const onBook = (s: Session) => {
-    const full = s.booked >= s.capacity;
-    setMsg(
-      `${full ? t('planning.waitlist') : t('planning.book')} · ${s.style} ${hhmm(s.startsAt)}` +
-        (isSupabaseConfigured ? '' : ` — ${t('planning.demo')}`),
-    );
-    // Réservé à l'unité → suggère la carte (discret : une seule fois par visite).
-    if (!full && !nudged) {
-      setNudged(true);
-      setTimeout(() => setNudge(s.schoolCode), 550);
-    }
+    setMsg(s.kind==='open'||s.kind==='kids'?'Cours open sans réservation : présente-toi à l’accueil. Vérifie les éventuels changements auprès de l’équipe.':'Pour ce cours ou stage, contacte l’accueil afin de connaître les modalités d’inscription.');
   };
 
   return (
@@ -158,9 +148,6 @@ export default function PlanningScreen() {
                         <Text style={[styles.tagText, { color: ac }]}>{t(`level.${s.level}`)}</Text>
                       </View>
                       {campus === 'ALL' && <Text style={styles.campusHint}>{s.schoolCode}</Text>}
-                      <Text style={[styles.left, full && { color: Palette.danger }]}>
-                        {full ? t('common.spotsFull') : t('common.spotsLeft', { n: left })}
-                      </Text>
                     </View>
                   </View>
                   <FavHeart
@@ -169,13 +156,7 @@ export default function PlanningScreen() {
                     color={Palette.textMute}
                   />
                   <Pressable onPress={() => onBook(s)}>
-                    {full ? (
-                      <View style={[styles.book, styles.bookFull]}><Text style={styles.bookTextFull}>{t('planning.waitlist')}</Text></View>
-                    ) : (
-                      <LinearGradient colors={gradientFor(s.schoolCode)} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.book}>
-                        <Text style={styles.bookText}>{t('planning.book')}</Text>
-                      </LinearGradient>
-                    )}
+                    <LinearGradient colors={gradientFor(s.schoolCode)} style={styles.book}><Text style={styles.bookText}>Infos</Text></LinearGradient>
                   </Pressable>
                 </View>
               );
@@ -184,12 +165,6 @@ export default function PlanningScreen() {
         )}
       </ScrollView>
 
-      <SavingsNudge
-        visible={nudge !== null}
-        campus={nudge ?? 'CORE'}
-        onClose={() => setNudge(null)}
-        onSeeCards={() => router.push('/wallet')}
-      />
     </View>
   );
 }

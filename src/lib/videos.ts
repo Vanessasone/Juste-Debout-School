@@ -23,17 +23,7 @@ const H = {
   waacking: '#8A2E6B',
 };
 
-export const VIDEOS: Video[] = [
-  { id: 'v1', title: 'Les bases de la House', style: 'House', durationSec: 252, views: 1240, likes: 312, section: 'new', hue: H.house },
-  { id: 'v2', title: 'Popping · dime stop', style: 'Popping', durationSec: 363, views: 980, likes: 205, section: 'new', hue: H.popping },
-  { id: 'v3', title: 'Locking · les points', style: 'Locking', durationSec: 421, views: 760, likes: 150, section: 'new', hue: H.locking },
-  { id: 'v4', title: 'Replay open class — House', style: 'House', durationSec: 4800, views: 3200, likes: 540, section: 'popular', hue: H.house },
-  { id: 'v5', title: 'Musicalité en Hip-Hop', style: 'Hip-Hop', durationSec: 512, views: 2600, likes: 480, section: 'popular', hue: H.hiphop },
-  { id: 'v6', title: 'Waacking · les bras', style: 'Waacking', durationSec: 388, views: 2100, likes: 410, section: 'popular', hue: H.waacking },
-  { id: 'v7', title: 'Tuto footwork House', style: 'House', durationSec: 300, views: 1500, likes: 260, section: 'tuto', hue: H.house },
-  { id: 'v8', title: 'Tuto boogaloo', style: 'Popping', durationSec: 340, views: 1100, likes: 190, section: 'tuto', hue: H.popping },
-  { id: 'v9', title: 'Tuto Hip-Hop groove', style: 'Hip-Hop', durationSec: 275, views: 1700, likes: 300, section: 'tuto', hue: H.hiphop },
-];
+export const VIDEOS: Video[] = [];
 
 export const VIDEO_STYLES = ['House', 'Popping', 'Locking', 'Hip-Hop', 'Waacking'];
 
