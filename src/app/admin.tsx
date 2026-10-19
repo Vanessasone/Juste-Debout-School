@@ -94,6 +94,7 @@ export default function AdminHub() {
             <Text style={styles.demoText}>{t('admin.demoNote')}</Text>
           </View>
         )}
+        <Tool icon="school" color="#2F40E6" title="Formation & promotions" sub="Groupes, planning, appel, documents et annonces" onPress={() => router.push('/admin-training')} />
         <Tool icon="lock-closed" color="#2F40E6" title="Annuaire privé" sub="Élèves, professeurs et import des coordonnées" onPress={() => router.push('/admin-directory')} />
         <Tool icon="people" color="#2F40E6" title={t('admin.people')} sub={t('admin.peopleSub')} onPress={() => router.push('/admin-people')} />
         <Tool icon="ribbon" color="#FF6A16" title={t('admin.points')} sub={t('admin.pointsSub')} onPress={() => router.push('/admin-points')} />

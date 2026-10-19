@@ -60,6 +60,8 @@ function RootNavigator() {
         <Stack.Screen name="admin-planning" />
         <Stack.Screen name="admin-people" />
         <Stack.Screen name="admin-directory" />
+        <Stack.Screen name="admin-training" />
+        <Stack.Screen name="my-training" />
         <Stack.Screen name="edit-profile" />
         <Stack.Screen name="rentals" />
         <Stack.Screen name="shop" />

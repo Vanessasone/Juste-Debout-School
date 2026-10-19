@@ -98,6 +98,7 @@ export default function PlanningScreen() {
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: Space.xxxl }}>
+        <Pressable accessibilityRole="button" onPress={()=>router.push('/my-training')} style={{padding:18,margin:16,borderRadius:16,backgroundColor:Palette.industry}}><Text style={{color:'#fff',fontWeight:'800'}}>Mon planning de formation et mes documents →</Text></Pressable>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.dateStrip}>
           {days.map((d, i) => {
             const on = i === dayIndex;
