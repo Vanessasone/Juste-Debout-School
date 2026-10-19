@@ -28,6 +28,8 @@ export default function EditProfile() {
   const { accent } = useCampus();
 
   const [loading, setLoading] = useState(true);
+  const [loadError,setLoadError]=useState(false);
+  const [retry,setRetry]=useState(0);
   const [fullName, setFullName] = useState('');
   const [alias, setAlias] = useState('');
   const [city, setCity] = useState('');
@@ -44,8 +46,11 @@ export default function EditProfile() {
   const [msg, setMsg] = useState<string | null>(null);
 
   useEffect(() => {
+    let active=true;setLoading(true);setLoadError(false);
     getMyProfile()
       .then((p) => {
+        if(!active)return;
+        if(!p)throw new Error('Profil indisponible');
         if (p) {
           setFullName(p.full_name ?? '');
           setAlias(p.alias ?? '');
@@ -59,15 +64,19 @@ export default function EditProfile() {
           setPhotoUrl(p.photo_url ?? null);
         }
       })
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, []);
+      .catch(() => {if(active)setLoadError(true)})
+      .finally(() => {if(active)setLoading(false)});
+    return()=>{active=false};
+  }, [retry]);
+
+  useEffect(()=>{setMsg(null)},[fullName,alias,city,country,level,styles_,bio,instagram,available]);
 
   const toggleStyle = (s: string) =>
     setStyles((cur) => (cur.includes(s) ? cur.filter((x) => x !== s) : [...cur, s]));
 
   const changePhoto = async () => {
-    setErr(null);
+    if(uploading||saving)return;
+    setErr(null);setMsg(null);
     setUploading(true);
     try {
       const url = await pickAndUploadAvatar();
@@ -80,6 +89,7 @@ export default function EditProfile() {
   };
 
   const save = async () => {
+    if(saving||uploading||loadError||loading)return;
     setSaving(true);
     setErr(null);
     setMsg(null);
@@ -93,13 +103,8 @@ export default function EditProfile() {
         styles: styles_,
         bio: bio.trim() || null,
         instagram: instagram.trim() || null,
+        available_for_school: available,
       });
-      // « Dispo pour stages » : la colonne peut ne pas être encore migrée → best-effort.
-      try {
-        await updateMyProfile({ available_for_school: available });
-      } catch {
-        /* colonne available_for_school pas encore ajoutée — sans blocage */
-      }
       setMsg(t('ep.saved'));
     } catch (e: any) {
       setErr(e?.message ?? 'Erreur');
@@ -109,7 +114,7 @@ export default function EditProfile() {
   };
 
   const Chip = ({ label, on, onPress }: { label: string; on: boolean; onPress: () => void }) => (
-    <Pressable onPress={onPress} style={[styles.chip, on && { backgroundColor: accent, borderColor: accent }]}>
+    <Pressable disabled={saving||uploading} onPress={onPress} style={[styles.chip, on && { backgroundColor: accent, borderColor: accent }]}>
       <Text style={[styles.chipText, on && { color: '#fff' }]}>{label}</Text>
     </Pressable>
   );
@@ -126,7 +131,7 @@ export default function EditProfile() {
 
       {loading ? (
         <ActivityIndicator color={accent} style={{ marginTop: Space.xxxl }} />
-      ) : (
+      ) : loadError ? (<View style={{padding:24,gap:20}}><Text accessibilityRole="alert" style={{color:Palette.text}}>Impossible de charger ton profil. Réessaie avant de le modifier.</Text><Pressable accessibilityRole="button" onPress={()=>setRetry(v=>v+1)}><Text style={{color:accent,fontWeight:'800'}}>Réessayer</Text></Pressable></View>) : (
         <ScrollView contentContainerStyle={{ padding: Space.lg, paddingBottom: Space.xxxl }}>
           <Text style={{color:Palette.textMute,fontSize:13,lineHeight:20,marginBottom:12}}>Les informations de présentation sont facultatives. Elles servent à ton espace School et ne sont pas automatiquement publiées sur le site vitrine.</Text>
           <Pressable accessibilityRole="link" onPress={()=>Linking.openURL('https://justedeboutschoolapp.netlify.app/confidentialite.html')}><Text style={{color:accent,fontSize:13,marginBottom:20}}>Confidentialité et droits sur mes données ↗</Text></Pressable>
@@ -152,18 +157,18 @@ export default function EditProfile() {
           </View>
 
           <Text style={styles.label}>{t('ep.name')}</Text>
-          <TextInput style={styles.input} value={fullName} onChangeText={setFullName} placeholderTextColor={Palette.textMute} />
+          <TextInput editable={!saving&&!uploading} style={styles.input} value={fullName} onChangeText={setFullName} placeholderTextColor={Palette.textMute} />
           <Text style={styles.label}>{t('ep.alias')}</Text>
-          <TextInput style={styles.input} value={alias} onChangeText={setAlias} placeholderTextColor={Palette.textMute} autoCapitalize="none" />
+          <TextInput editable={!saving&&!uploading} style={styles.input} value={alias} onChangeText={setAlias} placeholderTextColor={Palette.textMute} autoCapitalize="none" />
 
           <View style={styles.row}>
             <View style={{ flex: 1 }}>
               <Text style={styles.label}>{t('ep.city')}</Text>
-              <TextInput style={styles.input} value={city} onChangeText={setCity} placeholderTextColor={Palette.textMute} />
+              <TextInput editable={!saving&&!uploading} style={styles.input} value={city} onChangeText={setCity} placeholderTextColor={Palette.textMute} />
             </View>
             <View style={{ flex: 1 }}>
               <Text style={styles.label}>{t('ep.country')}</Text>
-              <TextInput style={styles.input} value={country} onChangeText={setCountry} placeholderTextColor={Palette.textMute} />
+              <TextInput editable={!saving&&!uploading} style={styles.input} value={country} onChangeText={setCountry} placeholderTextColor={Palette.textMute} />
             </View>
           </View>
 
@@ -174,13 +179,13 @@ export default function EditProfile() {
           <View style={styles.wrap}>{STYLE_LIST.map((s) => <Chip key={s} label={s} on={styles_.includes(s)} onPress={() => toggleStyle(s)} />)}</View>
 
           <Text style={styles.label}>{t('ep.bio')}</Text>
-          <TextInput style={[styles.input, { height: 90, textAlignVertical: 'top' }]} value={bio} onChangeText={setBio} multiline placeholderTextColor={Palette.textMute} />
+          <TextInput editable={!saving&&!uploading} style={[styles.input, { height: 90, textAlignVertical: 'top' }]} value={bio} onChangeText={setBio} multiline placeholderTextColor={Palette.textMute} />
 
           <Text style={styles.label}>{t('ep.instagram')}</Text>
-          <TextInput style={styles.input} value={instagram} onChangeText={setInstagram} autoCapitalize="none" placeholderTextColor={Palette.textMute} />
+          <TextInput editable={!saving&&!uploading} style={styles.input} value={instagram} onChangeText={setInstagram} autoCapitalize="none" placeholderTextColor={Palette.textMute} />
 
           {/* Dispo pour stages */}
-          <Pressable style={styles.toggleRow} onPress={() => setAvailable((v) => !v)}>
+          <Pressable accessibilityRole="switch" accessibilityState={{checked:available,disabled:saving||uploading}} disabled={saving||uploading} style={styles.toggleRow} onPress={() => setAvailable((v) => !v)}>
             <View style={{ flex: 1 }}>
               <Text style={styles.toggleTitle}>{t('ep.available')}</Text>
               <Text style={styles.toggleHint}>{t('ep.availableHint')}</Text>
@@ -190,10 +195,10 @@ export default function EditProfile() {
             </View>
           </Pressable>
 
-          {err && <Text style={styles.err}>{err}</Text>}
-          {msg && <Text style={styles.msg}>{msg}</Text>}
+          {err && <Text accessibilityRole="alert" style={styles.err}>{err}</Text>}
+          {msg && <Text accessibilityLiveRegion="polite" style={styles.msg}>{msg}</Text>}
 
-          <GradientBtn label={t('admin.save')} onPress={save} disabled={saving} />
+          <GradientBtn label={t('admin.save')} onPress={save} disabled={saving||uploading} />
           <Pressable accessibilityRole="button" onPress={() => router.replace('/(tabs)/profile')} style={{ paddingVertical: 20, alignItems: 'center' }}><Text style={{ color: Palette.text, fontSize: 16, fontWeight: '800' }}>{msg ? 'Terminer et revenir au profil' : 'Retour au profil'}</Text></Pressable>
         </ScrollView>
       )}

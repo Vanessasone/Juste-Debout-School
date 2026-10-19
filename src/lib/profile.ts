@@ -20,7 +20,8 @@ export type Profile = {
 };
 
 export async function getMyProfile(): Promise<Profile | null> {
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if(authError)throw authError;
   if (!user) return null;
   const { data, error } = await supabase.from('profiles').select('*').eq('id', user.id).single();
   if (error) {
@@ -30,11 +31,15 @@ export async function getMyProfile(): Promise<Profile | null> {
   return { ...data, photo_url: await resolveProfilePhoto(data.photo_url) } as Profile;
 }
 
-export async function updateMyProfile(fields: Partial<Profile>): Promise<void> {
-  const { data: { user } } = await supabase.auth.getUser();
+export type EditableProfile = Pick<Profile, 'full_name' | 'alias' | 'country' | 'city' | 'styles' | 'level' | 'bio' | 'instagram' | 'photo_url' | 'available_for_school'>;
+
+export async function updateMyProfile(fields: Partial<EditableProfile>): Promise<void> {
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if(authError)throw authError;
   if (!user) throw new Error('Tu dois être connecté.');
-  const { error } = await supabase.from('profiles').update(fields).eq('id', user.id);
+  const { data, error } = await supabase.from('profiles').update(fields).eq('id', user.id).select('id').single();
   if (error) throw error;
+  if (!data?.id) throw new Error('Le profil n’a pas été enregistré. Réessaie.');
 }
 
 export function isAdmin(p: Profile | null): boolean {
