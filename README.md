@@ -1,7 +1,7 @@
 # Juste Debout School — app réseau
 
 App élève des **Juste Debout Schools** (réseau multi-écoles : CORE, INDUSTRY, et les suivantes).
-Application **séparée** de l'app événement Juste Debout, mais qui **partage le compte / l'authentification** (même projet Supabase).
+Application indépendante : projet Supabase dédié `zmzunjphubbdumowcurk`, comptes, profils et sessions propres à School. Aucun transfert de session vers TOTF ou les applications événement.
 
 - **Stack** : Expo SDK 57 · Expo Router (typed routes) · React Native 0.86 · Supabase.
 - **Identité** : charte « Atelier / Affiche » propre à l'école (papier + encre), **système par campus** — CORE orange `#DE7A1A`, INDUSTRY cobalt `#2A3CC0`. Distincte de l'app événement (vert/noir).
@@ -11,7 +11,7 @@ Application **séparée** de l'app événement Juste Debout, mais qui **partage 
 
 ```bash
 npm install
-cp .env.example .env   # renseigne les MÊMES valeurs Supabase que l'app événement
+cp .env.example .env   # renseigne uniquement les clés publiques du projet School dédié
 npm run ios            # ou: npm run android / npm run web
 ```
 
@@ -19,19 +19,15 @@ npm run ios            # ou: npm run android / npm run web
 
 ## Backend
 
-Dans le **même projet Supabase** que l'app événement (Supabase → SQL Editor → New query → Run),
-exécute dans l'ordre :
-1. `supabase/schema-jds.sql` — tables `jds_*` (écoles, studios, séances, cartes, réservations) + RLS + RPC `jds_book_session`, seed des deux écoles réelles.
-2. `supabase/schema-vote.sql` — système de **vote communautaire** partagé école + événement (`polls` / `poll_candidates` / `poll_votes`) + RPC `cast_vote` + sondage de démo.
-3. `supabase/schema-rankings.sql` — **classements** (profs open, profs formation, élèves) : registre de points `ranking_points` + view agrégée + RPC admin `ranking_add` (assiduité/retards/absences/jury/défis/bonus) + roster de démo.
+Le projet de production School est `zmzunjphubbdumowcurk` (Paris). Ne jamais exécuter les anciens scripts d'initialisation dans le projet événement : ils décrivent l'architecture historique partagée et contiennent des données de démonstration.
 
-Le tout réutilise `public.profiles` / `auth.users` → **compte partagé** (un vote unique par personne sur les deux apps).
+Authentification : email/mot de passe. Google n'est pas activé. Site URL : `https://justedeboutschoolapp.netlify.app`; retours autorisés uniquement sur ce domaine. Stockage local de session : `jds-school-auth-v1`. Les comptes événement/TOTF ne sont pas importés automatiquement. Les profils sont créés par un trigger à l'inscription ; les rôles ne sont pas modifiables par les utilisateurs.
 
 ## Où en est le projet
 
-- **Fait** : socle multi-tenant (schéma + RLS), thème par campus, **Accueil** image-forward, **Planning** (réservation via RPC), **système de vote** communautaire (école + événement), nav à 5 onglets, i18n **FR/EN**, connexion (compte partagé), logos en placeholders (`Logo.tsx`).
+- **Fait** : socle multi-tenant (schéma + RLS), thème par campus, **Accueil** image-forward, **Planning** (réservation via RPC), **système de vote** communautaire School, nav à 5 onglets, i18n **FR/EN**, connexion School indépendante, logos en placeholders (`Logo.tsx`).
 - **Phase 1 (suite)** : wallet de cartes + achat/paiement (Stripe) + check-in QR. **Logos + photos réels fournis juste avant les paiements.**
-- **Phase 2** : profil/progression, vidéos, communauté, passerelle événement.
+- **Phase 2** : profil/progression, vidéos, communauté, espace School indépendant.
 - **Phase 3** : back-office par école, analytics, fidélité, mode franchise.
 
 ## À confirmer avec JDS
