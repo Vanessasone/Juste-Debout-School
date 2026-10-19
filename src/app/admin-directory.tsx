@@ -74,6 +74,11 @@ export default function AdminDirectory() {
         <Text style={styles.heading}>{p.first_name} {p.last_name}</Text>
         <Text style={styles.body}>{p.campus} · {p.person_type==='student'?'Élève':'Professeur'}{p.cohort?` · ${p.cohort}`:''}</Text>
         {!!p.email && <Text selectable style={styles.body}>{p.email}</Text>}
+        {!p.email && !!p.source_details?.emails_raw && <Text selectable style={styles.body}>Emails à confirmer : {p.source_details.emails_raw}</Text>}
+        {!!p.source_details?.subject && <Text style={styles.body}>{p.source_details.subject}</Text>}
+        {!!p.source_details?.birth_date && <Text style={styles.body}>Naissance : {p.source_details.birth_date.split('-').reverse().join('/')}</Text>}
+        {p.person_type==='student' && !p.file_code && <Text style={styles.badge}>Numéro de dossier à compléter</Text>}
+        {!p.phone && <Text style={styles.badge}>Téléphone à compléter</Text>}
         {!!p.phone && <Text selectable style={styles.body}>{p.phone}</Text>}
         {!!p.file_code && <Text style={styles.body}>Dossier {p.file_code}</Text>}
         <Text style={styles.badge}>{p.review_status==='verified'?'Vérifiée':'À vérifier'}</Text>

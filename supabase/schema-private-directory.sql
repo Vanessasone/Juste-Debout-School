@@ -5,11 +5,12 @@ create table public.jds_private_directory (
  campus text not null check(campus in ('CORE','INDUSTRY')),
  person_type text not null check(person_type in ('student','teacher')),
  first_name text not null check(length(trim(first_name)) between 1 and 200),
- last_name text not null check(length(trim(last_name)) between 1 and 200),
+ last_name text not null check(length(trim(last_name))<=200 and (person_type='teacher' or length(trim(last_name))>=1)),
  email text check(email is null or length(email)<=320),
  phone text check(phone is null or length(phone)<=100),
  cohort text check(cohort is null or length(cohort)<=100),
  file_code text check(file_code is null or length(file_code)<=100),
+ source_details jsonb not null default '{}'::jsonb,
  review_status text not null default 'pending' check(review_status in ('pending','verified')),
  created_at timestamptz not null default now()
 );

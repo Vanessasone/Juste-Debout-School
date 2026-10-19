@@ -5,7 +5,7 @@ export type DirectoryInput = {
   first_name: string; last_name: string; email: string | null; phone: string | null;
   cohort: string | null; file_code: string | null;
 };
-export type DirectoryPerson = DirectoryInput & { id: string; review_status: 'pending' | 'verified' };
+export type DirectoryPerson = DirectoryInput & { id: string; review_status: 'pending' | 'verified'; source_details?: { emails_raw?: string; subject?: string; birth_date?: string; issues?: string } };
 
 /** CSV paste accepts comma, semicolon or spreadsheet tabs, including quoted cells. */
 export function parseDirectoryCsv(input: string): DirectoryInput[] {
@@ -36,7 +36,7 @@ export function parseDirectoryCsv(input: string): DirectoryInput[] {
     const get = (key: string) => r[headers.indexOf(key)]?.trim() ?? '';
     const first_name = get('prenom'); const last_name = get('nom');
     const campus = get('campus').toUpperCase(); const person_type = get('type').toLowerCase();
-    if (!first_name || !last_name) throw new Error(`Ligne ${i + 2} : prénom et nom requis.`);
+    if (!first_name || (!last_name && person_type !== 'teacher')) throw new Error(`Ligne ${i + 2} : prénom et nom requis pour un élève, nom ou pseudonyme requis pour un professeur.`);
     if (campus !== 'CORE' && campus !== 'INDUSTRY') throw new Error(`Ligne ${i + 2} : campus CORE ou INDUSTRY requis.`);
     if (person_type !== 'student' && person_type !== 'teacher') throw new Error(`Ligne ${i + 2} : type student ou teacher requis.`);
     const email = get('email').toLowerCase() || null;
