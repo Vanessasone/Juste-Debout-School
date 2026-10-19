@@ -1,0 +1,1 @@
+Visuels originaux fournis par Vanessa via SwissTransfer le 19 octobre 2026. Redimensionnement proportionnel et compression JPEG pour l’affichage, sans recadrage. T20 = TEVIN confirmé par Vanessa. Camilla Kids mercredi : 17h (7–10 ans), 18h (11–14 ans). Les créneaux sont des références hebdomadaires, pas des réservations datées.

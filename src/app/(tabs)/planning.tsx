@@ -9,6 +9,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { CoreOpenCatalogue } from '@/components/CoreOpenCatalogue';
 import { Wavetruv } from '@/components/Logo';
 import { SavingsNudge } from '@/components/SavingsNudge';
 import { FavHeart } from '@/components/ui';
@@ -119,6 +120,9 @@ export default function PlanningScreen() {
             );
           })}
         </ScrollView>
+
+        {campus !== 'INDUSTRY' && <CoreOpenCatalogue day={days[dayIndex].getDay()} />}
+        <Text style={[styles.meta,{marginHorizontal:Space.lg,marginBottom:12}]}>{t('coreOpen.otherSessions')}</Text>
 
         {msg && (
           <View style={[styles.msg, { borderLeftColor: accent }]}><Text style={styles.msgText}>{msg}</Text></View>

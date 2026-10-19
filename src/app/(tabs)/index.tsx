@@ -11,6 +11,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { CoreOpenCatalogue } from '@/components/CoreOpenCatalogue';
 import { Coin } from '@/components/Coin';
 import { Wavetruv, Wordmark } from '@/components/Logo';
 import { RateSheet } from '@/components/RateSheet';
@@ -299,6 +300,7 @@ export default function HomeScreen() {
           </View>
         </View>
         </FadeInView>
+        {campus !== 'INDUSTRY' && <CoreOpenCatalogue compact />}
       </ScrollView>
 
       <RateSheet

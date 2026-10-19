@@ -1,0 +1,339 @@
+[
+  {
+    "id": "core-8383",
+    "teacher": "AYÉLÉ",
+    "style": "Hip-Hop",
+    "day": 1,
+    "start": "17:30",
+    "ages": null,
+    "poster": "core-8383.jpg",
+    "aliases": [
+      "AYÉLÉ"
+    ]
+  },
+  {
+    "id": "core-8384",
+    "teacher": "LA PETITE",
+    "style": "Locking",
+    "day": 1,
+    "start": "17:30",
+    "ages": null,
+    "poster": "core-8384.jpg",
+    "aliases": [
+      "LA PETITE"
+    ]
+  },
+  {
+    "id": "core-8385",
+    "teacher": "BABYROC1",
+    "style": "Hip-Hop",
+    "day": 1,
+    "start": "17:30",
+    "ages": null,
+    "poster": "core-8385.jpg",
+    "aliases": [
+      "BABYROC1"
+    ]
+  },
+  {
+    "id": "core-8386",
+    "teacher": "DANESHIRO",
+    "style": "House Dance",
+    "day": 1,
+    "start": "19:00",
+    "ages": null,
+    "poster": "core-8386.jpg",
+    "aliases": [
+      "DANESHIRO"
+    ]
+  },
+  {
+    "id": "core-8387",
+    "teacher": "QUEENSY",
+    "style": "Dancehall",
+    "day": 1,
+    "start": "19:00",
+    "ages": null,
+    "poster": "core-8387.jpg",
+    "aliases": [
+      "QUEENSY"
+    ]
+  },
+  {
+    "id": "core-8388",
+    "teacher": "LA SALLE ROSE",
+    "style": "Hip-Hop",
+    "day": 1,
+    "start": "20:30",
+    "ages": null,
+    "poster": "core-8388.jpg",
+    "aliases": [
+      "LA SALLE ROSE"
+    ]
+  },
+  {
+    "id": "core-8389",
+    "teacher": "K.YOO",
+    "style": "Hip-Hop",
+    "day": 2,
+    "start": "17:30",
+    "ages": null,
+    "poster": "core-8389.jpg",
+    "aliases": [
+      "K.YOO"
+    ]
+  },
+  {
+    "id": "core-8390",
+    "teacher": "TARIK",
+    "style": "House Dance",
+    "day": 2,
+    "start": "17:30",
+    "ages": null,
+    "poster": "core-8390.jpg",
+    "aliases": [
+      "TARIK"
+    ]
+  },
+  {
+    "id": "core-8391",
+    "teacher": "KOTA",
+    "style": "Locking",
+    "day": 2,
+    "start": "19:00",
+    "ages": null,
+    "poster": "core-8391.jpg",
+    "aliases": [
+      "KOTA"
+    ]
+  },
+  {
+    "id": "core-8392",
+    "teacher": "ASTON",
+    "style": "Popping",
+    "day": 2,
+    "start": "19:00",
+    "ages": null,
+    "poster": "core-8392.jpg",
+    "aliases": [
+      "ASTON"
+    ]
+  },
+  {
+    "id": "core-8393",
+    "teacher": "SOYYMIMY",
+    "style": "Hip-Hop",
+    "day": 2,
+    "start": "19:00",
+    "ages": null,
+    "poster": "core-8393.jpg",
+    "aliases": [
+      "SOYYMIMY"
+    ]
+  },
+  {
+    "id": "core-8394",
+    "teacher": "HPONE",
+    "style": "House Dance",
+    "day": 2,
+    "start": "20:30",
+    "ages": null,
+    "poster": "core-8394.jpg",
+    "aliases": [
+      "HPONE"
+    ]
+  },
+  {
+    "id": "core-8395",
+    "teacher": "DYSDYS",
+    "style": "Bboying",
+    "day": 3,
+    "start": "19:00",
+    "ages": null,
+    "poster": "core-8395.jpg",
+    "aliases": [
+      "DYSDYS"
+    ]
+  },
+  {
+    "id": "core-8396",
+    "teacher": "BOUSTESSE",
+    "style": "House Dance",
+    "day": 3,
+    "start": "20:30",
+    "ages": null,
+    "poster": "core-8396.jpg",
+    "aliases": [
+      "BOUSTESSE"
+    ]
+  },
+  {
+    "id": "core-8397",
+    "teacher": "AXOO",
+    "style": "Voguing",
+    "day": 4,
+    "start": "17:30",
+    "ages": null,
+    "poster": "core-8397.jpg",
+    "aliases": [
+      "AXOO"
+    ]
+  },
+  {
+    "id": "core-8398",
+    "teacher": "SPIDER",
+    "style": "Hip-Hop",
+    "day": 4,
+    "start": "17:30",
+    "ages": null,
+    "poster": "core-8398.jpg",
+    "aliases": [
+      "SPIDER"
+    ]
+  },
+  {
+    "id": "core-8399",
+    "teacher": "DOMINIQUE LESDEMA",
+    "style": "Jazz Rock",
+    "day": 4,
+    "start": "17:30",
+    "ages": null,
+    "poster": "core-8399.jpg",
+    "aliases": [
+      "DOMINIQUE LESDEMA"
+    ]
+  },
+  {
+    "id": "core-8400",
+    "teacher": "T20",
+    "style": "Hip-Hop",
+    "day": 4,
+    "start": "19:00",
+    "ages": null,
+    "poster": "core-8400.jpg",
+    "aliases": [
+      "TEVIN",
+      "T20"
+    ]
+  },
+  {
+    "id": "core-8401",
+    "teacher": "RICKYSOUL",
+    "style": "House Dance",
+    "day": 4,
+    "start": "19:00",
+    "ages": null,
+    "poster": "core-8401.jpg",
+    "aliases": [
+      "RICKYSOUL"
+    ]
+  },
+  {
+    "id": "core-8402",
+    "teacher": "KOTA",
+    "style": "Popping",
+    "day": 4,
+    "start": "19:00",
+    "ages": null,
+    "poster": "core-8402.jpg",
+    "aliases": [
+      "KOTA"
+    ]
+  },
+  {
+    "id": "core-8403",
+    "teacher": "HENRIQUE",
+    "style": "House Dance",
+    "day": 5,
+    "start": "17:30",
+    "ages": null,
+    "poster": "core-8403.jpg",
+    "aliases": [
+      "HENRIQUE"
+    ]
+  },
+  {
+    "id": "core-8404",
+    "teacher": "GIU",
+    "style": "Hip-Hop",
+    "day": 5,
+    "start": "17:30",
+    "ages": null,
+    "poster": "core-8404.jpg",
+    "aliases": [
+      "GIU"
+    ]
+  },
+  {
+    "id": "core-8405",
+    "teacher": "ANDY",
+    "style": "Amapiano",
+    "day": 5,
+    "start": "19:00",
+    "ages": null,
+    "poster": "core-8405.jpg",
+    "aliases": [
+      "ANDY"
+    ]
+  },
+  {
+    "id": "core-8406",
+    "teacher": "TRIX",
+    "style": "Hip-Hop",
+    "day": 5,
+    "start": "19:00",
+    "ages": null,
+    "poster": "core-8406.jpg",
+    "aliases": [
+      "TRIX"
+    ]
+  },
+  {
+    "id": "core-8407",
+    "teacher": "IONY",
+    "style": "Hip-Hop Kids",
+    "day": 6,
+    "start": "11:30",
+    "ages": "7–10 ans",
+    "poster": "core-8407.jpg",
+    "aliases": [
+      "IONY"
+    ]
+  },
+  {
+    "id": "core-8407-older",
+    "teacher": "IONY",
+    "style": "Hip-Hop Kids",
+    "day": 6,
+    "start": "12:30",
+    "ages": "11–14 ans",
+    "poster": "core-8407.jpg",
+    "aliases": [
+      "IONY"
+    ]
+  },
+  {
+    "id": "core-8408",
+    "teacher": "CAMILLA",
+    "style": "Hip-Hop Kids",
+    "day": 3,
+    "start": "17:00",
+    "ages": "7–10 ans",
+    "poster": "core-8408.jpg",
+    "aliases": [
+      "CAMILLA"
+    ]
+  },
+  {
+    "id": "core-8408-older",
+    "teacher": "CAMILLA",
+    "style": "Hip-Hop Kids",
+    "day": 3,
+    "start": "18:00",
+    "ages": "11–14 ans",
+    "poster": "core-8408.jpg",
+    "aliases": [
+      "CAMILLA"
+    ]
+  }
+]

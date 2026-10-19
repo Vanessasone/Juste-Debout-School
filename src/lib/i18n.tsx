@@ -11,6 +11,7 @@ export type Locale = 'fr' | 'en';
 type Dict = Record<string, string>;
 
 const fr: Dict = {
+  'coreOpen.otherSessions': 'Autres séances datées de l’application',
   'tab.home': 'Accueil',
   'tab.planning': 'Planning',
   'tab.videos': 'Vidéos',
@@ -378,6 +379,7 @@ const fr: Dict = {
 };
 
 const en: Dict = {
+  'coreOpen.otherSessions': 'Other dated sessions in the app',
   'tab.home': 'Home',
   'tab.planning': 'Schedule',
   'tab.videos': 'Videos',
