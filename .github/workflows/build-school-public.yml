@@ -1,0 +1,46 @@
+name: Build School public website
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/build-school-public.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  public-site:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: oven-sh/setup-bun@v2
+      - name: Fetch pinned School website source
+        env:
+          SOURCE_URL: 'https://d2ol7oe51mr4n9.cloudfront.net/user_3DmKqFGm3dD6DZhfXTWsmDsb9QY/f02804d5-f5d4-407e-aadb-267a4770fdd1.zip'
+          SOURCE_SHA256: 'c0641bb673934964365208a698115714394821adc06b06aa57e06abfabaa9188'
+        run: |
+          python3 - <<'PY'
+          import os,urllib.request,hashlib,zipfile,io,pathlib
+          data=urllib.request.urlopen(os.environ['SOURCE_URL'],timeout=60).read()
+          assert hashlib.sha256(data).hexdigest()==os.environ['SOURCE_SHA256']
+          root=pathlib.Path('school-website').resolve();root.mkdir()
+          with zipfile.ZipFile(io.BytesIO(data)) as z:
+            for n in z.namelist():
+              assert (root/n).resolve().is_relative_to(root)
+            z.extractall(root)
+          PY
+      - name: Install existing locked dependencies
+        working-directory: school-website
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Build independent public website
+        working-directory: school-website
+        run: |
+          ./node_modules/.bin/vite build --config vite.public.config.ts
+          mv public-dist/public-site.html public-dist/index.html
+          printf '/*    /index.html   200\n' > public-dist/_redirects
+          printf '/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  X-Frame-Options: DENY\n' > public-dist/_headers
+          test -s public-dist/index.html
+      - uses: actions/upload-artifact@v7
+        with:
+          name: school-public-site
+          path: school-website/public-dist/
+          if-no-files-found: error
+          retention-days: 7
