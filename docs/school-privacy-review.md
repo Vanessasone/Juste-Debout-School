@@ -8,8 +8,8 @@
 - School Supabase audit: all 33 public tables have RLS enabled. Profiles read/update own rows; directory access is campus-scoped. The sole storage bucket is private school-training; avatar objects = 0.
 
 ## Items requiring school confirmation before official-domain launch
-- Full publisher legal entity: legal form, registration/SIREN, registered office and any applicable VAT details. The old legal notice identifies only Juste Debout School and Bruce Soné, 3 rue de l’Est.
-- Approve and implement a category-by-category retention schedule and periodic purge/archive workflow. The notice currently states purpose-based criteria; no automated deletion is claimed or configured.
+- Publisher identified through current INPI record: GB SCHOOL (GBS), SASU, SIREN 795298322. Updated in public notices; VAT number/status not asserted.
+- Retention schedule and manual review procedure prepared in school-retention-policy.md; public notice states adopted internal account/contact rules and legal document periods. Finance-specific training periods and actual provider log settings remain to verify. No automated purge/archive job configured.
 - Confirm processor contracts, hosting regions, subprocessors and any international transfer guarantees with Netlify and Supabase. No assertion of France-only processing.
 - Define responsibility for rights requests at contact@juste-debout.com, with verification, response and account-closure procedures. No requests were sent and no accounts deleted during this review.
 - Inform people whose directory records were imported, including unlinked students, through the school’s approved communication channel. No invitation or bulk email was sent.
