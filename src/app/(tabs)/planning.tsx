@@ -43,6 +43,8 @@ export default function PlanningScreen() {
   const [dayIndex, setDayIndex] = useState(0);
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError,setLoadError]=useState(false);
+  const [retry,setRetry]=useState(0);
   const [msg, setMsg] = useState<string | null>(null);
   const [nudged, setNudged] = useState(false); // nudge d'économie : 1× par visite (discret)
   const [nudge, setNudge] = useState<CampusCode | null>(null);
@@ -55,13 +57,13 @@ export default function PlanningScreen() {
 
   useEffect(() => {
     let alive = true;
-    setLoading(true);
-    getSessions(campus, days[dayIndex]).then((r) => alive && setSessions(r)).finally(() => alive && setLoading(false));
+    setLoading(true); setLoadError(false); setSessions([]);
+    getSessions(campus, days[dayIndex]).then((r) => {if(alive)setSessions(r)}).catch(()=>{if(alive)setLoadError(true)}).finally(() => alive && setLoading(false));
     return () => { alive = false; };
-  }, [campus, dayIndex, days]);
+  }, [campus, dayIndex, days, retry]);
 
   const onBook = (s: Session) => {
-    setMsg(s.kind==='open'||s.kind==='kids'?'Cours open sans réservation : présente-toi à l’accueil. Vérifie les éventuels changements auprès de l’équipe.':'Pour ce cours ou stage, contacte l’accueil afin de connaître les modalités d’inscription.');
+    setMsg(t(s.kind==='open'||s.kind==='kids'?'planning.openInfo':'planning.contactInfo'));
   };
 
   return (
@@ -127,7 +129,7 @@ export default function PlanningScreen() {
 
         {loading ? (
           <ActivityIndicator color={accent} style={{ marginTop: Space.xxl }} />
-        ) : sessions.length === 0 ? (
+        ) : loadError ? (<View style={styles.empty}><Text accessibilityRole="alert" style={styles.emptyText}>{t('planning.loadError')}</Text><Pressable accessibilityRole="button" onPress={()=>setRetry(v=>v+1)}><Text style={{color:accent,marginTop:14,fontWeight:'700'}}>{t('planning.retry')}</Text></Pressable></View>) : sessions.length === 0 ? (
           <View style={styles.empty}>
             <Ionicons name="calendar-outline" size={28} color={Palette.textMute} />
             <Text style={styles.emptyText}>{t('planning.empty')}</Text>

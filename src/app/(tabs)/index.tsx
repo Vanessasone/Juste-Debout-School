@@ -94,6 +94,7 @@ export default function HomeScreen() {
     return () => { active = false; };
   }, [session?.user.id]));
   const [hero, setHero] = useState<Session[]>([]);
+  const [heroError,setHeroError]=useState(false);
   const [idx, setIdx] = useState(0);
   const [fade, setFade] = useState(1);
 
@@ -102,16 +103,19 @@ export default function HomeScreen() {
   }, []);
 
   useEffect(() => {
-    getUpcomingSessions(campus, 6).then((rows) => { setHero(rows.slice(0, 4)); setIdx(0); });
+    let active=true; setHero([]); setHeroError(false); setIdx(0); setFade(1);
+    getUpcomingSessions(campus, 6).then(rows=>{if(active){setHero(rows.slice(0,4));setIdx(0);}}).catch(()=>{if(active)setHeroError(true)});
+    return()=>{active=false};
   }, [campus]);
 
   useEffect(() => {
     if (hero.length < 2) return;
+    let transition:ReturnType<typeof setTimeout>|undefined;
     const id = setInterval(() => {
       setFade(0);
-      setTimeout(() => { setIdx((i) => (i + 1) % hero.length); setFade(1); }, 280);
+      transition=setTimeout(() => { setIdx((i) => (i + 1) % hero.length); setFade(1); }, 280);
     }, 3600);
-    return () => clearInterval(id);
+    return () => {clearInterval(id);if(transition)clearTimeout(transition);};
   }, [hero]);
 
   const firstName = profile?.full_name?.trim().split(/\s+/)[0] || profile?.alias || '';
@@ -153,7 +157,7 @@ export default function HomeScreen() {
                 </Text>
                 <Pressable style={styles.heroCta} onPress={() => router.push('/planning')}>
                   <LinearGradient colors={gradientFor(s.schoolCode)} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.heroCtaBg}>
-                    <Text style={styles.heroCtaText}>Réserver ma place →</Text>
+                    <Text style={styles.heroCtaText}>{t('planning.viewClass')}</Text>
                   </LinearGradient>
                 </Pressable>
               </>
@@ -175,6 +179,7 @@ export default function HomeScreen() {
         {/* ---------- SHEET (clair) ---------- */}
         <FadeInView>
         <View style={styles.sheet}>
+          {heroError && <Text accessibilityRole="alert" style={{color:Palette.text,padding:16}}>{t('planning.loadError')}</Text>}
           <View style={styles.grab} />
 
           <Pressable style={styles.searchBar} onPress={() => router.push('/search')}>

@@ -4,8 +4,8 @@
  * plusieurs cours ont lieu en même temps).
  */
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useFocusEffect, useRouter } from 'expo-router';
+import { useCallback, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -28,7 +28,8 @@ export default function Reservations() {
   const [error,setError]=useState(false);
   const [bookings, setBookings] = useState<Booking[] | null>(null);
 
-  useEffect(() => { getMyBookings().then(setBookings).catch(() => {setError(true);setBookings([]);}); }, []);
+  const [retry,setRetry]=useState(0);
+  useFocusEffect(useCallback(()=>{let active=true;setError(false);setBookings(null);getMyBookings().then(rows=>{if(active)setBookings(rows)}).catch(()=>{if(active){setError(true);setBookings([])}});return()=>{active=false};},[retry]));
 
   return (
     <View style={{ flex: 1, backgroundColor: Palette.bg }}>
@@ -44,7 +45,8 @@ export default function Reservations() {
         ) : bookings.length === 0 ? (
           <View style={styles.empty}>
             <Ionicons name="calendar-outline" size={34} color={Palette.textMute} />
-            <Text style={styles.emptyText}>{error?'Impossible de charger les réservations. Réessaie plus tard.':t('resv.empty')}</Text>
+            <Text style={styles.emptyText}>{error?t('planning.bookingsLoadError'):t('resv.empty')}</Text>
+            {error && <Pressable accessibilityRole="button" onPress={()=>setRetry(v=>v+1)}><Text style={{color:Palette.core,fontWeight:'700'}}>{t('planning.retry')}</Text></Pressable>}
           </View>
         ) : (
           <View style={{ gap: 16 }}>

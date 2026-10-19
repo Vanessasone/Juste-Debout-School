@@ -92,7 +92,9 @@ export async function bookChildSession(childId: string, sessionId: string): Prom
     DEMO_BOOKINGS.set(childId, set);
     return;
   }
-  await supabase.from('jds_child_bookings').insert({ child_id: childId, session_id: sessionId });
+  const {data,error}=await supabase.from('jds_child_bookings').insert({child_id:childId,session_id:sessionId}).select('id').single();
+  if(error)throw error;
+  if(!data?.id)throw new Error('Réservation non confirmée');
 }
 
 export async function addChild(input: NewChild): Promise<Child | null> {

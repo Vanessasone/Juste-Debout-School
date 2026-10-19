@@ -48,6 +48,7 @@ export default function Kiosk() {
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [loadingClasses,setLoadingClasses] = useState(false);
+  const [classesError,setClassesError] = useState(false);
   useEffect(() => () => { if (resetTimer.current) clearTimeout(resetTimer.current); memberRequest.current++; }, []);
 
   useEffect(() => {
@@ -60,7 +61,7 @@ export default function Kiosk() {
     if (resetTimer.current) clearTimeout(resetTimer.current);
     scanLock.current = false;
     memberRequest.current++;
-    setLoadingClasses(false);
+    setLoadingClasses(false); setClassesError(false);
     setSaveError(null);
     setDone(null); setSelected(null); setQuery(''); setResults([]); setClasses([]); setMode('scan');
   };
@@ -79,11 +80,11 @@ export default function Kiosk() {
     if (savingLock.current) return;
     const request = ++memberRequest.current;
     tap();
-    setSaveError(null); setSelected(m); setClasses([]); setLoadingClasses(true);
+    setSaveError(null); setSelected(m); setClasses([]); setLoadingClasses(true); setClassesError(false);
     const all = await getSessions(campus, new Date()).catch(() => null);
     if (request !== memberRequest.current) return;
     setLoadingClasses(false);
-    if (!all) { setSaveError(t('kiosk.loadError')); return; }
+    if (!all) { setClassesError(true); setSaveError(t('kiosk.loadError')); return; }
     setClasses(all);
   };
 
@@ -178,7 +179,7 @@ export default function Kiosk() {
                 <Ionicons name="checkmark-circle" size={26} color={accentFor(school)} />
               </Pressable>
             ))}
-            {!loadingClasses && classes.length === 0 && (
+            {!classesError && !loadingClasses && classes.length === 0 && (
               <Pressable disabled={saving} accessibilityState={{disabled:saving,busy:saving}} onPress={() => confirm(null, selected)}>
                 <LinearGradient colors={gradientFor(school)} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.freeBtn}>
                   <Text style={styles.freeTxt}>{t('kiosk.freeCheck')}</Text>

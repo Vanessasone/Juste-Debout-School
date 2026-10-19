@@ -116,7 +116,8 @@ export async function getSchools(): Promise<School[]> {
     .from('jds_schools')
     .select('id, code, name, tagline, address, accent_color, is_open, opens_on')
     .order('sort_order');
-  if (error || !data) return MOCK_SCHOOLS;
+  if (error) return [];
+  if (!data) return [];
   return data.map((r) => ({
     id: r.id,
     code: r.code as CampusCode,
@@ -156,7 +157,8 @@ export async function getSessions(campus: CampusFilter, day: Date): Promise<Sess
   if (campus !== 'ALL') q = q.eq('jds_schools.code', campus);
 
   const { data, error } = await q;
-  if (error || !data) return [];
+  if (error) throw error;
+  if (!data) throw new Error('Planning indisponible');
 
   return data.map((r: any) => ({
     id: r.id,
@@ -196,7 +198,8 @@ export async function getUpcomingSessions(campus: CampusFilter, limit = 6): Prom
     .limit(limit);
   if (campus !== 'ALL') q = q.eq('jds_schools.code', campus);
   const { data, error } = await q;
-  if (error || !data) return [];
+  if (error) throw error;
+  if (!data) throw new Error('Planning indisponible');
   return data.map((r: any) => ({
     id: r.id,
     schoolCode: r.jds_schools?.code as CampusCode,
@@ -223,7 +226,8 @@ export async function bookSession(
     p_card: cardId,
   });
   if (error) throw error;
-  return data as 'booked' | 'waitlist';
+  if (data !== 'booked' && data !== 'waitlist') throw new Error('Réservation non confirmée. Consulte tes réservations avant de réessayer.');
+  return data;
 }
 
 /** Créer un cours / créneau (staff/admin). Démo : no-op. */

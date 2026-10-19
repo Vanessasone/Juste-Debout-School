@@ -17,6 +17,7 @@ import { tap } from '@/lib/haptics';
 import { useI18n } from '@/lib/i18n';
 import { goBack } from '@/lib/nav';
 import { getUpcomingSessions, LEVEL_LABEL, type Session } from '@/lib/schools';
+import { isSupabaseConfigured } from '@/lib/supabase';
 
 const DOW = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
 const hhmm = (d: Date) => `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
@@ -33,22 +34,32 @@ export default function ChildDetail() {
   const [loading, setLoading] = useState(true);
   const [sessions, setSessions] = useState<Session[]>([]);
   const [booked, setBooked] = useState<Set<string>>(new Set());
+  const [sessionsError,setSessionsError]=useState(false);
+  const [bookingMessage,setBookingMessage]=useState<string|null>(null);
 
   useEffect(() => {
-    getChild(String(id))
-      .then((c) => {
-        setChild(c);
-        if (c) getUpcomingSessions(c.schoolCode, 5).then(setSessions).catch(() => {});
-      })
-      .finally(() => setLoading(false));
-    getChildBookings(String(id)).then((ids) => setBooked(new Set(ids))).catch(() => {});
+    let active=true;
+    setLoading(true);setChild(null);setSessions([]);setSessionsError(false);setBookingMessage(null);setBooked(new Set());
+    getChild(String(id)).then(async c=>{
+      if(!active)return;
+      setChild(c);
+      if(c){const rows=await getUpcomingSessions(c.schoolCode,5);if(active)setSessions(rows);}
+    }).catch(()=>{if(active)setSessionsError(true)}).finally(()=>{if(active)setLoading(false)});
+    getChildBookings(String(id)).then(ids=>{if(active)setBooked(new Set(ids))}).catch(()=>{});
+    return()=>{active=false};
   }, [id]);
 
-  const book = async (sessionId: string) => {
-    if (booked.has(sessionId)) return;
+  const book = async (lesson: Session) => {
+    if (isSupabaseConfigured) {
+      setBookingMessage(t(lesson.kind==='open'||lesson.kind==='kids'?'planning.openInfo':'planning.contactInfo'));
+      return;
+    }
+    if (booked.has(lesson.id)) return;
     tap();
-    setBooked((prev) => new Set(prev).add(sessionId));
-    try { await bookChildSession(String(id), sessionId); } catch { /* rollback silencieux non nécessaire en démo */ }
+    try {
+      await bookChildSession(String(id), lesson.id);
+      setBooked(prev=>new Set(prev).add(lesson.id));
+    } catch { setBookingMessage(t('planning.bookingError')); }
   };
 
   const accent = child ? accentFor(child.schoolCode) : Palette.core;
@@ -109,7 +120,9 @@ export default function ChildDetail() {
 
         {/* Prochains cours */}
         <Text style={styles.sec}>{t('kids.upcoming')}</Text>
-        {sessions.length === 0 ? (
+        {sessionsError && <Text accessibilityRole="alert" style={styles.none}>{t('planning.loadError')}</Text>}
+        {bookingMessage && <Text accessibilityRole="alert" style={styles.none}>{bookingMessage}</Text>}
+        {!sessionsError && sessions.length === 0 ? (
           <Text style={styles.none}>{t('kids.none')}</Text>
         ) : (
           <View style={{ gap: 10 }}>
@@ -122,17 +135,17 @@ export default function ChildDetail() {
                     <Text style={styles.clsMeta}>{dayLabel(s.startsAt, t('home.today'))} · {hhmm(s.startsAt)} · {LEVEL_LABEL[s.level] ?? s.level}</Text>
                   </View>
                   <Pressable
-                    onPress={() => book(s.id)}
+                    accessibilityRole="button" onPress={() => book(s)}
                     style={[styles.bookBtn, on ? { backgroundColor: Palette.success } : { borderColor: accent, borderWidth: 1.5 }]}
                   >
-                    <Text style={[styles.bookTxt, { color: on ? '#fff' : accent }]}>{on ? t('kids.booked') : t('kids.book')}</Text>
+                    <Text style={[styles.bookTxt, { color: on ? '#fff' : accent }]}>{isSupabaseConfigured ? t('planning.info') : on ? t('kids.booked') : t('kids.book')}</Text>
                   </Pressable>
                 </View>
               );
             })}
           </View>
         )}
-        <Text style={styles.demo}>{t('kids.demoNote')}</Text>
+        {!isSupabaseConfigured && <Text style={styles.demo}>{t('kids.demoNote')}</Text>}
       </ScrollView>
     </View>
   );

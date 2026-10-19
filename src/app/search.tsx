@@ -29,11 +29,14 @@ export default function Search() {
   const { t } = useI18n();
   const [q, setQ] = useState('');
   const [classes, setClasses] = useState<Session[]>([]);
+  const [classesError,setClassesError]=useState(false);
   const [teachers, setTeachers] = useState<Teacher[]>([]);
 
   useEffect(() => {
-    getUpcomingSessions('ALL', 60).then(setClasses);
-    getTeachers().then(setTeachers);
+    let active=true;
+    getUpcomingSessions('ALL',60).then(rows=>{if(active)setClasses(rows)}).catch(()=>{if(active)setClassesError(true)});
+    getTeachers().then(rows=>{if(active)setTeachers(rows)}).catch(()=>{});
+    return()=>{active=false};
   }, []);
 
   const query = q.trim().toLowerCase();
@@ -108,6 +111,7 @@ export default function Search() {
       </View>
 
       <ScrollView contentContainerStyle={{ padding: Space.lg, paddingBottom: Space.xxxl }} keyboardShouldPersistTaps="handled">
+        {classesError && <Text accessibilityRole="alert" style={{color:Palette.textMute,marginBottom:16}}>{t('planning.loadError')}</Text>}
         {query.length === 0 ? (
           <View style={styles.hint}>
             <Ionicons name="search" size={28} color={Palette.textMute} />
