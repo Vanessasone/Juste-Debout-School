@@ -40,6 +40,8 @@ export function PressableScale({
   const to = (v: number) => Animated.spring(scale, { toValue: v, useNativeDriver: true, speed: 40, bounciness: 6 }).start();
   return (
     <Pressable
+      accessibilityRole="button"
+      accessibilityState={{disabled:!!disabled}}
       onPressIn={() => !disabled && to(0.96)}
       onPressOut={() => to(1)}
       onPress={() => { if (!disabled) { if (haptic) tap(); onPress?.(); } }}
