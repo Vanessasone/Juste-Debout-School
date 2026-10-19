@@ -9,6 +9,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import {IndustryOpenCatalogue} from '@/components/IndustryOpenCatalogue';
 import { CoreOpenCatalogue } from '@/components/CoreOpenCatalogue';
 import { Wavetruv } from '@/components/Logo';
 import { FavHeart } from '@/components/ui';
@@ -115,6 +116,7 @@ export default function PlanningScreen() {
         </ScrollView>
 
         {campus !== 'INDUSTRY' && <CoreOpenCatalogue day={days[dayIndex].getDay()} />}
+        {campus !== 'CORE' && <IndustryOpenCatalogue/>}
         <Text style={[styles.meta,{marginHorizontal:Space.lg,marginBottom:12}]}>{t('coreOpen.otherSessions')}</Text>
 
         {msg && (

@@ -1,0 +1,164 @@
+[
+  {
+    "id": "industry-open-1",
+    "day": 1,
+    "room": 2,
+    "time": "16:30–17:30",
+    "style": "Afro",
+    "teacher": "Gwendo",
+    "note": "Enfants"
+  },
+  {
+    "id": "industry-open-2",
+    "day": 1,
+    "room": 2,
+    "time": "17:30–18:30",
+    "style": "Afro",
+    "teacher": "Gwendo",
+    "note": "Ados"
+  },
+  {
+    "id": "industry-open-3",
+    "day": 1,
+    "room": 3,
+    "time": "17:00–18:00",
+    "style": "Yoga",
+    "teacher": "Mina",
+    "note": ""
+  },
+  {
+    "id": "industry-open-4",
+    "day": 2,
+    "room": 1,
+    "time": "19:30–21:00",
+    "style": "Modern",
+    "teacher": "Flavie",
+    "note": "À partir de fin novembre · date de début à confirmer"
+  },
+  {
+    "id": "industry-open-5",
+    "day": 2,
+    "room": 2,
+    "time": "20:00–21:30",
+    "style": "House choreo",
+    "teacher": "Julien",
+    "note": "Premier trimestre"
+  },
+  {
+    "id": "industry-open-6",
+    "day": 2,
+    "room": 3,
+    "time": "18:30–20:00",
+    "style": "Dancehall choreo",
+    "teacher": "Queensy",
+    "note": ""
+  },
+  {
+    "id": "industry-open-7",
+    "day": 3,
+    "room": 2,
+    "time": "16:30–17:30",
+    "style": "Hip-hop",
+    "teacher": "Tarik",
+    "note": "Enfants · 10–12 ans"
+  },
+  {
+    "id": "industry-open-8",
+    "day": 3,
+    "room": 2,
+    "time": "17:30–18:30",
+    "style": "House",
+    "teacher": "Tarik",
+    "note": "Ados · 13–16 ans"
+  },
+  {
+    "id": "industry-open-9",
+    "day": 3,
+    "room": 2,
+    "time": "18:30–20:00",
+    "style": "Reggaeton choreo",
+    "teacher": "Cristian",
+    "note": ""
+  },
+  {
+    "id": "industry-open-10",
+    "day": 4,
+    "room": 1,
+    "time": "Horaire à confirmer · 3 h",
+    "style": "Heels",
+    "teacher": "Enzo",
+    "note": "2 h technique + 1 h chorégraphie"
+  },
+  {
+    "id": "industry-open-11",
+    "day": 4,
+    "room": 3,
+    "time": "17:00–18:00",
+    "style": "Hip-hop choreo",
+    "teacher": "Giulia",
+    "note": "Ados · orthographe du nom à confirmer"
+  },
+  {
+    "id": "industry-open-12",
+    "day": 4,
+    "room": 3,
+    "time": "18:00–19:30",
+    "style": "Hip-hop choreo",
+    "teacher": "Giulia & Ayélé",
+    "note": ""
+  },
+  {
+    "id": "industry-open-13",
+    "day": 5,
+    "room": 2,
+    "time": "16:30–17:30",
+    "style": "Danse enfants",
+    "teacher": "Kaliana",
+    "note": "Discipline à confirmer"
+  },
+  {
+    "id": "industry-open-14",
+    "day": 5,
+    "room": 2,
+    "time": "17:30–18:30",
+    "style": "Danse ados",
+    "teacher": "Kaliana",
+    "note": "Discipline à confirmer"
+  },
+  {
+    "id": "industry-open-15",
+    "day": 5,
+    "room": 2,
+    "time": "18:30–20:00",
+    "style": "K-pop",
+    "teacher": "Djakka / Julien",
+    "note": "Attribution à confirmer"
+  },
+  {
+    "id": "industry-open-16",
+    "day": 5,
+    "room": 2,
+    "time": "20:00–22:00",
+    "style": "Reggaeton choreo",
+    "teacher": "Samuel Solerr",
+    "note": ""
+  },
+  {
+    "id": "industry-open-17",
+    "day": 5,
+    "room": 3,
+    "time": "17:00–18:00",
+    "style": "Yoga",
+    "teacher": "Mina",
+    "note": ""
+  },
+  {
+    "id": "industry-open-18",
+    "day": 5,
+    "room": 3,
+    "time": "18:00–19:30",
+    "style": "Salsa shine",
+    "teacher": "Maeva Dancer",
+    "note": ""
+  }
+]

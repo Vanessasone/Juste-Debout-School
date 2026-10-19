@@ -1,0 +1,10 @@
+import {useState} from 'react';
+import {Pressable,Text,View} from 'react-native';
+import {Palette,Space} from '@/constants/brand';
+import courses from '@/lib/industry-open.json';
+export function IndustryOpenCatalogue(){
+ const [day,setDay]=useState(0);
+ const days=['Toute la semaine','Lundi','Mardi','Mercredi','Jeudi','Vendredi'];
+ const visible=courses.filter(c=>!day||c.day===day);
+ return <View style={{margin:Space.lg,gap:12}}><Text style={{fontSize:22,fontWeight:'800',color:Palette.text}}>INDUSTRY · Cours open</Text><Text style={{color:Palette.textDim,lineHeight:21}}>OUVERTURE EN PRÉPARATION · Programme hebdomadaire prévisionnel 2026–2027. Horaires et intervenants susceptibles d’évoluer. Ces créneaux ne sont pas des séances datées et ne sont pas ouverts à la réservation.</Text><View style={{flexDirection:'row',flexWrap:'wrap',gap:8}}>{days.map((d,i)=><Pressable key={d} accessibilityRole="button" accessibilityState={{selected:day===i}} onPress={()=>setDay(i)} style={{padding:12,borderRadius:20,backgroundColor:day===i?Palette.industry:Palette.surface}}><Text style={{color:day===i?'#fff':Palette.text}}>{d}</Text></Pressable>)}</View>{visible.map(c=><View key={c.id} style={{padding:16,gap:6,borderRadius:16,borderWidth:1,borderColor:Palette.border,backgroundColor:Palette.surface}}><Text style={{fontWeight:'800',color:Palette.text}}>{c.style} · {c.teacher||'Intervenant à venir'}</Text><Text style={{color:Palette.textDim}}>{days[c.day]} · {c.time} · Salle {c.room}</Text>{!!c.note&&<Text style={{color:Palette.textDim}}>{c.note}</Text>}</View>)}<Text style={{color:Palette.textDim,lineHeight:21}}>Workshops prévus : Marie Thooris, Heels, 17 novembre 19h30–21h (salle 1, inauguration) et 14 décembre 20h–21h30 (salle 2) ; Ronan, commercial, 11 novembre et 9 décembre 19h–20h30 (salle 3) ; Maximilien, hip-hop choreo, 18 novembre 19h–20h30 (salle 3). Dates et ouverture à confirmer par l’école. Les locations Kizomba, salsa et danse orientale ne sont pas des cours open School.</Text></View>;
+}
