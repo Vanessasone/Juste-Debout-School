@@ -1,5 +1,5 @@
 /**
- * Écran PROFIL — identité (partagée avec l'app événement), progression par
+ * Écran PROFIL — identité School indépendante, progression par
  * style, carte, accès classements, langue FR/EN, déconnexion.
  * Données d'exemple en mode démo.
  */
@@ -49,21 +49,24 @@ export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
   const { t, locale, setLocale } = useI18n();
   const { accent } = useCampus();
-  const { configured, signOut } = useAuth();
+  const { configured, signOut, session } = useAuth();
   const router = useRouter();
   const [profile, setProfile] = useState<Profile | null>(null);
 
-  // Recharge le profil partagé à chaque fois qu'on revient sur l'onglet.
+  // Recharge le profil School à chaque fois qu'on revient sur l'onglet.
   useFocusEffect(
     useCallback(() => {
-      getMyProfile().then(setProfile).catch(() => {});
-    }, []),
+      let active = true;
+      setProfile(null);
+      if (session?.user.id) getMyProfile().then(p => { if (active) setProfile(p); }).catch(() => {});
+      return () => { active = false; };
+    }, [session?.user.id]),
   );
 
-  const displayName = profile?.alias || profile?.full_name || 'Naïma';
+  const displayName = profile?.full_name || profile?.alias || 'Mon profil';
   const subParts = profile
     ? [profile.instagram ? `@${profile.instagram}` : null, profile.city].filter(Boolean)
-    : ['@naima.dance', 'Paris'];
+    : [];
   const sub = subParts.join(' · ') || '—';
   const chips = profile?.styles?.length ? profile.styles : STYLES_PRACTICED;
   // Espace staff visible en démo (preview) ou si admin/staff en réel.
@@ -104,6 +107,7 @@ export default function ProfileScreen() {
         </View>
 
         <View style={styles.body}>
+          {isAdmin(profile) && <Pressable accessibilityRole="button" style={styles.linkRow} onPress={() => router.push('/admin')}><Ionicons name="shield-checkmark" size={22} color={Palette.core} /><Text style={[styles.linkTitle, { flex: 1 }]}>Administration School</Text><Ionicons name="chevron-forward" size={18} color={Palette.text} /></Pressable>}
           {/* Stats */}
           <View style={styles.statRow}>
             <Stat n="12" label={t('profile.statStreak')} color={Palette.core} />

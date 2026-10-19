@@ -17,11 +17,12 @@ import { Wavetruv, Wordmark } from '@/components/Logo';
 import { RateSheet } from '@/components/RateSheet';
 import { AppSwitch, FadeInView, FavHeart } from '@/components/ui';
 import { accentFor, CampusCode, gradientFor, Palette, Radius, Space, Type } from '@/constants/brand';
+import { useAuth } from '@/lib/auth';
 import { useCampus } from '@/lib/campus';
 import { useI18n } from '@/lib/i18n';
 import { getActivePoll, Poll } from '@/lib/polls';
 import { getMyPoints, tierInfo } from '@/lib/points';
-import { getMyProfile, Profile } from '@/lib/profile';
+import { getMyProfile, isAdmin, Profile } from '@/lib/profile';
 import { getClassesToRate, RateItem } from '@/lib/ratings';
 import { isSupabaseConfigured, supabase } from '@/lib/supabase';
 import { getLastSeen, getNotifications } from '@/lib/notifications';
@@ -52,6 +53,7 @@ export default function HomeScreen() {
   const { campus, accent, setCampus } = useCampus();
   const { t } = useI18n();
   const router = useRouter();
+  const { session } = useAuth();
 
   const [poll, setPoll] = useState<Poll | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -88,15 +90,20 @@ export default function HomeScreen() {
       })();
       getMyPoints().then(setCoins).catch(() => {});
       getClassesToRate().then(setToRate).catch(() => {});
-    }, []),
+    }, [session?.user.id]),
   );
+  useFocusEffect(useCallback(() => {
+    let active = true;
+    setProfile(null);
+    if (session?.user.id) getMyProfile().then(p => { if (active) setProfile(p); }).catch(() => {});
+    return () => { active = false; };
+  }, [session?.user.id]));
   const [hero, setHero] = useState<Session[]>([]);
   const [idx, setIdx] = useState(0);
   const [fade, setFade] = useState(1);
 
   useEffect(() => {
     getActivePoll(['school', 'both']).then(setPoll);
-    getMyProfile().then(setProfile).catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -112,7 +119,7 @@ export default function HomeScreen() {
     return () => clearInterval(id);
   }, [hero]);
 
-  const firstName = profile?.alias || profile?.full_name || 'Naïma';
+  const firstName = profile?.full_name?.trim().split(/\s+/)[0] || profile?.alias || '';
   const coinInfo = tierInfo(coins);
   const s = hero[idx];
   const heroAccent = s ? accentFor(s.schoolCode) : accent;
@@ -120,6 +127,7 @@ export default function HomeScreen() {
   return (
     <View style={{ flex: 1, backgroundColor: Palette.bg }}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: Space.xxxl }}>
+        {isAdmin(profile) && <Pressable accessibilityRole="button" onPress={() => router.push('/admin')} style={{ padding: 16, backgroundColor: '#1B1917', flexDirection: 'row', gap: 10, alignItems: 'center' }}><Ionicons name="shield-checkmark" size={22} color="#FF6A16" /><Text style={{ color: '#fff', fontWeight: '800', flex: 1 }}>Administration School</Text><Ionicons name="chevron-forward" size={20} color="#fff" /></Pressable>}
         {/* ---------- HERO ---------- */}
         <View style={[styles.hero, { paddingTop: insets.top + 8, minHeight: insets.top + 320 }]}>
           <View style={styles.heroBase} />

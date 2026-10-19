@@ -1,6 +1,5 @@
 /**
- * Éditer MON profil — écrit dans la table `profiles` PARTAGÉE avec l'app
- * événement (même compte). Modifs visibles des deux côtés.
+ * Éditer le profil indépendant Juste Debout School.
  */
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -13,7 +12,6 @@ import { GradientBtn } from '@/components/ui';
 import { Palette, Radius, Space, Type } from '@/constants/brand';
 import { useCampus } from '@/lib/campus';
 import { useI18n } from '@/lib/i18n';
-import { goBack } from '@/lib/nav';
 import { pickAndUploadAvatar } from '@/lib/photos';
 import { getMyProfile, updateMyProfile } from '@/lib/profile';
 import { isSupabaseConfigured } from '@/lib/supabase';
@@ -118,7 +116,7 @@ export default function EditProfile() {
   return (
     <View style={{ flex: 1, backgroundColor: Palette.bg }}>
       <View style={[styles.hdr, { paddingTop: insets.top + Space.sm }]}>
-        <Pressable onPress={() => goBack(router)} hitSlop={10}>
+        <Pressable accessibilityRole="button" accessibilityLabel="Retour au profil" onPress={() => router.replace('/(tabs)/profile')} hitSlop={10} style={{ minWidth: 44, minHeight: 44, justifyContent: 'center' }}>
           <Ionicons name="chevron-back" size={24} color="#fff" />
         </Pressable>
         <Text style={styles.title}>{t('ep.title')}</Text>
@@ -130,7 +128,7 @@ export default function EditProfile() {
       ) : (
         <ScrollView contentContainerStyle={{ padding: Space.lg, paddingBottom: Space.xxxl }}>
           <View style={styles.shared}>
-            <Ionicons name="link" size={14} color={Palette.textDim} />
+            <Ionicons name="shield-checkmark-outline" size={14} color={Palette.textDim} />
             <Text style={styles.sharedText}>{t('ep.shared')}</Text>
           </View>
 
@@ -193,6 +191,7 @@ export default function EditProfile() {
           {msg && <Text style={styles.msg}>{msg}</Text>}
 
           <GradientBtn label={t('admin.save')} onPress={save} disabled={saving} />
+          <Pressable accessibilityRole="button" onPress={() => router.replace('/(tabs)/profile')} style={{ paddingVertical: 20, alignItems: 'center' }}><Text style={{ color: Palette.text, fontSize: 16, fontWeight: '800' }}>{msg ? 'Terminer et revenir au profil' : 'Retour au profil'}</Text></Pressable>
         </ScrollView>
       )}
     </View>

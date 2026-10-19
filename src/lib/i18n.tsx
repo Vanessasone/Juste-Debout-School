@@ -82,7 +82,7 @@ const fr: Dict = {
   'profile.signOut': 'Se déconnecter',
 
   'ep.title': 'Mon profil',
-  'ep.shared': 'Profil partagé avec l’app Juste Debout',
+  'ep.shared': 'Profil indépendant Juste Debout School',
   'ep.name': 'Nom complet',
   'ep.alias': 'Alias / nom de danseur',
   'ep.city': 'Ville',
@@ -95,7 +95,7 @@ const fr: Dict = {
   'ep.availableHint': 'Visible par la JD School pour te proposer des stages.',
   'ep.photo': 'Photo',
   'ep.saved': 'Profil enregistré ✓',
-  'ep.loginNeeded': 'Connecte-toi (mode réel) pour éditer ton profil partagé.',
+  'ep.loginNeeded': 'Connecte-toi pour modifier ton profil School.',
 
   'rankings.title': 'Classements',
   'rankings.openTeachers': 'Profs open',
@@ -449,7 +449,7 @@ const en: Dict = {
   'profile.signOut': 'Sign out',
 
   'ep.title': 'My profile',
-  'ep.shared': 'Profile shared with the Juste Debout app',
+  'ep.shared': 'Independent Juste Debout School profile',
   'ep.name': 'Full name',
   'ep.alias': 'Alias / dancer name',
   'ep.city': 'City',
@@ -462,7 +462,7 @@ const en: Dict = {
   'ep.availableHint': 'Visible to JD School so they can offer you workshops.',
   'ep.photo': 'Photo',
   'ep.saved': 'Profile saved ✓',
-  'ep.loginNeeded': 'Log in (real mode) to edit your shared profile.',
+  'ep.loginNeeded': 'Log in to edit your School profile.',
 
   'rankings.title': 'Rankings',
   'rankings.openTeachers': 'Open teachers',
