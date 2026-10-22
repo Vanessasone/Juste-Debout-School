@@ -1,0 +1,7 @@
+import {supabase} from './supabase';
+export type StudentRanking={member_id:string;group_id:string;grade_count:number;grade_mean20:number|null;grade_score100:number|null;bonus_points:number;absence_penalty:number;attendance_score:number|null;global_score:number|null;grade_rank:number|null;attendance_rank:number|null;global_rank:number|null;warning_required:boolean;recorded_courses:number;missing_calls:number;pending_justifications:number;unsubmitted_subjects:number};
+export type GoodAction={id:string;member_id:string;occurred_on:string;label:string;created_at:string;voided_at:string|null;void_reason:string};
+export async function getStudentRankings(){const {data,error}=await supabase.rpc('jds_student_three_rankings');if(error)throw error;return (data??[]) as StudentRanking[];}
+export async function getGoodActions(){const {data,error}=await supabase.from('jds_student_good_actions').select('id,member_id,occurred_on,label,created_at,voided_at,void_reason').order('occurred_on',{ascending:false});if(error)throw error;return (data??[]) as GoodAction[];}
+export async function addGoodAction(key:string,member:string,date:string,label:string){const {error}=await supabase.rpc('jds_add_student_good_action',{action_key:key,target_member:member,action_date:date,description:label});if(error)throw error;}
+export async function voidGoodAction(key:string,reason:string){const {error}=await supabase.rpc('jds_void_student_good_action',{action_key:key,reason});if(error)throw error;}
