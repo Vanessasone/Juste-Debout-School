@@ -39,3 +39,8 @@ Les mentions SIRET/Qualiopi CORE ne sont pas recopiées vers INDUSTRY sans valid
 Schema : `supabase/schema-bulletins.sql` (migration déjà appliquée au projet School seul).
 Interface : `web-access/bulletins.js`, `bulletin-pdf.js`, `bulletins.html`, `bulletins.css`.
 Construction : dépendances épinglées dans web-access/package.json, `npm run build` depuis web-access. Copier HTML/CSS dans public et dans l’export statique app-release avant publication Netlify. Le module utilise la session School dédiée, sans liaison Event/TOTF.
+
+## Catalogue CORE — reprise du 22 octobre
+Le fichier BULLETIN CORE P1.xlsx a été lu directement (XML du classeur). Ses trois bulletins ne contiennent ni matières remplies ni coefficients. L’onglet PROFS fournit un catalogue, sans affectation classe/trimestre.
+La configuration CORE propose désormais ce catalogue pour préremplir intitulé et nom affiché. Les coefficients et le compte professeur restent à valider explicitement. Les entrées d’entraînement libre sont exclues. Une sélection ne sauvegarde rien avant Enregistrer la matière. L’ajout libre et les matières existantes sont conservés.
+Test DOM ajouté : sélection CORE, intitulé/nom repris, aucun compte ni coefficient attribué, puis sauvegarde avec valeurs nulles. Suite UI et construction web réussies. Publication Netlify à vérifier séparément.

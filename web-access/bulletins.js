@@ -1,6 +1,7 @@
 import {createClient} from '@supabase/supabase-js';
 import {key} from './config.js';
 import {downloadReport,score} from './bulletin-pdf.js';
+import coreCatalogue from './core-subject-catalogue.json';
 const sb=createClient('https://zmzunjphubbdumowcurk.supabase.co',key,{auth:{storageKey:'jds-school-auth-v1',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
 const host=document.getElementById('bulletins'),status=document.getElementById('status');
 let context,data,groupId,term=1,memberId,subjectId,busy=false,loadedTerm=1;
@@ -37,6 +38,13 @@ function renderConfig(){const details=el('details');details.append(el('summary',
  const [pl,teacher]=select('Professeur validé',[['','À attribuer'],...teachers.map(t=>[t.id,t.name])],s.teacher_profile,()=>{label.value=teachers.find(t=>t.id===teacher.value)?.name||'';});
  const [nl,label]=field('Nom affiché sur le bulletin',s.teacher_name);label.maxLength=150;
  const [cl,cc]=field('Coefficient contrôle continu',s.cc_coefficient,'number'),[vl,ev]=field('Coefficient évaluation',s.evaluation_coefficient,'number'),[ol,order]=field('Ordre d’affichage',s.sort_order??0,'number');cc.step=ev.step='any';
+ if(data.group.campus==='CORE'&&!s.id){
+ const [catalogueLabel]=select('Reprendre une matière du catalogue CORE',[['','Saisie libre'],...coreCatalogue.map((entry,index)=>[String(index),`${entry.subject}${entry.teacher?' · '+entry.teacher:''}`])],'',value=>{
+ if(value==='')return;
+ const entry=coreCatalogue[Number(value)];title.value=entry.subject;label.value=entry.teacher;teacher.value='';
+ });
+ form.append(catalogueLabel,el('p','Catalogue du modèle CORE. Sélectionne uniquement les enseignements de cette classe et de ce trimestre, puis attribue le compte professeur validé et les coefficients.','muted'));
+ }
  form.append(tl,pl,nl,cl,vl,ol,btn('Enregistrer la matière',async()=>{await rpc('jds_save_bulletin_subject',{target_group:groupId,target_term:term,title:title.value,teacher:teacher.value||null,teacher_label:label.value,cc_weight:number(cc),eval_weight:number(ev),sort_position:number(order)??0,subject_key:s.id||null});await load();},true));
  if(!teachers.length)form.prepend(el('p','Aucun professeur validé pour cette école. Valide d’abord les demandes dans « Ma fonction · Mes accès ».','muted'));
  }draw();
