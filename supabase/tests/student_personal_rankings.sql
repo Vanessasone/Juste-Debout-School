@@ -19,6 +19,7 @@ do $$declare student uuid:=gen_random_uuid();peer uuid:=gen_random_uuid();outsid
  insert into public.jds_bulletin_grades(subject_id,member_id,cc_scores,submitted) values(subject_key,member,array[3]::numeric[],true),(subject_key,member2,array[5]::numeric[],true);
  select * into r from public.jds_student_three_rankings() where member_id=member;
  if r.grade_rank<>2 or r.grade_score100<>60 then raise exception 'Admin baseline';end if;
+ perform school_private.capture_student_rankings();
  insert into personal_ranking_fixture values('student',student),('peer',peer),('outsider',outsider),('member',member),('member2',member2),('admin',admin_id);
 end $$;
 grant select on personal_ranking_fixture to authenticated;
@@ -28,6 +29,10 @@ do $$declare r record;begin
  if (select count(*) from public.jds_my_student_rankings())<>1 then raise exception 'Student must receive exactly own row';end if;
  select * into r from public.jds_my_student_rankings();
  if r.member_id<>(select v from personal_ranking_fixture where k='member') or r.grade_rank<>2 or r.grade_score100<>60 then raise exception 'Rank must be cohort-calculated, then filtered';end if;
+ if (select count(*) from public.jds_student_ranking_history)<>1 then raise exception 'History must contain only own observation';end if;
+ if exists(select 1 from public.jds_student_ranking_history where member_id<>(select v from personal_ranking_fixture where k='member')) then raise exception 'Peer history leaked';end if;
+ if has_function_privilege('authenticated','school_private.capture_student_rankings()','EXECUTE') then raise exception 'Student can capture';end if;
+ if has_table_privilege('authenticated','public.jds_student_ranking_history','INSERT') then raise exception 'Student can forge history';end if;
  if exists(select 1 from public.jds_student_three_rankings()) then raise exception 'Admin endpoint leaked';end if;
  if exists(select 1 from public.jds_student_good_actions where member_id<>(select v from personal_ranking_fixture where k='member')) then raise exception 'Peer actions leaked';end if;
  if has_function_privilege('authenticated','school_private.student_rankings_engine()','EXECUTE') then raise exception 'Engine callable';end if;
@@ -37,7 +42,7 @@ end $$;
 select set_config('request.jwt.claim.sub',(select v::text from personal_ranking_fixture where k='peer'),true);
 do $$declare r record;begin select * into r from public.jds_my_student_rankings();if r.member_id<>(select v from personal_ranking_fixture where k='member2') or r.grade_rank<>1 then raise exception 'Peer scope';end if;end $$;
 select set_config('request.jwt.claim.sub',(select v::text from personal_ranking_fixture where k='outsider'),true);
-do $$begin if exists(select 1 from public.jds_my_student_rankings()) then raise exception 'Unlinked user leaked results';end if;end $$;
+do $$begin if exists(select 1 from public.jds_student_ranking_history) then raise exception 'Unlinked history leak';end if; if exists(select 1 from public.jds_my_student_rankings()) then raise exception 'Unlinked user leaked results';end if;end $$;
 select set_config('request.jwt.claim.sub','',true);
 do $$begin if exists(select 1 from public.jds_my_student_rankings()) then raise exception 'Missing identity leaked results';end if; if has_function_privilege('anon','public.jds_my_student_rankings()','EXECUTE') then raise exception 'Anonymous grant';end if;end $$;
 reset role;
