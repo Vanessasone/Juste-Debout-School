@@ -5,3 +5,5 @@ export async function getStudentRankings(){const {data,error}=await supabase.rpc
 export async function getGoodActions(){const {data,error}=await supabase.from('jds_student_good_actions').select('id,member_id,occurred_on,label,created_at,voided_at,void_reason').order('occurred_on',{ascending:false});if(error)throw error;return (data??[]) as GoodAction[];}
 export async function addGoodAction(key:string,member:string,date:string,label:string){const {error}=await supabase.rpc('jds_add_student_good_action',{action_key:key,target_member:member,action_date:date,description:label});if(error)throw error;}
 export async function voidGoodAction(key:string,reason:string){const {error}=await supabase.rpc('jds_void_student_good_action',{action_key:key,reason});if(error)throw error;}
+
+export async function getMyStudentRankings(){const {data,error}=await supabase.rpc('jds_my_student_rankings');if(error)throw error;return (data??[]) as StudentRanking[];}
