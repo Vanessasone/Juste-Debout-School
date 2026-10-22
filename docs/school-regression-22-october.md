@@ -1,0 +1,7 @@
+# School regression — 22 October 2026
+
+Updated old test expectations for Vanessa's full-campus director access rule. The activation test now safely handles existing Nicolas/Loïc accounts and creates only transaction-local synthetic Bruce/Rabah accounts when missing; no duplicate real emails or lasting test identities.
+
+Passed: web-access npm test (student/open/teacher forms, team activation UI, report UI, French grades, empty coefficients, catalogue, removal/restoration); school_bulletins.sql (teacher submission, locking, direction publication, weighted calculations, exemptions, immutable versions, revision conflicts, missing coefficients, subject removal/restoration, student/peer/teacher RLS); school_team_activation.sql (unauthorized/anonymous/unconfirmed access refused, each confirmed director gains both campuses, repeated activation does not duplicate admin roles); school-role-matrix.sql (student, teacher, campus manager, global manager, disabled manager, administrator).
+
+Every SQL test rolled back. Aggregate cleanup verified zero grade rows, zero report rows, zero @example.invalid accounts; the 75 unlinked training memberships remain unchanged. Nicolas and Loïc remain active; Bruce and Rabah remain inactive awaiting their real confirmed accounts. No real bulletin was sent or published. These server/DOM checks do not establish authenticated browser acceptance using a real professor and student; that remains pending actual account setup and coefficient decisions.
