@@ -18,10 +18,12 @@ async function init(){
   const check=async()=>{if(busy||done||localStorage.getItem('jds_onboarded')!=='1')return;
    const path=location.pathname;if(!['/','/profile','/admin'].includes(path))return;
    if(!document.getElementById('school-function-link')){const a=elt('a','Ma fonction · Mes accès','school-function-link');a.id='school-function-link';a.href='/school-role.html';document.body.append(a)}
+   if(!document.getElementById('school-bulletins-link')){const a=elt('a','Bulletins · Espace prof','school-function-link');a.id='school-bulletins-link';a.href='/bulletins.html';a.style.bottom='210px';document.body.append(a);sb.from('jds_bulletin_notices').select('id',{count:'exact',head:true}).is('read_at',null).then(r=>{if(r.count>0)a.textContent='Bulletins · '+r.count+' nouveau(x)';}).catch(()=>{})}
    if(path!=='/')return;busy=true;try{const row=await checked(sb.from('jds_function_choices').select('function').eq('profile_id',user.id).maybeSingle());done=true;if(!row)location.assign('/school-role.html')}catch{/* Preserve the app when the network is unavailable. */}finally{busy=false}
   };let timer;const observer=new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(check,250)});observer.observe(document.getElementById('root')||document.body,{childList:true,subtree:true});check();return;
  }
  const host=document.getElementById('school-access'),message=document.getElementById('message');
+ const bulletinLink=elt('a','Bulletins · Espace prof →','return');bulletinLink.href='/bulletins.html';host.before(bulletinLink);
  function status(text,error=false){message.textContent=text;message.className=error?'error':'success'}
  let busy=false;
  async function action(fn){if(busy)return;busy=true;document.querySelectorAll('button').forEach(b=>b.disabled=true);try{await fn()}catch(e){status(e.message,true)}finally{busy=false;document.querySelectorAll('button').forEach(b=>b.disabled=false)}}

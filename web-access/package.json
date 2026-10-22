@@ -4,11 +4,13 @@
   "version": "1.1.0",
   "type": "module",
   "scripts": {
-    "build": "esbuild access.js --bundle --platform=browser --minify --outfile=../public/assets/school-access.js",
-    "test": "node test-ui.cjs && node test-team-ui.cjs"
+    "build": "esbuild access.js --bundle --platform=browser --minify --outfile=../public/assets/school-access.js && esbuild bulletins.js --bundle --platform=browser --minify --outfile=../public/assets/bulletins.js",
+    "test": "node test-ui.cjs && node test-team-ui.cjs && node test-bulletins.cjs"
   },
   "dependencies": {
-    "@supabase/supabase-js": "2.110.1"
+    "@supabase/supabase-js": "2.110.1",
+    "jspdf": "3.0.3",
+    "jspdf-autotable": "5.0.2"
   },
   "devDependencies": {
     "esbuild": "0.25.12",
