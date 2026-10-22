@@ -1,0 +1,36 @@
+BEGIN;
+DO $test$
+DECLARE learner uuid:=gen_random_uuid(); open_learner uuid:=gen_random_uuid(); reviewer uuid:=gen_random_uuid(); person uuid:=gen_random_uuid(); wrong_person uuid:=gen_random_uuid(); grp uuid; wrong_grp uuid; req uuid; open_req uuid; denied boolean;
+BEGIN
+ SELECT id INTO grp FROM public.jds_training_groups WHERE campus='INDUSTRY' AND name='P2' AND season='2026-2027';
+ SELECT id INTO wrong_grp FROM public.jds_training_groups WHERE campus='CORE' AND name='P1' AND season='2026-2027';
+ INSERT INTO auth.users(id,email,email_confirmed_at,raw_user_meta_data) VALUES(learner,'enrollment-formation@example.invalid',now(),'{}'),(open_learner,'enrollment-open@example.invalid',now(),'{}'),(reviewer,'enrollment-reviewer@example.invalid',now(),'{}');
+ INSERT INTO public.jds_private_directory(id,external_key,campus,person_type,first_name,last_name) VALUES(person,person::text,'INDUSTRY','student','Test','Enrollment'),(wrong_person,wrong_person::text,'CORE','student','Test','Other Campus');
+ INSERT INTO public.jds_training_members(group_id,person_id) VALUES(grp,person),(wrong_grp,wrong_person);
+ UPDATE public.jds_school_responsibilities SET profile_id=reviewer,enabled=true WHERE email='jacky@juste-debout.com';
+ PERFORM set_config('request.jwt.claim.sub',learner::text,true);
+ denied:=false;BEGIN PERFORM public.jds_submit_student_request('formation','INDUSTRY',wrong_grp,'');EXCEPTION WHEN raise_exception THEN denied:=true;END;
+ IF NOT denied THEN RAISE EXCEPTION 'Cross-campus class accepted'; END IF;
+ req:=public.jds_submit_student_request('formation','INDUSTRY',grp,'');
+ IF EXISTS(SELECT 1 FROM public.jds_training_members WHERE profile_id=learner) THEN RAISE EXCEPTION 'Access before approval'; END IF;
+ denied:=false;BEGIN PERFORM public.jds_review_student_request(req,'approved',person,'');EXCEPTION WHEN raise_exception THEN denied:=true;END;
+ IF NOT denied THEN RAISE EXCEPTION 'Self validation'; END IF;
+ PERFORM set_config('request.jwt.claim.sub',reviewer::text,true);
+ IF NOT school_private.can_review_access('INDUSTRY','student') OR school_private.can_review_access('CORE','student') OR school_private.can_review_access('INDUSTRY','teacher') THEN RAISE EXCEPTION 'Jacky scope regression'; END IF;
+ denied:=false;BEGIN PERFORM public.jds_review_access_request(req,'approved','');EXCEPTION WHEN raise_exception THEN denied:=true;END;
+ IF NOT denied THEN RAISE EXCEPTION 'Generic review bypass'; END IF;
+ denied:=false;BEGIN PERFORM public.jds_review_student_request(req,'approved',wrong_person,'');EXCEPTION WHEN raise_exception THEN denied:=true;END;
+ IF NOT denied THEN RAISE EXCEPTION 'Wrong identity accepted'; END IF;
+ PERFORM public.jds_review_student_request(req,'approved',person,'Validated test');
+ IF NOT EXISTS(SELECT 1 FROM public.jds_training_members WHERE group_id=grp AND person_id=person AND profile_id=learner) THEN RAISE EXCEPTION 'Membership missing'; END IF;
+ IF NOT EXISTS(SELECT 1 FROM public.jds_private_directory WHERE id=person AND review_status='verified') THEN RAISE EXCEPTION 'Directory verification missing'; END IF;
+ IF NOT EXISTS(SELECT 1 FROM public.jds_access_requests WHERE id=req AND status='approved' AND linked_person_id=person AND reviewed_by=reviewer) THEN RAISE EXCEPTION 'Audit receipt missing'; END IF;
+ PERFORM set_config('request.jwt.claim.sub',open_learner::text,true);
+ open_req:=public.jds_submit_student_request('open','INDUSTRY',NULL,'House / Hip-Hop');
+ PERFORM set_config('request.jwt.claim.sub',reviewer::text,true);
+ PERFORM public.jds_review_student_request(open_req,'approved',NULL,'');
+ IF EXISTS(SELECT 1 FROM public.jds_training_members WHERE profile_id=open_learner) THEN RAISE EXCEPTION 'Open student received training membership'; END IF;
+ IF EXISTS(SELECT 1 FROM public.profiles WHERE id IN(learner,open_learner) AND roles<>ARRAY['student']::text[]) THEN RAISE EXCEPTION 'Global role changed'; END IF;
+ IF has_function_privilege('anon','public.jds_submit_student_request(text,text,uuid,text)','EXECUTE') THEN RAISE EXCEPTION 'Anonymous request grant'; END IF;
+END $test$;
+ROLLBACK;
