@@ -52,6 +52,7 @@ export default function AdminHub() {
   const { accent } = useCampus();
   // Garde d'accès : en réel, réservé admin/staff (défense en profondeur, la RLS bloque déjà côté serveur).
   const [central,setCentral]=useState(false);
+  const [coreAccess,setCoreAccess]=useState(false);
   const [canTeacherRanking,setCanTeacherRanking]=useState(false);
   const [allowed, setAllowed] = useState<boolean | null>(!isSupabaseConfigured ? true : null);
 
@@ -62,6 +63,7 @@ export default function AdminHub() {
       .then((access) => {
         const ok=access.campuses.length>0;
         setCentral(access.admin);
+        setCoreAccess(access.campuses.includes('CORE'));
         setAllowed(ok);
         if (!ok) router.replace('/(tabs)');
       })
@@ -99,6 +101,7 @@ export default function AdminHub() {
             <Text style={styles.demoText}>{t('admin.demoNote')}</Text>
           </View>
         )}
+        {coreAccess&&<Tool icon="calendar" color="#FF6A16" title="Locations CORE · Agenda" sub="Cours, réservations annuelles, vacances et disponibilités" onPress={()=>router.push('/admin-rentals')}/>} 
         <Tool icon="school" color="#2F40E6" title="Formation & promotions" sub="Groupes, planning, appel, documents et annonces" onPress={() => router.push('/admin-training')} />
         <Tool icon="podium" color="#FF6A16" title="Classements élèves" sub="Notes, assiduité, global et bonnes actions" onPress={()=>router.push('/student-rankings')}/>
         <Tool icon="lock-closed" color="#2F40E6" title="Annuaire privé" sub="Élèves, professeurs et import des coordonnées" onPress={() => router.push('/admin-directory')} />
