@@ -14,6 +14,16 @@ do $$declare admin_id uuid;grp uuid:=gen_random_uuid();person uuid:=gen_random_u
  insert into public.jds_bulletin_grades(subject_id,member_id,cc_scores,evaluation_scores,submitted) values(subject,member,array[5,0]::numeric[],array[10]::numeric[],true);
  select * into r from public.jds_student_three_rankings() where member_id=member;
  if r.grade_count<>3 or r.grade_mean20<>10 or r.grade_score100<>50 or r.global_score<>52 or r.grade_rank<>1 then raise exception 'Normalization or zero score';end if;
+ update public.jds_bulletin_subjects set cc_coefficient=2,evaluation_coefficient=1 where id=subject;
+ select * into r from public.jds_student_three_rankings() where member_id=member;
+ if r.grade_mean20<>10 then raise exception 'Explicit weights';end if;
+ update public.jds_bulletin_grades set cc_exempt=true where member_id=member;
+ select * into r from public.jds_student_three_rankings() where member_id=member;
+ if r.grade_count<>1 or r.grade_mean20<>10 then raise exception 'Exempt marks counted';end if;
+ update public.jds_bulletin_subjects set active=false where id=subject;
+ select * into r from public.jds_student_three_rankings() where member_id=member;
+ if r.grade_count<>0 then raise exception 'Archived marks counted';end if;
+ update public.jds_bulletin_subjects set active=true where id=subject;
  perform public.jds_void_student_good_action(action,'Erreur de saisie');
  perform public.jds_void_student_good_action(action,'Deuxième tentative');
  select * into r from public.jds_student_three_rankings() where member_id=member;
