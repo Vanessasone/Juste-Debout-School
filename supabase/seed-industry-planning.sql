@@ -1,6 +1,6 @@
 begin;
 insert into public.jds_training_posts(id,group_id,title,body,kind,status) values
-('384fe947-5c93-4ca7-9a11-628e5631ff01','d66ccee2-8b85-464d-9b58-d5fd26e5408e','INDUSTRY P1 · Trimestre 1 · Planning prévisionnel','INDUSTRY · Ouverture en préparation. Planning prévisionnel 2026–2027, susceptible d’évoluer.
+('384fe947-5c93-4ca7-9a11-628e5631ff01','d66ccee2-8b85-464d-9b58-d5fd26e5408e','INDUSTRY P1 · Trimestre 1 · Planning prévisionnel','INDUSTRY · Formation 2026–2027. Les cours ont lieu dans d’autres locaux pendant la préparation de l’ouverture du site INDUSTRY. Les lieux de chaque cours restent à préciser dans le planning. Horaires issus des emplois du temps transmis, susceptibles d’évoluer.
 Dates des trimestres à confirmer. Vacances CORE envisagées comme référence, non confirmées pour INDUSTRY.
 Les créneaux ci-dessous sont des plages hebdomadaires, pas des séances datées. Le coaching physique de William est annoncé pour 1 h dans la plage 14 h–16 h : horaire précis à venir.
 
@@ -33,7 +33,7 @@ Vendredi
 11h–13h : MODERN · Quentin laporte
 13h–14h : REPAS
 14h–16h : Entraînement · Libre','announcement','published'),
-('384fe947-5c93-4ca7-9a12-628e5631ff01','d66ccee2-8b85-464d-9b58-d5fd26e5408e','INDUSTRY P1 · Trimestre 2 · Planning prévisionnel','INDUSTRY · Ouverture en préparation. Planning prévisionnel 2026–2027, susceptible d’évoluer.
+('384fe947-5c93-4ca7-9a12-628e5631ff01','d66ccee2-8b85-464d-9b58-d5fd26e5408e','INDUSTRY P1 · Trimestre 2 · Planning prévisionnel','INDUSTRY · Formation 2026–2027. Les cours ont lieu dans d’autres locaux pendant la préparation de l’ouverture du site INDUSTRY. Les lieux de chaque cours restent à préciser dans le planning. Horaires issus des emplois du temps transmis, susceptibles d’évoluer.
 Dates des trimestres à confirmer. Vacances CORE envisagées comme référence, non confirmées pour INDUSTRY.
 Les créneaux ci-dessous sont des plages hebdomadaires, pas des séances datées. Le coaching physique de William est annoncé pour 1 h dans la plage 14 h–16 h : horaire précis à venir.
 
@@ -66,7 +66,7 @@ Vendredi
 11h–13h : MODERN · Quentin laporte
 13h–14h : REPAS
 14h–16h : Entraînement · Libre','announcement','published'),
-('384fe947-5c93-4ca7-9a13-628e5631ff01','d66ccee2-8b85-464d-9b58-d5fd26e5408e','INDUSTRY P1 · Trimestre 3 · Planning prévisionnel','INDUSTRY · Ouverture en préparation. Planning prévisionnel 2026–2027, susceptible d’évoluer.
+('384fe947-5c93-4ca7-9a13-628e5631ff01','d66ccee2-8b85-464d-9b58-d5fd26e5408e','INDUSTRY P1 · Trimestre 3 · Planning prévisionnel','INDUSTRY · Formation 2026–2027. Les cours ont lieu dans d’autres locaux pendant la préparation de l’ouverture du site INDUSTRY. Les lieux de chaque cours restent à préciser dans le planning. Horaires issus des emplois du temps transmis, susceptibles d’évoluer.
 Dates des trimestres à confirmer. Vacances CORE envisagées comme référence, non confirmées pour INDUSTRY.
 Les créneaux ci-dessous sont des plages hebdomadaires, pas des séances datées. Le coaching physique de William est annoncé pour 1 h dans la plage 14 h–16 h : horaire précis à venir.
 
@@ -99,7 +99,7 @@ Vendredi
 11h–13h : MODERN · Quentin laporte
 13h–14h : REPAS
 14h–16h : Entraînement · Libre','announcement','published'),
-('384fe947-5c93-4ca7-9a21-628e5631ff01','e97f38cc-34c9-422e-a57e-057b7405e30f','INDUSTRY P2 · Trimestre 1 · Planning prévisionnel','INDUSTRY · Ouverture en préparation. Planning prévisionnel 2026–2027, susceptible d’évoluer.
+('384fe947-5c93-4ca7-9a21-628e5631ff01','e97f38cc-34c9-422e-a57e-057b7405e30f','INDUSTRY P2 · Trimestre 1 · Planning prévisionnel','INDUSTRY · Formation 2026–2027. Les cours ont lieu dans d’autres locaux pendant la préparation de l’ouverture du site INDUSTRY. Les lieux de chaque cours restent à préciser dans le planning. Horaires issus des emplois du temps transmis, susceptibles d’évoluer.
 Dates des trimestres à confirmer. Vacances CORE envisagées comme référence, non confirmées pour INDUSTRY.
 Les créneaux ci-dessous sont des plages hebdomadaires, pas des séances datées. Le coaching physique de William est annoncé pour 1 h dans la plage 14 h–16 h : horaire précis à venir.
 
@@ -132,7 +132,7 @@ Vendredi
 11h–13h : LOCKING · Loic
 13h–14h : REPAS
 14h–16h : HIP HOP CHOREO · Myriam sacko','announcement','published'),
-('384fe947-5c93-4ca7-9a22-628e5631ff01','e97f38cc-34c9-422e-a57e-057b7405e30f','INDUSTRY P2 · Trimestre 2 · Planning prévisionnel','INDUSTRY · Ouverture en préparation. Planning prévisionnel 2026–2027, susceptible d’évoluer.
+('384fe947-5c93-4ca7-9a22-628e5631ff01','e97f38cc-34c9-422e-a57e-057b7405e30f','INDUSTRY P2 · Trimestre 2 · Planning prévisionnel','INDUSTRY · Formation 2026–2027. Les cours ont lieu dans d’autres locaux pendant la préparation de l’ouverture du site INDUSTRY. Les lieux de chaque cours restent à préciser dans le planning. Horaires issus des emplois du temps transmis, susceptibles d’évoluer.
 Dates des trimestres à confirmer. Vacances CORE envisagées comme référence, non confirmées pour INDUSTRY.
 Les créneaux ci-dessous sont des plages hebdomadaires, pas des séances datées. Le coaching physique de William est annoncé pour 1 h dans la plage 14 h–16 h : horaire précis à venir.
 
@@ -165,7 +165,7 @@ Vendredi
 11h–13h : LOCKING · Loic
 13h–14h : REPAS
 14h–16h : Entraînement · Libre','announcement','published'),
-('384fe947-5c93-4ca7-9a23-628e5631ff01','e97f38cc-34c9-422e-a57e-057b7405e30f','INDUSTRY P2 · Trimestre 3 · Planning prévisionnel','INDUSTRY · Ouverture en préparation. Planning prévisionnel 2026–2027, susceptible d’évoluer.
+('384fe947-5c93-4ca7-9a23-628e5631ff01','e97f38cc-34c9-422e-a57e-057b7405e30f','INDUSTRY P2 · Trimestre 3 · Planning prévisionnel','INDUSTRY · Formation 2026–2027. Les cours ont lieu dans d’autres locaux pendant la préparation de l’ouverture du site INDUSTRY. Les lieux de chaque cours restent à préciser dans le planning. Horaires issus des emplois du temps transmis, susceptibles d’évoluer.
 Dates des trimestres à confirmer. Vacances CORE envisagées comme référence, non confirmées pour INDUSTRY.
 Les créneaux ci-dessous sont des plages hebdomadaires, pas des séances datées. Le coaching physique de William est annoncé pour 1 h dans la plage 14 h–16 h : horaire précis à venir.
 
