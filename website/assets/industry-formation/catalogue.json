@@ -1,0 +1,122 @@
+[
+  {
+    "id": "amelie",
+    "name": "Amélie",
+    "subject": "Techniques académiques",
+    "image": "/assets/industry-formation/amelie.png"
+  },
+  {
+    "id": "ashley-khelif",
+    "name": "Ashley Khelif",
+    "subject": "Heels",
+    "image": "/assets/industry-formation/ashley-khelif.png"
+  },
+  {
+    "id": "bruce-ykanji",
+    "name": "Bruce Ykanji",
+    "subject": "Popping / Hip-Hop",
+    "image": "/assets/industry-formation/bruce-ykanji.png"
+  },
+  {
+    "id": "creesto",
+    "name": "Creesto",
+    "subject": "Popping",
+    "image": "/assets/industry-formation/creesto.png"
+  },
+  {
+    "id": "enzo-hacini",
+    "name": "Enzo Hacini",
+    "subject": "Heels",
+    "image": "/assets/industry-formation/enzo-hacini.png"
+  },
+  {
+    "id": "joel-tenda",
+    "name": "Joël Tenda",
+    "subject": "Ndombolo",
+    "image": "/assets/industry-formation/joel-tenda.png"
+  },
+  {
+    "id": "loic",
+    "name": "Loïc",
+    "subject": "Locking",
+    "image": "/assets/industry-formation/loic.png"
+  },
+  {
+    "id": "loriane",
+    "name": "Loriane",
+    "subject": "Heels / Techniques académiques",
+    "image": "/assets/industry-formation/loriane.png"
+  },
+  {
+    "id": "marie-mwiza-ndutiye",
+    "name": "Marie Mwiza Ndutiye",
+    "subject": "Yoga",
+    "image": "/assets/industry-formation/marie-mwiza-ndutiye.png"
+  },
+  {
+    "id": "meech",
+    "name": "Meech",
+    "subject": "Hip-Hop",
+    "image": "/assets/industry-formation/meech.png"
+  },
+  {
+    "id": "melissa-fromentin",
+    "name": "Mélissa Fromentin",
+    "subject": "Street Jazz",
+    "image": "/assets/industry-formation/melissa-fromentin.png"
+  },
+  {
+    "id": "michmich",
+    "name": "Michmich",
+    "subject": "Urban contemporain",
+    "image": "/assets/industry-formation/michmich.png"
+  },
+  {
+    "id": "p-lock",
+    "name": "P.lock",
+    "subject": "Locking",
+    "image": "/assets/industry-formation/p-lock.png"
+  },
+  {
+    "id": "queensy",
+    "name": "Queensy",
+    "subject": "Dancehall",
+    "image": "/assets/industry-formation/queensy.png"
+  },
+  {
+    "id": "quentin",
+    "name": "Quentin",
+    "subject": "Modern",
+    "image": "/assets/industry-formation/quentin.png"
+  },
+  {
+    "id": "rickysoul",
+    "name": "Rickysoul",
+    "subject": "House Dance",
+    "image": "/assets/industry-formation/rickysoul.png"
+  },
+  {
+    "id": "ulijen",
+    "name": "ULIJEN",
+    "subject": "House Choreo",
+    "image": "/assets/industry-formation/ulijen.png"
+  },
+  {
+    "id": "vision",
+    "name": "Vision",
+    "subject": "Électro",
+    "image": "/assets/industry-formation/vision.png"
+  },
+  {
+    "id": "william",
+    "name": "William",
+    "subject": "Coaching physique",
+    "image": "/assets/industry-formation/william.png"
+  },
+  {
+    "id": "xtana",
+    "name": "Xtana",
+    "subject": "Afro House",
+    "image": "/assets/industry-formation/xtana.png"
+  }
+]
