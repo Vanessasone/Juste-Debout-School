@@ -1,0 +1,37 @@
+begin;
+create temp table rental_test_ids(k text,v uuid);
+do $$declare admin_id uuid;student uuid:=gen_random_uuid();room uuid;other_room uuid;block_key uuid;day date:=date '2026-11-09';r record;holiday_key uuid;begin
+ select id into admin_id from public.profiles where 'admin'=any(roles) limit 1;
+ insert into auth.users(id,email,raw_user_meta_data,email_confirmed_at) values(student,'rental-agenda-test@example.invalid','{}',now());
+ select studio_id into room from public.jds_rental_calendar_rooms order by studio_id limit 1;
+ select studio_id into other_room from public.jds_rental_calendar_rooms where studio_id<>room limit 1;
+ insert into rental_test_ids values('student',student),('room',room);
+ perform set_config('request.jwt.claim.sub',admin_id::text,true);
+ select * into r from public.jds_core_rental_day(day) where studio_id=room order by starts_at limit 1;
+ if r.available or r.calendar_verified then raise exception 'Unverified calendar must not be available';end if;
+ perform public.jds_set_core_rental_calendar('10:00','22:00','2027-02-01','Test fixture verified all open classes and annual reservations');
+ block_key:=public.jds_save_core_rental_block(null,room,day,day+7,1,'11:00','12:00','annual','PRIVATE rental fixture',false);
+ if exists(select 1 from public.jds_core_rental_day(day) where studio_id=room and (starts_at at time zone 'Europe/Paris')::time='11:00' and available) then raise exception 'Annual conflict';end if;
+ if not exists(select 1 from public.jds_core_rental_day(day) where studio_id=room and (starts_at at time zone 'Europe/Paris')::time='10:00' and available) then raise exception 'Adjacent slot should be available';end if;
+ if not exists(select 1 from public.jds_core_rental_day(day) where studio_id=other_room and (starts_at at time zone 'Europe/Paris')::time='11:00' and available) then raise exception 'Different room should remain available';end if;
+ insert into public.jds_rental_calendar_holidays(starts_on,ends_on,label,confirmed) values(day,day+7,'Test holiday',true) returning id into holiday_key;
+ if exists(select 1 from public.jds_core_rental_day(day) where studio_id=room and (starts_at at time zone 'Europe/Paris')::time='11:00' and available) then raise exception 'Annual reservation maintained on holiday';end if;
+ update public.jds_rental_calendar_blocks set pause_holidays=true where id=block_key;
+ if not exists(select 1 from public.jds_core_rental_day(day) where studio_id=room and (starts_at at time zone 'Europe/Paris')::time='11:00' and available) then raise exception 'Pause on confirmed holidays';end if;
+ update public.jds_rental_calendar_holidays set confirmed=false where id=holiday_key;
+ if exists(select 1 from public.jds_core_rental_day(day) where studio_id=room and (starts_at at time zone 'Europe/Paris')::time='11:00' and available) then raise exception 'Provisional holiday must not free room';end if;
+ if exists(select 1 from public.jds_core_rental_day('2026-11-14') where (starts_at at time zone 'Europe/Paris')::time='19:00' and hour_price_cents is not null) then raise exception 'Weekend evening invented tariff';end if;
+end $$;
+grant select on rental_test_ids to authenticated;
+set local role authenticated;
+select set_config('request.jwt.claim.sub',(select v::text from rental_test_ids where k='student'),true);
+do $$begin
+ if exists(select 1 from public.jds_rental_calendar_blocks) then raise exception 'Private renter identity leaked';end if;
+ if exists(select 1 from public.jds_rental_calendar_settings) then raise exception 'Private review note leaked';end if;
+ if not exists(select 1 from public.jds_core_rental_day('2026-11-09')) then raise exception 'Sanitized calendar inaccessible';end if;
+ begin perform public.jds_set_core_rental_calendar('10:00','22:00','2027-01-01','Unauthorized update');raise exception 'Unauthorized configuration accepted';exception when raise_exception then if SQLERRM='Unauthorized configuration accepted' then raise;end if;end;
+ if has_table_privilege('authenticated','public.jds_rental_calendar_blocks','INSERT') then raise exception 'Direct write granted';end if;
+ if has_function_privilege('anon','public.jds_core_rental_day(date)','EXECUTE') then raise exception 'Anonymous access';end if;
+end $$;
+reset role;
+rollback;
