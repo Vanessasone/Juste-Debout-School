@@ -18,6 +18,7 @@ import { useCampus } from '@/lib/campus';
 import { useI18n } from '@/lib/i18n';
 import { goBack } from '@/lib/nav';
 import { getMyProfile, isAdmin } from '@/lib/profile';
+import {canReadTeacherSkills} from '@/lib/teacher-skills';
 import { getLeaderboard, LeaderRow, Population } from '@/lib/rankings';
 import { getSchools, School } from '@/lib/schools';
 
@@ -29,12 +30,13 @@ export default function RankingsScreen() {
   const router = useRouter();
   const { t } = useI18n();
   const { accent } = useCampus();
-  const [pop, setPop] = useState<Population>('open_teacher');
+  const [pop, setPop] = useState<Population>('formation_student');
   const [rows, setRows] = useState<LeaderRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [schools, setSchools] = useState<School[]>([]);
   const [schoolId, setSchoolId] = useState<string | null>(null); // null = toutes
   const [canStaff, setCanStaff] = useState(false);
+  const [canTeacherRanking,setCanTeacherRanking]=useState(false);
 
   const TABS: { key: Population; label: string }[] = [
     { key: 'open_teacher', label: t('rankings.openTeachers') },
@@ -44,6 +46,7 @@ export default function RankingsScreen() {
 
   useEffect(() => {
     getSchools().then(setSchools);
+    canReadTeacherSkills().then(setCanTeacherRanking).catch(()=>setCanTeacherRanking(false));
     getMyProfile().then((p) => setCanStaff(isAdmin(p) || !!p?.roles?.includes('staff'))).catch(() => {});
   }, []);
 
@@ -70,7 +73,7 @@ export default function RankingsScreen() {
           <Wavetruv size={22} tint="#fff" />
         </View>
         <View style={styles.seg}>
-          {TABS.map((tab) => {
+          {TABS.filter(tab=>tab.key==='formation_student'||canTeacherRanking).map((tab) => {
             const on = pop === tab.key;
             return (
               <Pressable
@@ -87,6 +90,7 @@ export default function RankingsScreen() {
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: Space.lg, paddingBottom: Space.xxxl }}>
+        {canTeacherRanking&&<GradientBtn label="Ranking professeurs · matrice confidentielle" onPress={()=>router.push('/teacher-ranking')}/>}
         {schools.length > 1 && (
           <View style={styles.schoolRow}>
             <Pressable onPress={() => setSchoolId(null)} style={[styles.schoolChip, schoolId === null && styles.schoolChipAll]}>
