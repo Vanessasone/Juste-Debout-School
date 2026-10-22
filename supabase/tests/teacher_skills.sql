@@ -1,0 +1,48 @@
+begin;
+create temp table skill_test_ids(k text,v uuid);
+do $$declare actor uuid;email_key text;other_admin uuid;subject uuid:=gen_random_uuid();student_subject uuid:=gen_random_uuid();rowid uuid;denied boolean;begin
+ select id into other_admin from public.profiles where id not in (select profile_id from public.jds_school_responsibilities where email in ('nicolas@juste-debout.com','bruceykanji1@gmail.com','rabah@juste-debout.com','loic@juste-debout.com') and profile_id is not null) and 'admin'=any(roles) limit 1;
+ if other_admin is null then raise exception 'Non-director admin required for boundary test';end if;
+ insert into public.ranking_subjects(id,population,name) values(subject,'formation_teacher','Test private teacher'),(student_subject,'formation_student','Test student preserved');
+ insert into public.ranking_points(subject_id,kind,points) values(subject,'bonus',1),(student_subject,'bonus',2);
+ foreach email_key in array array['nicolas@juste-debout.com','bruceykanji1@gmail.com','rabah@juste-debout.com','loic@juste-debout.com'] loop
+ select id into actor from auth.users where lower(email)=email_key;
+ if actor is null then actor:=gen_random_uuid();insert into auth.users(id,email,email_confirmed_at,raw_user_meta_data) values(actor,email_key,now(),'{}');end if;
+ update public.jds_school_responsibilities set profile_id=actor,enabled=true where lower(email)=email_key;
+ perform set_config('request.jwt.claim.sub',actor::text,true);
+ if not public.jds_teacher_ranking_access() then raise exception 'Named director denied';end if;
+ insert into skill_test_ids values(email_key,actor);
+ end loop;
+ select v into actor from skill_test_ids where k='nicolas@juste-debout.com';perform set_config('request.jwt.claim.sub',actor::text,true);
+ rowid:=public.jds_save_teacher_skills(null,'Test synthetic teacher','Test period',array[5,4,null,3,2,1,null,5,4,3]::numeric[],true,false,null);
+ denied:=false;begin perform public.jds_save_teacher_skills(rowid,'Test synthetic teacher','Test period',array[6,4,null,3,2,1,null,5,4,3]::numeric[],true,false,1);exception when raise_exception then denied:=true;end;
+ if not denied then raise exception 'Out of scale score accepted';end if;
+ denied:=false;begin perform public.jds_save_teacher_skills(rowid,'Test synthetic teacher','Test period',array[5,4,null,3,2,1,null,5,4,3]::numeric[],true,false,0);exception when raise_exception then denied:=true;end;
+ if not denied then raise exception 'Stale revision accepted';end if;
+ insert into skill_test_ids values('other_admin',other_admin),('row',rowid),('teacher_subject',subject),('student_subject',student_subject);
+ perform set_config('request.jwt.claim.sub',other_admin::text,true);
+ if public.jds_teacher_ranking_access() then raise exception 'Other administrator allowed';end if;
+ denied:=false;begin perform public.jds_save_teacher_skills(null,'Unauthorized','Test',array[1,1,1,1,1,1,1,1,1,1]::numeric[],true,false,null);exception when raise_exception then denied:=true;end;
+ if not denied then raise exception 'Other administrator wrote matrix';end if;
+ denied:=false;begin perform public.ranking_add(subject,'bonus',99);exception when raise_exception then denied:=true;end;
+ if not denied then raise exception 'Other administrator wrote teacher points';end if;
+ perform public.ranking_add(student_subject,'bonus',1);
+ if has_function_privilege('anon','public.jds_save_teacher_skills(uuid,text,text,numeric[],boolean,boolean,integer)','EXECUTE') or has_table_privilege('authenticated','public.jds_teacher_skill_scores','UPDATE') then raise exception 'Unsafe grants';end if;
+end $$;
+grant select on skill_test_ids to authenticated;
+select set_config('request.jwt.claim.sub',(select v::text from skill_test_ids where k='other_admin'),true);
+set local role authenticated;
+do $$begin
+ if exists(select 1 from public.jds_teacher_skill_scores) or exists(select 1 from public.jds_teacher_skill_audit) then raise exception 'Other admin saw confidential evaluation';end if;
+ if exists(select 1 from public.ranking_subjects where population in ('open_teacher','formation_teacher')) or exists(select 1 from public.v_ranking_leaderboard where population in ('open_teacher','formation_teacher')) then raise exception 'Legacy teacher ranking leaked';end if;
+ if not exists(select 1 from public.v_ranking_leaderboard where subject_id=(select v from skill_test_ids where k='student_subject')) then raise exception 'Student ranking changed';end if;
+end $$;
+reset role;
+select set_config('request.jwt.claim.sub',(select v::text from skill_test_ids where k='nicolas@juste-debout.com'),true);
+set local role authenticated;
+do $$begin
+ if not exists(select 1 from public.jds_teacher_skill_scores where id=(select v from skill_test_ids where k='row')) then raise exception 'Director missing matrix';end if;
+ if not exists(select 1 from public.v_ranking_leaderboard where subject_id=(select v from skill_test_ids where k='teacher_subject')) then raise exception 'Director missing legacy points';end if;
+end $$;
+reset role;
+rollback;
