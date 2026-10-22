@@ -6,6 +6,8 @@ create table public.jds_student_good_actions(
  check((voided_at is null and voided_by is null and void_reason='') or (voided_at is not null and voided_by is not null and length(trim(void_reason)) between 1 and 500))
 );
 create index student_good_actions_member on public.jds_student_good_actions(member_id,occurred_on);
+create index student_good_actions_creator on public.jds_student_good_actions(created_by);
+create index student_good_actions_voider on public.jds_student_good_actions(voided_by);
 alter table public.jds_student_good_actions enable row level security;
 revoke all on public.jds_student_good_actions from anon,authenticated;
 grant select on public.jds_student_good_actions to authenticated;
