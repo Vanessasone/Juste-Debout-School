@@ -53,6 +53,7 @@ export default function RankingsScreen() {
   useEffect(() => {
     let alive = true;
     setLoading(true);
+    if(pop==='formation_student'){setRows([]);setLoading(false);return;}
     getLeaderboard(pop, { schoolId: schoolId ?? undefined })
       .then((r) => alive && setRows(r))
       .finally(() => alive && setLoading(false));
@@ -92,7 +93,7 @@ export default function RankingsScreen() {
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: Space.lg, paddingBottom: Space.xxxl }}>
         {canStaff&&<GradientBtn label="Classements élèves : notes, assiduité et global" onPress={()=>router.push('/student-rankings')}/>}
         {canTeacherRanking&&<GradientBtn label="Ranking professeurs · matrice confidentielle" onPress={()=>router.push('/teacher-ranking')}/>}
-        {schools.length > 1 && (
+        {pop!=='formation_student' && schools.length > 1 && (
           <View style={styles.schoolRow}>
             <Pressable onPress={() => setSchoolId(null)} style={[styles.schoolChip, schoolId === null && styles.schoolChipAll]}>
               {schoolId === null && <LinearGradient colors={gradientFor('ALL')} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFill} />}
@@ -116,7 +117,7 @@ export default function RankingsScreen() {
           </View>
         )}
 
-        {loading ? (
+        {pop==='formation_student'?<View style={styles.note}><Text style={styles.noteText}>Consulte tes scores et tes positions dans ton espace personnel.</Text><GradientBtn label="Mes résultats personnels" onPress={()=>router.push('/my-rankings')}/></View>:loading ? (
           <ActivityIndicator color={accent} style={{ marginTop: Space.xxl }} />
         ) : rows.length === 0 ? (
           <View style={styles.empty}>
