@@ -1,0 +1,17 @@
+const assert=require('node:assert/strict');
+const vm=require('node:vm');
+const esbuild=require('../web-access/node_modules/esbuild');
+const source=esbuild.buildSync({entryPoints:['src/lib/training-attendance.ts'],bundle:true,platform:'node',format:'cjs',write:false,logLevel:'silent'}).outputFiles[0].text;
+const mod={exports:{}};
+vm.runInNewContext(source,{module:mod,exports:mod.exports,require});
+const {attendanceSummary}=mod.exports;
+const members=['a','b','c','d','e'].map(id=>({id,group_id:'group',person_id:id,profile_id:null}));
+const record=(member_id,status,lesson_id='lesson')=>({member_id,status,lesson_id});
+const summary=attendanceSummary('lesson',members,[record('a','present'),record('b','late'),record('c','absent'),record('d','excused'),record('outsider','absent'),record('e','absent','other-lesson')]);
+assert.equal(JSON.stringify(summary),JSON.stringify({total:5,present:1,absent:1,late:1,excused:1,unmarked:1}));
+const empty=attendanceSummary('lesson',members,[]);
+assert.equal(empty.absent,0);assert.equal(empty.unmarked,5);
+assert.equal(attendanceSummary('lesson',[],[]).total,0);
+const corrected=attendanceSummary('lesson',members,[record('a','late')]);
+assert.equal(corrected.present,0);assert.equal(corrected.late,1);assert.equal(corrected.unmarked,4);
+console.log('PASS: attendance totals include only the selected lesson and roster; missing records remain unmarked; corrections update totals; no student account required.');
