@@ -1,6 +1,3 @@
-Warning: truncated output (original token count: 18578)
-Total output lines: 2538
-
 {
   "season": "2026-2027",
   "type": "weekly_templates",
@@ -1227,7 +1224,85 @@ Total output lines: 2538
       "starts_local": "11:00",
       "ends_local": "13:00",
       "timezone": "Europe/Paris",
-      …578 tokens truncated…2",
+      "source_label": "MODERN · Quentin laporte",
+      "title": "MODERN",
+      "teacher_display": "Quentin laporte",
+      "teacher_profile_id": null,
+      "kind": "teaching",
+      "duration_minutes": 120,
+      "exact_time_confirmed": true,
+      "venue": null,
+      "valid_from": null,
+      "valid_until": null,
+      "holiday_calendar_confirmed": false,
+      "needs_review": [
+        "venue",
+        "term_dates",
+        "holiday_calendar"
+      ]
+    },
+    {
+      "id": "industry-p1-t3-d5-14",
+      "group_id": "d66ccee2-8b85-464d-9b58-d5fd26e5408e",
+      "source_post_id": "384fe947-5c93-4ca7-9a13-628e5631ff01",
+      "campus": "INDUSTRY",
+      "promotion": "P1",
+      "term": 3,
+      "iso_weekday": 5,
+      "starts_local": "14:00",
+      "ends_local": "16:00",
+      "timezone": "Europe/Paris",
+      "source_label": "Entraînement · Libre",
+      "title": "Entraînement",
+      "teacher_display": null,
+      "teacher_profile_id": null,
+      "kind": "free_training",
+      "duration_minutes": 120,
+      "exact_time_confirmed": true,
+      "venue": null,
+      "valid_from": null,
+      "valid_until": null,
+      "holiday_calendar_confirmed": false,
+      "needs_review": [
+        "venue",
+        "term_dates",
+        "holiday_calendar"
+      ]
+    },
+    {
+      "id": "industry-p2-t1-d1-09",
+      "group_id": "e97f38cc-34c9-422e-a57e-057b7405e30f",
+      "source_post_id": "384fe947-5c93-4ca7-9a21-628e5631ff01",
+      "campus": "INDUSTRY",
+      "promotion": "P2",
+      "term": 1,
+      "iso_weekday": 1,
+      "starts_local": "09:00",
+      "ends_local": "11:00",
+      "timezone": "Europe/Paris",
+      "source_label": "Entraînement · Libre",
+      "title": "Entraînement",
+      "teacher_display": null,
+      "teacher_profile_id": null,
+      "kind": "free_training",
+      "duration_minutes": 120,
+      "exact_time_confirmed": true,
+      "venue": null,
+      "valid_from": null,
+      "valid_until": null,
+      "holiday_calendar_confirmed": false,
+      "needs_review": [
+        "venue",
+        "term_dates",
+        "holiday_calendar"
+      ]
+    },
+    {
+      "id": "industry-p2-t1-d1-11",
+      "group_id": "e97f38cc-34c9-422e-a57e-057b7405e30f",
+      "source_post_id": "384fe947-5c93-4ca7-9a21-628e5631ff01",
+      "campus": "INDUSTRY",
+      "promotion": "P2",
       "term": 1,
       "iso_weekday": 1,
       "starts_local": "11:00",
