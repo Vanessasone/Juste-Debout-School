@@ -14,6 +14,9 @@ do $$declare actor uuid;email_key text;other_admin uuid;subject uuid:=gen_random
  insert into skill_test_ids values(email_key,actor);
  end loop;
  select v into actor from skill_test_ids where k='nicolas@juste-debout.com';perform set_config('request.jwt.claim.sub',actor::text,true);
+ update public.jds_school_responsibilities set enabled=false where profile_id=actor;
+ if public.jds_teacher_ranking_access() then raise exception 'Disabled responsibility allowed';end if;
+ update public.jds_school_responsibilities set enabled=true where profile_id=actor;
  rowid:=public.jds_save_teacher_skills(null,'Test synthetic teacher','Test period',array[5,4,null,3,2,1,null,5,4,3]::numeric[],true,false,null);
  denied:=false;begin perform public.jds_save_teacher_skills(rowid,'Test synthetic teacher','Test period',array[6,4,null,3,2,1,null,5,4,3]::numeric[],true,false,1);exception when raise_exception then denied:=true;end;
  if not denied then raise exception 'Out of scale score accepted';end if;
