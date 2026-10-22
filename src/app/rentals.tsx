@@ -59,6 +59,7 @@ export default function Rentals() {
       </View>
 
       <ScrollView contentContainerStyle={{ padding: Space.lg, paddingBottom: Space.xxxl }}>
+        {school==='CORE'&&<Pressable accessibilityRole="button" style={[styles.reserve,{backgroundColor:accent,marginBottom:16}]} onPress={()=>router.push('/rental-calendar')}><Text style={styles.reserveText}>Consulter l’agenda des salles CORE</Text></Pressable>}
         <Text style={styles.empty}>Location sur demande et sous réserve de disponibilité. Tarifs à reconfirmer avec le devis. Pour combiner plusieurs salles, contacte l’équipe.</Text>
         {msg && (
           <View style={[styles.msgBanner, { borderLeftColor: accent }]}>
