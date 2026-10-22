@@ -1,6 +1,6 @@
 begin;
 create temp table rental_test_ids(k text,v uuid);
-do $$declare admin_id uuid;student uuid:=gen_random_uuid();room uuid;other_room uuid;block_key uuid;day date:=date '2026-11-09';r record;holiday_key uuid;begin
+do $$declare admin_id uuid;student uuid:=gen_random_uuid();room uuid;other_room uuid;block_key uuid;day date:=date '2026-11-09';r record;holiday_key uuid;lesson_key uuid;group_key uuid;begin
  select id into admin_id from public.profiles where 'admin'=any(roles) limit 1;
  insert into auth.users(id,email,raw_user_meta_data,email_confirmed_at) values(student,'rental-agenda-test@example.invalid','{}',now());
  select studio_id into room from public.jds_rental_calendar_rooms order by studio_id limit 1;
@@ -20,6 +20,13 @@ do $$declare admin_id uuid;student uuid:=gen_random_uuid();room uuid;other_room 
  if not exists(select 1 from public.jds_core_rental_day(day) where studio_id=room and (starts_at at time zone 'Europe/Paris')::time='11:00' and available) then raise exception 'Pause on confirmed holidays';end if;
  update public.jds_rental_calendar_holidays set confirmed=false where id=holiday_key;
  if exists(select 1 from public.jds_core_rental_day(day) where studio_id=room and (starts_at at time zone 'Europe/Paris')::time='11:00' and available) then raise exception 'Provisional holiday must not free room';end if;
+ select id into group_key from public.jds_training_groups where campus='CORE' limit 1;
+ insert into public.jds_training_lessons(group_id,title,room,starts_at,ends_at,status,rental_studio_id) values(group_key,'Test lesson','CORE',((day+time '15:00') at time zone 'Europe/Paris'),((day+time '16:00') at time zone 'Europe/Paris'),'published',room) returning id into lesson_key;
+ if exists(select 1 from public.jds_core_rental_day(day) where studio_id=room and (starts_at at time zone 'Europe/Paris')::time='15:00' and available) then raise exception 'Dated class conflict';end if;
+ update public.jds_training_lessons set rental_studio_id=null where id=lesson_key;
+ if exists(select 1 from public.jds_core_rental_day(day) where studio_id=other_room and (starts_at at time zone 'Europe/Paris')::time='15:00' and available) then raise exception 'Unassigned class must block all rooms';end if;
+ update public.jds_training_lessons set status='cancelled' where id=lesson_key;
+ if not exists(select 1 from public.jds_core_rental_day(day) where studio_id=room and (starts_at at time zone 'Europe/Paris')::time='15:00' and available) then raise exception 'Cancelled class should free room';end if;
  if exists(select 1 from public.jds_core_rental_day('2026-11-14') where (starts_at at time zone 'Europe/Paris')::time='19:00' and hour_price_cents is not null) then raise exception 'Weekend evening invented tariff';end if;
 end $$;
 grant select on rental_test_ids to authenticated;
