@@ -100,6 +100,7 @@ export default function AdminHub() {
           </View>
         )}
         <Tool icon="school" color="#2F40E6" title="Formation & promotions" sub="Groupes, planning, appel, documents et annonces" onPress={() => router.push('/admin-training')} />
+        <Tool icon="podium" color="#FF6A16" title="Classements élèves" sub="Notes, assiduité, global et bonnes actions" onPress={()=>router.push('/student-rankings')}/>
         <Tool icon="lock-closed" color="#2F40E6" title="Annuaire privé" sub="Élèves, professeurs et import des coordonnées" onPress={() => router.push('/admin-directory')} />
         {central&&<>
         <Tool icon="shield-checkmark" color="#2F40E6" title="Responsables des écoles" sub="Périmètres préparés et état des accès" onPress={()=>router.push('/admin-responsibilities')}/>
