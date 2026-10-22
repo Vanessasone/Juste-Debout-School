@@ -1,4 +1,6 @@
 BEGIN;
+-- Isolate synthetic evaluations from default teacher templates; rollback restores them.
+UPDATE public.jds_bulletin_subjects SET active=false;
 CREATE TEMP TABLE bulletin_test_ids(k text,v uuid);
 DO $test$
 DECLARE teacher_id uuid:=gen_random_uuid(); student_id uuid:=gen_random_uuid(); peer uuid:=gen_random_uuid(); director uuid:=gen_random_uuid(); jacky uuid:=gen_random_uuid(); person uuid:=gen_random_uuid(); grp uuid; member uuid; subj uuid; subj2 uuid; report uuid; payload jsonb; denied boolean; admin_id uuid; req uuid;
@@ -48,6 +50,23 @@ BEGIN
  IF (SELECT (snapshot->>'cc_average20')::numeric FROM public.jds_bulletin_reports WHERE id=report)<>12 THEN RAISE EXCEPTION 'Original snapshot changed';END IF;
  denied:=false;BEGIN PERFORM public.jds_save_bulletin_grade(subj2,member,'{}','{}',true,true,'Conflict',false,1);EXCEPTION WHEN raise_exception THEN denied:=true;END;
  IF NOT denied THEN RAISE EXCEPTION 'Revision conflict ignored';END IF;
+ -- Removing a line excludes it from calculation without losing grades or reports.
+ PERFORM public.jds_set_bulletin_subject_active(subj2,false);
+ payload:=public.jds_preview_bulletin(member,3);
+ IF jsonb_array_length(payload->'rows')<>1 OR (payload->>'evaluation_average20')::numeric<>14 THEN RAISE EXCEPTION 'Removed subject still counted';END IF;
+ IF NOT EXISTS(SELECT 1 FROM public.jds_bulletin_grades WHERE subject_id=subj2) THEN RAISE EXCEPTION 'Removed grade destroyed';END IF;
+ IF (SELECT (snapshot->>'cc_average20')::numeric FROM public.jds_bulletin_reports WHERE id=report)<>12 THEN RAISE EXCEPTION 'Removal changed published report';END IF;
+ PERFORM set_config('request.jwt.claim.sub',teacher_id::text,true);
+ IF school_private.bulletin_can_grade(subj2) THEN RAISE EXCEPTION 'Teacher can grade removed subject';END IF;
+ denied:=false;BEGIN PERFORM public.jds_set_bulletin_subject_active(subj2,true);EXCEPTION WHEN raise_exception THEN denied:=true;END;
+ IF NOT denied THEN RAISE EXCEPTION 'Teacher restored subject';END IF;
+ PERFORM set_config('request.jwt.claim.sub',director::text,true);
+ PERFORM public.jds_set_bulletin_subject_active(subj2,true);
+ payload:=public.jds_preview_bulletin(member,3);
+ IF jsonb_array_length(payload->'rows')<>2 THEN RAISE EXCEPTION 'Restoration failed';END IF;
+ -- Same discipline may have two independent teacher lines.
+ PERFORM public.jds_save_bulletin_subject(grp,3,'Test bulletin Hip-Hop',NULL,'Another teacher',NULL,NULL);
+ PERFORM public.jds_set_bulletin_subject_active((SELECT id FROM public.jds_bulletin_subjects WHERE group_id=grp AND term=3 AND subject='Test bulletin Hip-Hop' AND teacher_name='Another teacher'),false);
  PERFORM public.jds_save_bulletin_subject(grp,3,'Test bulletin House',teacher_id,'Prof test',NULL,3,0,subj2);
  denied:=false;BEGIN PERFORM public.jds_preview_bulletin(member,3);EXCEPTION WHEN raise_exception THEN denied:=true;END;
  IF NOT denied THEN RAISE EXCEPTION 'Missing coefficient accepted';END IF;

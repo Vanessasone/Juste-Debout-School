@@ -31,7 +31,8 @@ function render(){host.replaceChildren();
  renderGrades();if(data.can_manage)renderDirection();
 }
 function renderConfig(){const details=el('details');details.append(el('summary',`Configurer les matières · ${data.subjects.length} matière(s)`),el('p','Choisis un professeur validé pour cette école et les coefficients du modèle. Laisser un coefficient vide bloque la publication. Un coefficient 0 exclut cette composante.','muted'));host.append(details);
- const options=[['','Nouvelle matière'],...data.subjects.map(s=>[s.id,s.subject])];const [sl,choice]=select('Matière à configurer',options,'',()=>draw());details.append(sl);const form=el('div');details.append(form);
+ const subjectLabel=s=>`${s.subject}${s.teacher_name?' · '+s.teacher_name:''}`;
+ const options=[['','Nouvelle matière'],...data.subjects.map(s=>[s.id,subjectLabel(s)])];const [sl,choice]=select('Matière à configurer',options,'',()=>draw());details.append(sl);const form=el('div');details.append(form);
  function draw(){form.replaceChildren();const s=data.subjects.find(s=>s.id===choice.value)||{};
  const [tl,title]=field('Intitulé de la matière',s.subject);title.maxLength=150;
  const teachers=context.teachers.filter(t=>t.campus===data.group.campus);
@@ -46,11 +47,18 @@ function renderConfig(){const details=el('details');details.append(el('summary',
  form.append(catalogueLabel,el('p','Catalogue du modèle CORE. Sélectionne uniquement les enseignements de cette classe et de ce trimestre, puis attribue le compte professeur validé et les coefficients.','muted'));
  }
  form.append(tl,pl,nl,cl,vl,ol,btn('Enregistrer la matière',async()=>{await rpc('jds_save_bulletin_subject',{target_group:groupId,target_term:term,title:title.value,teacher:teacher.value||null,teacher_label:label.value,cc_weight:number(cc),eval_weight:number(ev),sort_position:number(order)??0,subject_key:s.id||null});await load();},true));
+ if(s.id)form.append(btn('Retirer de ce trimestre',async()=>{
+ if(!window.confirm(`Retirer ${subjectLabel(s)} de ce trimestre ? Ses évaluations seront conservées. Les bulletins déjà publiés resteront inchangés.`))return;
+ await rpc('jds_set_bulletin_subject_active',{subject_key:s.id,enabled:false});await load();
+ }));
  if(!teachers.length)form.prepend(el('p','Aucun professeur validé pour cette école. Valide d’abord les demandes dans « Ma fonction · Mes accès ».','muted'));
  }draw();
+ const archived=data.archived_subjects||[];
+ if(archived.length){const removed=el('details');removed.append(el('summary',`Lignes retirées de ce trimestre · ${archived.length}`),el('p','Les évaluations sont conservées. Réintégrer une ligne la remet dans les prochains calculs et contrôles du bulletin.','muted'));
+ for(const s of archived){const row=el('div',undefined,'report-row');row.append(el('strong',subjectLabel(s)),btn('Réintégrer dans ce trimestre',async()=>{await rpc('jds_set_bulletin_subject_active',{subject_key:s.id,enabled:true});await load();}));removed.append(row);}details.append(removed);}
 }
 function renderGrades(){const section=area(data.can_manage?'Suivi et saisie des évaluations':'Mes évaluations');
- const grid=el('div',undefined,'grid');grid.append(select('Élève',data.members.map(m=>[m.id,m.name]),memberId,v=>{memberId=v;render();})[0],select('Matière',data.subjects.map(s=>[s.id,s.subject]),subjectId,v=>{subjectId=v;render();})[0]);section.append(grid);
+ const grid=el('div',undefined,'grid');grid.append(select('Élève',data.members.map(m=>[m.id,m.name]),memberId,v=>{memberId=v;render();})[0],select('Matière',data.subjects.map(s=>[s.id,`${s.subject}${s.teacher_name?' · '+s.teacher_name:''}`]),subjectId,v=>{subjectId=v;render();})[0]);section.append(grid);
  const g=data.grades.find(g=>g.member_id===memberId&&g.subject_id===subjectId)||{},s=data.subjects.find(s=>s.id===subjectId);
  section.append(el('p',`${s.teacher_name||'Professeur à attribuer'} · ${g.submitted?'Évaluation transmise':'Brouillon'}`,'muted'));
  if(g.submitted&&!data.can_manage){section.append(el('p',`Contrôle continu /5 : ${g.cc_exempt?'Non évalué':(g.cc_scores||[]).join(' ; ')} · Évaluation /20 : ${g.evaluation_exempt?'Non évaluée':(g.evaluation_scores||[]).join(' ; ')}`),el('p',g.appreciation),el('p','Évaluation transmise à l’administration. Pour corriger, demande une réouverture.'));return;}

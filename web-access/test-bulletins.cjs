@@ -5,7 +5,7 @@ async function run({manager=false,publisher=false,own=false,session=true,campus=
  const dom=new JSDOM('<p id="status"></p><div id="bulletins"></div>',{url:'https://school.test/bulletins.html',runScripts:'outside-only'}),w=dom.window,calls=[];
  const group={id:'group',campus,name:'P2',season:'2026-2027'};
  const ctx={groups:own?[]:[group],teachers:[{id:'teacher',campus:'INDUSTRY',name:'Prof Test'}],reports:own?[{id:'report',term:1,version:1,published_at:'2026-10-22',school_name:'Industry',class_name:'P2'}]:[]};
- const data={group,can_manage:manager,can_publish:publisher,subjects:[{id:'subject',subject:'Hip-Hop',teacher_profile:'teacher',teacher_name:'Prof Test',cc_coefficient:1,evaluation_coefficient:2}],members:[{id:'member',name:'Élève Test',linked:true}],grades:[],drafts:[],reports:[]};
+ const data={group,can_manage:manager,can_publish:publisher,subjects:[{id:'subject',subject:'Hip-Hop',teacher_profile:'teacher',teacher_name:'Prof Test',cc_coefficient:1,evaluation_coefficient:2}],members:[{id:'member',name:'Élève Test',linked:true}],grades:[],drafts:[],reports:[],archived_subjects:[{id:'archived',subject:'House',teacher_name:'Prof retiré'}]};
  w.createClient=()=>({auth:{getSession:async()=>({data:{session:session?{user:{id:'user'}}:null}}),onAuthStateChange:()=>{}},rpc:async(name,args)=>{calls.push([name,args]);return{data:name==='jds_bulletin_context'?ctx:name==='jds_bulletin_group'?data:{rows:[]}};}});w.key='test';w.downloadReport=()=>{};w.score=v=>v??'—';w.confirm=()=>false;
  w.coreCatalogue=JSON.parse(fs.readFileSync(__dirname+'/core-subject-catalogue.json','utf8'));w.eval(source);await wait();return{w,calls,dom};
 }
@@ -16,6 +16,13 @@ async function run({manager=false,publisher=false,own=false,session=true,campus=
  [...t.w.document.querySelectorAll('button')].find(b=>b.textContent==='Transmettre à l’administration').click();await wait();const save=t.calls.find(c=>c[0]==='jds_save_bulletin_grade')[1];assert.deepEqual(Array.from(save.cc),[4,3.5,5]);assert.deepEqual(Array.from(save.evaluations),[14,16]);assert.equal(save.send,true);assert.equal(save.expected_revision,0);t.dom.window.close();
  t=await run({manager:true});assert.match(t.w.document.body.textContent,/Configurer les matières/);assert.match(t.w.document.body.textContent,/publication est réservée/);assert.doesNotMatch(t.w.document.body.textContent,/Publier le bulletin/);t.dom.window.close();
  t=await run({manager:true,publisher:true});assert.match(t.w.document.body.textContent,/Publier le bulletin/);const coefficients=[...t.w.document.querySelectorAll('label')].filter(l=>l.textContent.startsWith('Coefficient'));assert.equal(coefficients[0].querySelector('input').value,'');t.dom.window.close();
+ t=await run({manager:true});
+ const configure=[...t.w.document.querySelectorAll('label')].find(l=>l.textContent.startsWith('Matière à configurer')).querySelector('select');
+ configure.value='subject';configure.dispatchEvent(new t.w.Event('change'));t.w.confirm=()=>true;
+ [...t.w.document.querySelectorAll('button')].find(b=>b.textContent==='Retirer de ce trimestre').click();await wait();
+ assert.equal(t.calls.find(c=>c[0]==='jds_set_bulletin_subject_active')[1].enabled,false);
+ [...t.w.document.querySelectorAll('button')].find(b=>b.textContent==='Réintégrer dans ce trimestre').click();await wait();
+ assert.equal(t.calls.filter(c=>c[0]==='jds_set_bulletin_subject_active')[1][1].enabled,true);t.dom.window.close();
  t=await run({own:true});assert.match(t.w.document.body.textContent,/Télécharger le PDF/);assert.doesNotMatch(t.w.document.body.textContent,/Mes évaluations|Configurer les matières/);t.dom.window.close();
  t=await run({manager:true,campus:'CORE'});
  const catalogue=[...t.w.document.querySelectorAll('label')].find(l=>l.textContent.startsWith('Reprendre une matière')).querySelector('select');

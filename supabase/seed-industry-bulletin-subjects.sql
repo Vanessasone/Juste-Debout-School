@@ -83,5 +83,5 @@ FROM (VALUES
 ('e97f38cc-34c9-422e-a57e-057b7405e30f',3,'LOCKING','Loic',76)) AS v(group_id,term,subject,teacher_name,sort_order)
 JOIN public.jds_training_groups g ON g.id=v.group_id::uuid
 WHERE g.campus='INDUSTRY' AND g.season='2026-2027'
-ON CONFLICT(group_id,term,subject) DO NOTHING;
+ON CONFLICT(group_id,term,subject,teacher_name) DO NOTHING;
 COMMIT;
