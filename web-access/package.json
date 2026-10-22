@@ -1,1 +1,17 @@
-{"name":"jds-school-access","private":true,"version":"1.1.0","type":"module","scripts":{"build":"esbuild access.js --bundle --platform=browser --minify --outfile=../public/assets/school-access.js","test":"node test-ui.cjs"},"dependencies":{"@supabase/supabase-js":"2.110.1"},"devDependencies":{"esbuild":"0.25.12","jsdom":"26.1.0"}}
+{
+  "name": "jds-school-access",
+  "private": true,
+  "version": "1.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "esbuild access.js --bundle --platform=browser --minify --outfile=../public/assets/school-access.js",
+    "test": "node test-ui.cjs && node test-team-ui.cjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.110.1"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.12",
+    "jsdom": "26.1.0"
+  }
+}

@@ -1,0 +1,30 @@
+BEGIN;
+DO $test$
+DECLARE admin_id uuid; student_id uuid:=gen_random_uuid(); nicolas_id uuid:=gen_random_uuid(); loic_id uuid:=gen_random_uuid(); nicolas_role uuid; loic_role uuid; denied boolean;
+BEGIN
+ SELECT id INTO admin_id FROM public.profiles WHERE 'admin'=ANY(roles) LIMIT 1;
+ IF admin_id IS NULL THEN RAISE EXCEPTION 'Existing central admin required for test'; END IF;
+ INSERT INTO auth.users(id,email,email_confirmed_at,raw_user_meta_data) VALUES(student_id,'activation-student@example.invalid',now(),'{}'),(nicolas_id,'nicolas@juste-debout.com',NULL,'{}'),(loic_id,'loic@juste-debout.com',now(),'{}');
+ SELECT id INTO nicolas_role FROM public.jds_school_responsibilities WHERE email='nicolas@juste-debout.com';
+ SELECT id INTO loic_role FROM public.jds_school_responsibilities WHERE email='loic@juste-debout.com';
+ PERFORM set_config('request.jwt.claim.sub',student_id::text,true);
+ IF EXISTS(SELECT 1 FROM public.jds_responsibility_accounts()) THEN RAISE EXCEPTION 'Team account metadata leaked'; END IF;
+ denied:=false;BEGIN PERFORM public.jds_activate_school_responsibility(nicolas_role);EXCEPTION WHEN raise_exception THEN denied:=true;END;
+ IF NOT denied THEN RAISE EXCEPTION 'Student activated staff'; END IF;
+ PERFORM set_config('request.jwt.claim.sub',admin_id::text,true);
+ denied:=false;BEGIN PERFORM public.jds_activate_school_responsibility(nicolas_role);EXCEPTION WHEN raise_exception THEN denied:=true;END;
+ IF NOT denied THEN RAISE EXCEPTION 'Unconfirmed staff activated'; END IF;
+ UPDATE auth.users SET email_confirmed_at=now() WHERE id=nicolas_id;
+ PERFORM public.jds_activate_school_responsibility(nicolas_role);
+ PERFORM public.jds_activate_school_responsibility(nicolas_role);
+ IF NOT EXISTS(SELECT 1 FROM public.profiles WHERE id=nicolas_id AND 'admin'=ANY(roles) AND cardinality(array_positions(roles,'admin'))=1) THEN RAISE EXCEPTION 'Nicolas full admin missing or duplicated'; END IF;
+ IF NOT EXISTS(SELECT 1 FROM public.jds_school_responsibilities WHERE id=nicolas_role AND profile_id=nicolas_id AND enabled AND campus IS NULL AND activated_by=admin_id AND activated_at IS NOT NULL) THEN RAISE EXCEPTION 'Activation audit missing'; END IF;
+ PERFORM public.jds_activate_school_responsibility(loic_role);
+ IF EXISTS(SELECT 1 FROM public.profiles WHERE id=loic_id AND 'admin'=ANY(roles)) THEN RAISE EXCEPTION 'Director received global admin'; END IF;
+ PERFORM set_config('request.jwt.claim.sub',loic_id::text,true);
+ IF NOT public.jds_can_manage_school('INDUSTRY') OR public.jds_can_manage_school('CORE') THEN RAISE EXCEPTION 'Director campus isolation failed'; END IF;
+ PERFORM set_config('request.jwt.claim.sub',nicolas_id::text,true);
+ IF NOT public.is_admin() OR NOT public.jds_can_manage_school('CORE') OR NOT public.jds_can_manage_school('INDUSTRY') THEN RAISE EXCEPTION 'Nicolas global permissions failed'; END IF;
+ IF has_function_privilege('anon','public.jds_activate_school_responsibility(uuid)','EXECUTE') THEN RAISE EXCEPTION 'Anonymous activation grant'; END IF;
+END $test$;
+ROLLBACK;
