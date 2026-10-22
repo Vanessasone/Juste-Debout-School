@@ -90,6 +90,7 @@ export default function RankingsScreen() {
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: Space.lg, paddingBottom: Space.xxxl }}>
+        {canStaff&&<GradientBtn label="Classements élèves : notes, assiduité et global" onPress={()=>router.push('/student-rankings')}/>}
         {canTeacherRanking&&<GradientBtn label="Ranking professeurs · matrice confidentielle" onPress={()=>router.push('/teacher-ranking')}/>}
         {schools.length > 1 && (
           <View style={styles.schoolRow}>
