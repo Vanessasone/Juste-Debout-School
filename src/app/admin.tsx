@@ -13,6 +13,7 @@ import { Palette, Radius, Space, Type } from '@/constants/brand';
 import { useCampus } from '@/lib/campus';
 import { useI18n } from '@/lib/i18n';
 import { goBack } from '@/lib/nav';
+import {canReadTeacherSkills} from '@/lib/teacher-skills';
 import {getSchoolAccess} from '@/lib/school-access';
 import { isSupabaseConfigured } from '@/lib/supabase';
 
@@ -51,10 +52,12 @@ export default function AdminHub() {
   const { accent } = useCampus();
   // Garde d'accès : en réel, réservé admin/staff (défense en profondeur, la RLS bloque déjà côté serveur).
   const [central,setCentral]=useState(false);
+  const [canTeacherRanking,setCanTeacherRanking]=useState(false);
   const [allowed, setAllowed] = useState<boolean | null>(!isSupabaseConfigured ? true : null);
 
   useEffect(() => {
     if (!isSupabaseConfigured) return;
+    canReadTeacherSkills().then(setCanTeacherRanking).catch(()=>setCanTeacherRanking(false));
     getSchoolAccess()
       .then((access) => {
         const ok=access.campuses.length>0;
@@ -101,6 +104,7 @@ export default function AdminHub() {
         {central&&<>
         <Tool icon="shield-checkmark" color="#2F40E6" title="Responsables des écoles" sub="Périmètres préparés et état des accès" onPress={()=>router.push('/admin-responsibilities')}/>
         <Tool icon="people" color="#2F40E6" title={t('admin.people')} sub={t('admin.peopleSub')} onPress={() => router.push('/admin-people')} />
+        <>{canTeacherRanking&&<Tool icon="lock-closed" color="#FF6A16" title="Ranking professeurs · confidentiel" sub="Matrice de compétences · quatre directeurs uniquement" onPress={()=>router.push('/teacher-ranking')}/>}</>
         <Tool icon="ribbon" color="#FF6A16" title={t('admin.points')} sub={t('admin.pointsSub')} onPress={() => router.push('/admin-points')} />
         <Tool icon="megaphone" color="#FF2E7E" title={t('admin.poll')} sub={t('admin.pollSub')} onPress={() => router.push('/admin-poll')} />
         <Tool icon="notifications" color="#7C3AED" title={t('admin.notif')} sub={t('admin.notifSub')} onPress={() => router.push('/admin-notif')} />
