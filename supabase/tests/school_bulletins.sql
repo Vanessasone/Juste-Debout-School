@@ -34,7 +34,7 @@ BEGIN
  PERFORM set_config('request.jwt.claim.sub',jacky::text,true);
  IF NOT public.jds_can_manage_school('INDUSTRY') OR school_private.bulletin_can_publish('INDUSTRY') THEN RAISE EXCEPTION 'Jacky scope';END IF;
  PERFORM set_config('request.jwt.claim.sub',director::text,true);
- IF school_private.bulletin_can_publish('CORE') THEN RAISE EXCEPTION 'Cross campus publish';END IF;
+ IF NOT school_private.bulletin_can_publish('CORE') OR NOT school_private.bulletin_can_publish('INDUSTRY') THEN RAISE EXCEPTION 'Director must publish for both campuses';END IF;
  payload:=public.jds_preview_bulletin(member,3);
  IF (payload->>'cc_average20')::numeric<>12 OR (payload->>'evaluation_average20')::numeric<>17 OR (payload->'rows'->0->>'cc20') IS NULL THEN RAISE EXCEPTION 'Weighted calculations failed: %',payload;END IF;
  report:=public.jds_publish_bulletin(member,3);
