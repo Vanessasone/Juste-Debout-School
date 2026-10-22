@@ -1,0 +1,15 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),ts=require('typescript');
+const exportsObject={};
+const source=ts.transpileModule(fs.readFileSync('src/lib/teacher-skills.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
+vm.runInNewContext(source,{exports:exportsObject,require:()=>({supabase:{}})});
+const {rankTeacherSkills,parseSkillScores}=exportsObject;
+const row=(id,scores)=>({id,teacher_name:id,scores});
+const ranked=rankTeacherSkills([row('A',[5,5]),row('B',[4,4]),row('C',[4,null]),row('D',[null,null]),row('E',[3,3])]);
+assert.equal(ranked.map(r=>`${r.id}:${r.rank}`).join(','),'A:1,B:2,C:2,E:4,D:null');
+assert.equal(ranked.find(r=>r.id==='C').score,4,'blanks must not count as zero');
+assert.equal(ranked.at(-1).score,null,'unscored teachers are not ranked');
+assert.equal(rankTeacherSkills([row('A',[1]),row('B',[5])])[0].id,'B','changed inputs must change ranking');
+assert.equal(parseSkillScores(['5','4','','1','2','3','4','5','','1'])[2],null);
+for(const v of ['0','6','2.5','NaN'])assert.throws(()=>parseSkillScores(Array(10).fill(v)));
+assert.throws(()=>parseSkillScores(['5']));
+console.log('PASS: average ignores blanks, unscored excluded, Excel-style ties and rank gaps, input changes reorder ranking, integer scale 1–5.');
