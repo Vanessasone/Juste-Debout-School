@@ -1,0 +1,9 @@
+import {supabase} from './supabase';
+import type {StudentRanking} from './student-rankings';
+export type RankingObservation={observed_on:string;captured_at:string;result:StudentRanking};
+export type HistoryPeriod='month'|'quarter'|'year';
+export type RankingMetric='grade_score100'|'attendance_score'|'global_score'|'grade_rank'|'attendance_rank'|'global_rank';
+export function historyRange(period:HistoryPeriod,anchor:string){const [year,month]=anchor.split('-').map(Number);const startMonth=period==='year'?0:period==='quarter'?Math.floor((month-1)/3)*3:month-1;const length=period==='year'?12:period==='quarter'?3:1;return {start:new Date(Date.UTC(year,startMonth,1)).toISOString().slice(0,10),end:new Date(Date.UTC(year,startMonth+length,0)).toISOString().slice(0,10)};}
+export function shiftHistory(period:HistoryPeriod,anchor:string,direction:number){const [y,m]=anchor.split('-').map(Number);return new Date(Date.UTC(y,m-1+direction*(period==='year'?12:period==='quarter'?3:1),1)).toISOString().slice(0,10);}
+export function bucketHistory(rows:RankingObservation[],period:HistoryPeriod){const selected=new Map<string,RankingObservation>();for(const row of [...rows].sort((a,b)=>a.observed_on.localeCompare(b.observed_on))){let bucket=row.observed_on;if(period==='year')bucket=bucket.slice(0,7);if(period==='quarter'){const day=new Date(bucket+'T12:00:00Z');day.setUTCDate(day.getUTCDate()-((day.getUTCDay()+6)%7));bucket=day.toISOString().slice(0,10);}selected.set(bucket,row);}return [...selected.values()];}
+export async function getRankingHistory(member:string,start:string,end:string){const {data,error}=await supabase.from('jds_student_ranking_history').select('observed_on,captured_at,result').eq('member_id',member).gte('observed_on',start).lte('observed_on',end).order('observed_on');if(error)throw error;return (data??[]) as RankingObservation[];}
