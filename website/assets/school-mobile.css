@@ -1,0 +1,35 @@
+/* Mobile launch: native autoplay, fast poster, and an explicit account entry. */
+.school-hero{position:relative;isolation:isolate;min-height:700px;height:100svh;max-height:1100px;overflow:hidden;background:#141719;color:#dde1e4}
+.school-hero__poster,.school-hero__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:58% 50%;pointer-events:none}
+.school-hero__video{transition:opacity .25s}
+.school-hero:after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(0deg,#101416 0%,transparent 62%),linear-gradient(90deg,#10141699,transparent 65%)}
+.school-hero__copy{position:absolute;z-index:2;left:5%;bottom:10%;max-width:430px}
+.school-hero__copy h1{font-size:clamp(48px,6vw,84px);font-weight:900;letter-spacing:-.06em;line-height:.92;white-space:pre-line;margin:0}
+.school-hero__copy p{font-size:17px;line-height:1.65;margin:24px 0;max-width:380px}
+.school-hero__cta{display:inline-flex;align-items:center;padding:14px 22px;border:1px solid #ef8624;border-radius:999px;text-decoration:none;color:#dde1e4;background:#141719b3;font-size:15px;font-weight:600}
+.school-hero__control{position:absolute;z-index:3;right:5%;bottom:110px;border:1px solid #a8adb188;border-radius:999px;padding:10px 16px;background:#141719bf;color:#dde1e4;font:500 12px/1.5 system-ui;cursor:pointer;min-height:44px}
+.school-hero a:focus-visible,.school-hero button:focus-visible{outline:3px solid #ef8624;outline-offset:5px}
+.journey-shell .journey-interface{display:none}
+.main-nav .nav-account{color:var(--school-orange);border-bottom:1px solid var(--school-orange)}
+@media(max-width:1100px) and (min-width:761px){.school-header .main-nav{gap:12px}.school-header .header-controls{gap:12px}.school-header .school-logo{max-width:116px}}
+@media(max-width:760px){
+ .school-header{height:72px!important;padding:0 12px!important;gap:8px!important}
+ .school-header .school-logo,.school-header .school-logo img{width:100px!important;max-width:100px!important}
+ .school-header .header-controls{gap:10px!important}
+ .school-header .theme-switch{width:32px;height:32px;min-width:32px;font-size:20px!important}
+ .school-header .account-link .account-name{position:static!important;clip-path:none!important;clip:auto!important;width:auto!important;height:auto!important;overflow:visible!important;display:inline!important;white-space:nowrap;font-size:10px!important}
+ .school-header .account-link{gap:4px!important;min-width:0!important;font-size:10px!important;min-height:44px}
+ .school-header .account-link span[aria-hidden]{font-size:14px!important}
+ .school-header .menu-toggle{min-width:32px;min-height:44px}
+ .school-header .main-nav{top:72px!important;max-height:calc(100svh - 110px);overflow-y:auto;overscroll-behavior:contain;padding:20px 6%!important;gap:8px!important}
+ .school-header .main-nav a{padding:14px 0!important;font-size:18px}
+ .school-hero{min-height:740px;height:100svh;max-height:1000px}
+ .school-hero__poster,.school-hero__video{object-position:50% 25%}
+ .school-hero__copy{left:6%;right:6%;bottom:110px;max-width:330px}
+ .school-hero__copy h1{font-size:clamp(42px,11vw,60px)}
+ .school-hero__copy p{font-size:14px;line-height:1.6;margin:18px 0;max-width:290px}
+ .school-hero__cta{font-size:13px;padding:12px 18px;min-height:44px;box-sizing:border-box}
+ .school-hero__control{top:100px;bottom:auto;right:6%;padding:8px 12px;font-size:11px}
+}
+@media(max-width:360px){.school-header .school-logo,.school-header .school-logo img{width:86px!important;max-width:86px!important}.school-header .header-controls{gap:6px!important}}
+@media(prefers-reduced-motion:reduce){.school-hero__video{transition:none}}

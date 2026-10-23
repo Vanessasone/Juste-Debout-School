@@ -32,3 +32,19 @@ Après vérification du déploiement préparé, publication du déploiement 6adb
 Supabase Auth Site URL : https://www.juste-debout-school.com/app/. Ajout de deux retours exacts autorisés : cette URL et https://www.juste-debout-school.com/app/update-password. Ancienne règle Netlify conservée pour les liens et la version historiques. Enregistrement contrôlé après rechargement du tableau de bord. Aucun compte créé, aucun email de test envoyé.
 
 L'ancien programme PDF WordPress n'est pas inclus dans l'archive du site. Son bouton invite désormais à demander le programme via le formulaire de contact, au lieu de promettre un téléchargement indisponible. Rétablir le PDF uniquement à réception du document original.
+
+## Mobile : animation, images et accès — 23 octobre 2026
+
+Corrections demandées : lancement automatique de l'animation, photographies plus rapides, et entrée Mon espace dans le menu mobile. La vidéo précédente était volontairement figée et cherchait une position en fonction du défilement, après téléchargement complet en blob. Remplacement du seul composant public par `website/runtime/school-hero.js` : vidéo native muette, autoplay, loop, playsInline, poster immédiat et commande pause/lecture ; préférence système de réduction des animations respectée avec lecture manuelle possible. Si le navigateur refuse l'autoplay, l'image demeure visible et le bouton permet de démarrer. La première vue ne nécessite plus deux écrans de défilement pour avancer l'animation.
+
+Pipeline reproductible pour la base complète 6adb2c934c6b8eb8a7c449e8 : `python scripts/optimize-school-public.py BASE.zip SORTIE.zip --cache CACHE_MEDIA`. Nécessite Pillow et ffmpeg. Le script refuse une structure de bundle différente avant de publier. Il conserve les fichiers existants et ajoute les nouvelles ressources ; les noms du nouveau bundle sont basés sur son contenu.
+
+Miniatures CORE : 6 305 837 → 993 654 octets (-84,2 %) pour les 26 affiches ; seuls les 7 visuels du carrousel visibles/requis portent une source. Images plus grandes pour les fiches et affiches. Miniatures INDUSTRY : -43,8 % au total ; réparation du visuel Quentin dont la miniature précédente était vide. Galerie INDUSTRY différée jusqu'à proximité de l'écran. Vidéo bureau : 6 015 288 → 1 736 042 octets ; mobile : 1 998 931 → 829 336 octets (-58,5 %), H.264 sans piste audio et métadonnées faststart.
+
+Ajout explicite de Mon espace/My account au menu React, avec fermeture du menu à la navigation. Texte du raccourci d'en-tête également conservé sur mobile. CSS mobile limité au site vitrine.
+
+Validation : `node tests/school-hero.cjs` (autoplay natif, source mobile/bureau, poster, pause/reprise, refus d'autoplay, préférence de mouvement et nettoyage). Syntaxe JavaScript de tous les fichiers modifiés contrôlée. Aucun asset local des pages HTML ne manque. Vérification navigateur sur prévisualisation 6adb300a3379a1a085169c4f en iframe de même origine de 390 × 844 : vidéo en lecture, currentTime > 0, scrollY = 0 ; Mon espace présent dans le menu et navigation vers l'accueil de l'application. Vérification bureau : vidéo en lecture ; visuel suivant CORE chargé en WebP 480. Les fichiers d'application sont identiques octet pour octet sauf le script de galerie publique et son catalogue de miniatures ; aucun droit, compte, note ou justificatif n'est modifié.
+
+La page de test __qa-mobile.html n'est présente que dans la prévisualisation de contrôle, jamais dans l'archive destinée à la production. Le cockpit de Nicolas fait l'objet d'une proposition fonctionnelle séparée ; il n'est pas implémenté par cette publication.
+
+Archive finale de production : 6adb30f8d80dc77afdc682ca ; même contenu testé, sans la page de contrôle mobile.
