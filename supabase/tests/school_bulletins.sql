@@ -19,8 +19,8 @@ BEGIN
  PERFORM set_config('request.jwt.claim.sub',admin_id::text,true);
  PERFORM public.jds_review_student_request(req,'approved',person,'Test bulletin');
  PERFORM set_config('request.jwt.claim.sub',director::text,true);
- subj:=public.jds_save_bulletin_subject(grp,3,'Test bulletin Hip-Hop',teacher_id,'Prof test',2,1);
- subj2:=public.jds_save_bulletin_subject(grp,3,'Test bulletin House',teacher_id,'Prof test',1,3);
+ subj:=public.jds_save_bulletin_subject_policy(grp,3,'Test bulletin Hip-Hop',teacher_id,'Prof test','street',4);
+ subj2:=public.jds_save_bulletin_subject_policy(grp,3,'Test bulletin Modern',teacher_id,'Prof test','dance',4);
  PERFORM public.jds_save_bulletin_draft(member,3,'Progression régulière',0,1);
  denied:=false;BEGIN PERFORM public.jds_preview_bulletin(member,3);EXCEPTION WHEN raise_exception THEN denied:=true;END;
  IF NOT denied THEN RAISE EXCEPTION 'Missing grades accepted';END IF;
@@ -36,7 +36,7 @@ BEGIN
  PERFORM set_config('request.jwt.claim.sub',director::text,true);
  IF NOT school_private.bulletin_can_publish('CORE') OR NOT school_private.bulletin_can_publish('INDUSTRY') THEN RAISE EXCEPTION 'Director must publish for both campuses';END IF;
  payload:=public.jds_preview_bulletin(member,3);
- IF (payload->>'cc_average20')::numeric<>12 OR (payload->>'evaluation_average20')::numeric<>17 OR (payload->'rows'->0->>'cc20') IS NULL THEN RAISE EXCEPTION 'Weighted calculations failed: %',payload;END IF;
+ IF (payload->>'cc_average20')::numeric<>12 OR (payload->>'evaluation_average20')::numeric<>15.33 OR (payload->'rows'->0->>'cc20') IS NULL THEN RAISE EXCEPTION 'Weighted calculations failed: %',payload;END IF;
  report:=public.jds_publish_bulletin(member,3);
  IF (SELECT snapshot->>'address' FROM public.jds_bulletin_reports WHERE id=report)<>'27 boulevard de la Somme, 75017 Paris' THEN RAISE EXCEPTION 'Industry address';END IF;
  denied:=false;BEGIN UPDATE public.jds_bulletin_reports SET snapshot='{}' WHERE id=report;EXCEPTION WHEN raise_exception THEN denied:=true;END;
@@ -67,9 +67,9 @@ BEGIN
  -- Same discipline may have two independent teacher lines.
  PERFORM public.jds_save_bulletin_subject(grp,3,'Test bulletin Hip-Hop',NULL,'Another teacher',NULL,NULL);
  PERFORM public.jds_set_bulletin_subject_active((SELECT id FROM public.jds_bulletin_subjects WHERE group_id=grp AND term=3 AND subject='Test bulletin Hip-Hop' AND teacher_name='Another teacher'),false);
- PERFORM public.jds_save_bulletin_subject(grp,3,'Test bulletin House',teacher_id,'Prof test',NULL,3,0,subj2);
+ PERFORM public.jds_save_bulletin_subject_policy(grp,3,'Test bulletin Modern',teacher_id,'Prof test',NULL,4,0,subj2);
  denied:=false;BEGIN PERFORM public.jds_preview_bulletin(member,3);EXCEPTION WHEN raise_exception THEN denied:=true;END;
- IF NOT denied THEN RAISE EXCEPTION 'Missing coefficient accepted';END IF;
+ IF NOT denied THEN RAISE EXCEPTION 'Missing category accepted';END IF;
  INSERT INTO bulletin_test_ids VALUES('teacher',teacher_id),('student',student_id),('peer',peer),('report',report),('member',member),('subject',subj);
  IF has_function_privilege('anon','public.jds_bulletin_context()','EXECUTE') OR has_table_privilege('authenticated','public.jds_bulletin_grades','UPDATE') THEN RAISE EXCEPTION 'Unsafe grants';END IF;
 END $test$;

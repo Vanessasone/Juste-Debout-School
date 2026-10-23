@@ -14,7 +14,9 @@
     "build:tasks": "esbuild tasks.js --bundle --platform=browser --minify --outfile=../website/assets/tasks.js && esbuild tasks-entry.js --bundle --platform=browser --minify --outfile=../website/assets/tasks-entry.js",
     "test:tasks": "node test-tasks.cjs",
     "test:template": "node test-finance-template.cjs",
-    "test:readiness": "node test-enrollment-readiness.cjs"
+    "test:readiness": "node test-enrollment-readiness.cjs",
+    "build:activation": "esbuild student-activation.js --bundle --platform=browser --minify --outfile=../website/assets/student-activation.js",
+    "test:activation": "node test-student-activation.cjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.110.1",
