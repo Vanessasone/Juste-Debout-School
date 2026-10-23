@@ -39,3 +39,18 @@ Sources : « JD INDUSTRY 1ERE 26_27-2.pdf », pages 1–2 ; « JD INDUSTRY 2eme 
 Le catalogue INDUSTRY public compte désormais 19 visuels. Les fichiers originaux restent intacts. Trois dérivés incomplets ont été reconstruits à partir des PNG : Bruce et Michmich en 1080 px, Quentin en 640 px. Les 57 variantes actives sont décodées pour le site et pour son application intégrée. Les ressources mises à jour utilisent une version de cache explicite.
 
 Reproduction : `python scripts/package-school-teacher-review.py ARCHIVE_SCHOOL_COMPLETE.zip SORTIE.zip`. Le script applique les catalogues contrôlés, les scripts et le cache aux deux surfaces ; il conserve l’application, ses données et ses droits.
+
+
+## Ancienne adresse de l’application — contrôle complémentaire
+
+L’ancienne adresse `justedeboutschoolapp.netlify.app` conservait le catalogue de 20 fiches, dont Meech. Le contrôle de sa grille a aussi montré 20 miniatures sans image décodée. La publication en place restait 6adb17a5fb09fac9d2c4a146, correspondant à l’archive complète des coefficients conservée dans la session.
+
+Une nouvelle archive historique reprend exactement cette base et les deux catalogues vérifiés de 19 fiches. Les 76 fichiers de médias publics manquants (PNG et variantes WebP) sont restaurés depuis la publication officielle déjà contrôlée. Aucun visuel de Meech n’est ajouté. Les ressources de galerie sont versionnées pour actualiser le cache. Les fichiers Expo, le bundle des bulletins, les droits, l’authentification et les redirections sont inchangés.
+
+Le packager accepte maintenant les bases avec ou sans préfixe `/app` ; il ne réécrit les sources HTML locales que sur demande explicite, afin qu’une mise à jour de l’ancienne application ne remplace jamais les sources du site officiel. La restauration des médias n’accepte que les affiches présentes dans les catalogues vérifiés et décode chaque fichier.
+
+Commande : `python scripts/package-school-teacher-review.py ARCHIVE_HISTORIQUE_COMPLETE.zip SORTIE.zip --media-archive ARCHIVE_OFFICIELLE_VERIFIEE.zip`. Comparaison de tous les fichiers existants et décodage des 19 grands formats et miniatures réussis.
+
+Publication de l’ancienne application : **6adb517945e454e4a0f30a04**, 163 fichiers servis. Règle de redirection acceptée sans erreur. Prévisualisation : 19 fiches, aucune fiche Meech, Ashley en Heels / Techniques académiques ; miniature Quentin en 640 px et grand format Michmich en 1080 × 1350.
+
+Contrôle en production après rechargement : 19 fiches, aucune fiche Meech, cinq affiches du carrousel chargées en 640 px. Auto-publication rétablie. Capture : `docs/assets/school-legacy-posters-restored.jpg`. Le domaine officiel et sa galerie de 33 photographies ne sont pas republiés par cette correction historique.
