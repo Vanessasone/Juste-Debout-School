@@ -29,4 +29,6 @@ Accès et écriture limités par les contrôles existants aux directeurs School 
 - Build : `npm run build:import --prefix web-access`. Dépendances épinglées et lockfile conservé. Les Worker PDF et licences sont servis depuis le même site.
 - `scripts/package-school-import.py` : archive complète requise ; toutes les ressources précédentes sont préservées octet pour octet, sauf les deux pages privées qui reçoivent le raccourci. Les neuf redirections et la règle d’en-têtes restent identiques. Les fichiers `__qa-import.*` sont exclus de l’archive de production.
 
-Publication finale en cours de vérification. La connexion Qonto et les paiements automatiques restent hors de cet import.
+Publication vérifiée : déploiement `6adba9e8ff653a9d62b85146`, 514 fichiers côté Netlify, neuf redirections et une règle d’en-têtes sans erreur. Page officielle `https://www.juste-debout-school.com/app/finance-import.html` ouverte dans le navigateur : connexion School requise et aucun dossier exposé. Les trois scripts servis correspondent octet pour octet aux builds testés. Capture : `docs/assets/school-finance-import-live.jpg`.
+
+La publication automatique reste verrouillée sur cette version. La tentative de rétablissement du réglage initial a été rejetée par la validation automatique de sécurité, qui exige un accord explicite de Vanessa pour ce réglage persistant de production. Aucune tentative de contournement. Le site reste publié. La connexion Qonto et les paiements automatiques restent hors de cet import.
