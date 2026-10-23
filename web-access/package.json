@@ -13,7 +13,8 @@
     "test:import": "node test-import.cjs",
     "build:tasks": "esbuild tasks.js --bundle --platform=browser --minify --outfile=../website/assets/tasks.js && esbuild tasks-entry.js --bundle --platform=browser --minify --outfile=../website/assets/tasks-entry.js",
     "test:tasks": "node test-tasks.cjs",
-    "test:template": "node test-finance-template.cjs"
+    "test:template": "node test-finance-template.cjs",
+    "test:readiness": "node test-enrollment-readiness.cjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.110.1",

@@ -5,7 +5,7 @@ import {euro} from './tuition-core.js';
 import {financialTemplate} from './finance-template.js';
 const sb=createClient('https://zmzunjphubbdumowcurk.supabase.co',key,{auth:{storageKey:'jds-school-auth-v1',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
 const host=document.getElementById('importer'),message=document.getElementById('message');
-let authorized=false,epoch=0,data=null,group='',analysis=null,sheet=0,header=0,mapping={},items=[],source='',busy=false,worker=null,timer=null,abortRead=null;
+let authorized=false,epoch=0,data=null,group=new URLSearchParams(location.search).get('group')||'',analysis=null,sheet=0,header=0,mapping={},items=[],source='',busy=false,worker=null,timer=null,abortRead=null;
 const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;};
 function status(text,error=false){message.textContent=text;message.className=error?'error':'success';}
 function button(text,action,primary=false){const b=el('button',text,primary?'primary':'');b.type='button';b.disabled=busy;b.onclick=action;return b;}
@@ -91,6 +91,6 @@ function render(){if(!authorized||!data)return;host.replaceChildren();const intr
  }
  for(const control of host.querySelectorAll('input,select,button'))if(busy)control.disabled=true;
 }
-async function init(){const ticket=++epoch;try{const {data:{session},error}=await sb.auth.getSession();if(error)throw error;if(ticket!==epoch)return;if(!session){clear();return;}const allowed=await checked(sb.rpc('jds_school_finance_access'));if(ticket!==epoch)return;if(!allowed)throw Error('Accès réservé aux directeurs School activés.');const result=await loadData();if(ticket!==epoch)return;authorized=true;data=result;render();status('Choisis une formation pour commencer.');}catch(e){if(ticket===epoch){authorized=false;data=null;host.replaceChildren(button('Réessayer',init));status(e.message,true);}}}
+async function init(){const ticket=++epoch;try{const {data:{session},error}=await sb.auth.getSession();if(error)throw error;if(ticket!==epoch)return;if(!session){clear();return;}const allowed=await checked(sb.rpc('jds_school_finance_access'));if(ticket!==epoch)return;if(!allowed)throw Error('Accès réservé aux directeurs School activés.');const result=await loadData();if(ticket!==epoch)return;authorized=true;data=result;if(!data.roster.some(m=>m.group_id===group)&&!data.groups?.some(g=>g.group_id===group))group='';render();status(group?'Promotion sélectionnée. Télécharge le tableau prérempli ou charge ton fichier.':'Choisis une formation pour commencer.');}catch(e){if(ticket===epoch){authorized=false;data=null;host.replaceChildren(button('Réessayer',init));status(e.message,true);}}}
 sb.auth.onAuthStateChange?.(event=>{if(event==='SIGNED_OUT')clear();else if(event==='SIGNED_IN')setTimeout(()=>void init(),0);});
 window.addEventListener('pagehide',()=>clear());void init();
