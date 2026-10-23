@@ -10,7 +10,9 @@
     "build:accounts": "esbuild rental-accounts.js --bundle --platform=browser --minify --outfile=../website/assets/rental-accounts.js",
     "build:tuition": "esbuild tuition.js --bundle --platform=browser --minify --outfile=../website/assets/tuition.js && esbuild enrollments.js --bundle --platform=browser --minify --outfile=../website/assets/enrollments.js && esbuild enrollment.js --bundle --platform=browser --minify --outfile=../website/assets/enrollment.js",
     "build:import": "esbuild finance-import.js --bundle --platform=browser --minify --outfile=../website/assets/finance-import.js && esbuild import-file-worker.js --bundle --platform=browser --format=iife --minify --outfile=../website/assets/import-file-worker.js && cp node_modules/pdfjs-dist/build/pdf.worker.min.mjs ../website/assets/pdf.worker.min.mjs",
-    "test:import": "node test-import.cjs"
+    "test:import": "node test-import.cjs",
+    "build:tasks": "esbuild tasks.js --bundle --platform=browser --minify --outfile=../website/assets/tasks.js && esbuild tasks-entry.js --bundle --platform=browser --minify --outfile=../website/assets/tasks-entry.js",
+    "test:tasks": "node test-tasks.cjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.110.1",
