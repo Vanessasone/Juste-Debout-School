@@ -83,3 +83,20 @@ La nouvelle salve contient dix fichiers et neuf photographies distinctes. Le dou
 Prévisualisation puis publication 6adb432ce247fba54e2f7168 : 414 fichiers. Contrôles navigateur : six vues distinctes, chargement du grand format 1600 × 1066, commandes FR/EN, suivant/flèches clavier, Échap et retour du focus au bouton initial ; libellé des studios CORE confirmé.
 
 Version finale 6adb457cbae6c61f2bb5fd56 : correction du seul grand format Le cercle, initialement incomplet. La préparation écrit désormais chaque image de façon atomique ; le packager vérifie taille, dimensions et décodage des 27 variantes avant publication. Les 27 fichiers ont été décodés depuis l’archive finale. Le grand format Le cercle a été chargé et vérifié en production (1600 × 1066). Capture finale : `docs/assets/school-life-gallery-live.jpg`. Auto-publication rétablie.
+
+
+## Sélection complète des photos et contrôle des intervenants — 23 octobre 2026
+
+Après réception de la dernière salve annoncée par Vanessa : 39 fichiers transmis, 36 photographies distinctes. Deux doublons ont les mêmes octets ; un troisième fichier diffère par ses métadonnées mais contient exactement les mêmes pixels RGB. Les originaux ne sont pas modifiés. La sélection et les empreintes sont dans `website/school-photo-selection.json` ; les dimensions et tailles des variantes sont dans `website/assets/school-life/complete-catalogue.json`.
+
+Trois photographies différentes illustrent CORE, le planning et la formation. Les 33 autres sont réservées à la galerie : six vues initiales, puis 27 dans un bloc à ouvrir. Les 27 images supplémentaires ne reçoivent ni src ni srcset avant ouverture. Le grand format ne se charge qu’à l’ouverture de la visionneuse, qui permet de parcourir les 33 vues même si le bloc reste fermé. Les six miniatures initiales représentent 108 222 octets. Chaque photo a trois WebP, sans agrandissement ; toutes les 108 variantes ont été décodées depuis l’archive finale.
+
+Préparation : `python scripts/prepare-school-photo-batch.py DOSSIER_ORIGINAUX --manifest website/school-photo-selection.json --catalogue website/assets/school-life/complete-catalogue.json`. Mise en archive depuis la version complète précédemment publiée : `python scripts/package-school-life-photos.py ARCHIVE_COMPLETE.zip SORTIE.zip --catalogue website/assets/school-life/complete-catalogue.json --previous-catalogue website/assets/school-life/catalogue.json`. Les écritures d’images et de ZIP sont atomiques.
+
+La prévisualisation 6adb4b2b5b47b9ce3a6766c7 a confirmé les 33 photos, 27 miniatures sans source avant ouverture puis chargées au toggle, le passage 1/33 → 33/33, le grand format 1600 × 1066, Échap, restitution du focus et les libellés FR/EN. Test DOM de visionneuse et vérification de syntaxe réussis.
+
+Le contrôle supplémentaire des intervenants est documenté dans `docs/school-teacher-visual-review.md`. À la demande de Vanessa, l’affiche incorrecte de Meech est retirée de la sélection publique en attendant son remplacement ; sa discipline Hip-Hop reste correcte dans le planning. Ashley est présentée en Heels / Techniques académiques selon les documents reçus. Les 19 affiches actives et leurs 57 variantes sont vérifiées sur le site et sa copie dans l’application intégrée ; trois dérivés incomplets ont été reconstruits. Le bundle Expo et les données métier restent identiques.
+
+Publication finale : **6adb4d0758d705b921f38d63**, archive complète de 496 fichiers. Les neuf règles de redirection et la règle d’en-têtes sont acceptées sans erreur. Auto-publication rétablie. Contrôle sur le domaine officiel : galerie des intervenants INDUSTRY avec 19 fiches et absence de Meech. Le grand format réparé de Bruce charge en 1080 × 1350 dans la prévisualisation finale.
+
+Visionneuse contrôlée en production : « Partager le mouvement », compteur 1/33, image chargée en 1600 × 1066. Capture : `docs/assets/school-photo-selection-final.jpg`. Pour CORE, seules les affiches des cours open sont disponibles ; aucune série d’affiches de formation professionnelle CORE n’est présentée comme reçue.

@@ -11,8 +11,8 @@ from PIL import Image, ImageOps
 
 ROOT=Path(__file__).resolve().parents[1]
 
-def prepare(source_dir):
-    manifest=json.loads((ROOT/'website/school-photo-batch-01.json').read_text())
+def prepare(source_dir,manifest_path,catalogue_path):
+    manifest=json.loads(Path(manifest_path).read_text())
     output=ROOT/'website/assets/school-life';output.mkdir(parents=True,exist_ok=True)
     for photo in manifest['photos']:
         source=Path(source_dir)/photo['source']
@@ -32,8 +32,8 @@ def prepare(source_dir):
             os.replace(staged_name,output/name)
             variants.append({'src':'/assets/school-life/'+name,'width':width,'height':height,'bytes':(output/name).stat().st_size})
         photo['variants']=variants
-    (ROOT/'website/assets/school-life/catalogue.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
+    Path(catalogue_path).write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
     print(f"Prepared {len(manifest['photos'])} unique photos, {sum(len(p['variants']) for p in manifest['photos'])} responsive variants")
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('source_dir');a=p.parse_args();prepare(a.source_dir)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('source_dir');p.add_argument('--manifest',default=str(ROOT/'website/school-photo-batch-01.json'));p.add_argument('--catalogue',default=str(ROOT/'website/assets/school-life/catalogue.json'));a=p.parse_args();prepare(a.source_dir,a.manifest,a.catalogue)

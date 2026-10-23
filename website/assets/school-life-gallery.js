@@ -21,7 +21,14 @@
  }
  document.addEventListener('click',e=>{
   const target=e.target instanceof Element?e.target.closest('button[data-photo-full]'):null;if(!target)return;
-  language=target.closest('[data-language]')?.dataset.language||'fr';items=[...target.closest('.school-life-grid').querySelectorAll('button[data-photo-full]')];opener=target;
+  language=target.closest('[data-language]')?.dataset.language||'fr';items=[...(target.closest('.school-life-section')||target.closest('.school-life-grid')).querySelectorAll('button[data-photo-full]')];opener=target;
   if(!dialog)create();previousOverflow=document.body.style.overflow;document.body.style.overflow='hidden';show(items.indexOf(target));dialog.showModal();dialog.querySelector('button').focus();
  });
+ document.addEventListener('toggle',e=>{
+  const details=e.target;if(!(details instanceof Element)||!details.matches('details.school-life-more')||!details.open)return;
+  for(const image of details.querySelectorAll('img[data-photo-src]')){
+   if(image.hasAttribute('src'))continue;
+   image.srcset=image.dataset.photoSrcset;image.src=image.dataset.photoSrc;
+  }
+ },true);
 })();

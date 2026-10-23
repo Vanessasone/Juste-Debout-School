@@ -1,0 +1,554 @@
+{
+  "studio_campus": "CORE",
+  "source_file_count": 39,
+  "unique_photo_count": 36,
+  "main_photo_count": 3,
+  "gallery_photo_count": 33,
+  "photos": [
+    {
+      "source": "0f1da255-7ddf-4a98-96eb-35b76ba4a914.jpeg",
+      "source_sha256": "b27224e36c26b6819753f467981c1c541ed46fcd0944cb592ab0ab664ecb42c1",
+      "slug": "energie-collective",
+      "role": "campus",
+      "caption": {
+        "fr": "L’énergie du collectif",
+        "en": "Collective energy"
+      },
+      "alt": {
+        "fr": "Un groupe danse ensemble les bras levés dans le studio",
+        "en": "A group dances together with arms raised in the studio"
+      },
+      "decoded_sha256": "ef494b38b31166d8557357346eabd661a48acd7b6f5d14628b992016ca859931"
+    },
+    {
+      "source": "5bdbc893-40a4-4d2d-b2db-719129449cbf.jpeg",
+      "source_sha256": "f20c923024fac74b68fe4468e7998b02235164f0a36322267fefb37e192e96e0",
+      "slug": "travail-du-geste",
+      "role": "schedule",
+      "caption": {
+        "fr": "Le geste en mouvement",
+        "en": "Movement in detail"
+      },
+      "alt": {
+        "fr": "Une danseuse s’incline sur le côté et lève un bras pendant un cours",
+        "en": "A dancer leans sideways and raises an arm during class"
+      },
+      "decoded_sha256": "117255367ca72d593ea3cd93ce46f771de6314e988410fcb1d286780d5c2f778"
+    },
+    {
+      "source": "dcea32e0-8db9-413d-a90e-4d70d25892ca.jpeg",
+      "source_sha256": "7f05738300682d6051379241ebd6e228a5a596fa633434cff0124b633f4fcdcb",
+      "slug": "affirmation",
+      "role": "formation",
+      "caption": {
+        "fr": "Affirmer sa danse",
+        "en": "Own your dance"
+      },
+      "alt": {
+        "fr": "Une danseuse lève une jambe devant un groupe dans le studio",
+        "en": "A dancer lifts a leg in front of a group in the studio"
+      },
+      "decoded_sha256": "acc1110dfb19bf8595d7c4fb64c5bbe4658b89146eb918da69361fc035564903"
+    },
+    {
+      "source": "4d08d35f-04c2-4dcf-9475-4a7aa4d87d8d.jpeg",
+      "source_sha256": "89a745f4cf4d6e27ec7e9c862363ff9aea5cbe70261a4d31d67e01e9530f5873",
+      "slug": "partager",
+      "role": "gallery",
+      "caption": {
+        "fr": "Partager le mouvement",
+        "en": "Sharing movement"
+      },
+      "alt": {
+        "fr": "Un professeur montre un mouvement à un groupe de danseurs",
+        "en": "A teacher shows a movement to a group of dancers"
+      },
+      "decoded_sha256": "f3c10a69365345b68ed0a51dfa8a62983279104e11219cdcb4fbd791c0c5fac2"
+    },
+    {
+      "source": "92913638-0680-47af-86cc-37ec96838159.jpeg",
+      "source_sha256": "d28859cddea30f25b0c5d774e43b40a0d9479d3cb09c4fbc368e68600b779b96",
+      "slug": "engagement",
+      "role": "gallery",
+      "caption": {
+        "fr": "L’engagement",
+        "en": "Commitment"
+      },
+      "alt": {
+        "fr": "Des participants répètent ensemble un geste dans le studio",
+        "en": "Participants repeat a movement together in the studio"
+      },
+      "decoded_sha256": "cc02b8ba9d667def6978c413a485d6b5df7ace7bce5b2b83a3bc5157d1b48050"
+    },
+    {
+      "source": "7f92f783-0b84-4e13-bad7-301db8fc873f.jpeg",
+      "source_sha256": "9f2a550e241e6a101ad1f071f68a5bf976a97bf06589e1ebe86fcdf0a8cece94",
+      "slug": "freestyle",
+      "role": "gallery",
+      "caption": {
+        "fr": "L’énergie du cercle",
+        "en": "The energy of the circle"
+      },
+      "alt": {
+        "fr": "Un danseur au centre d’un cercle sous des lumières colorées",
+        "en": "A dancer in the centre of a circle under coloured lights"
+      },
+      "decoded_sha256": "6ffac66cd56b3ca0f6e8b1f1986a37db09746bf30ade25af8fd4ae1c2a213a94"
+    },
+    {
+      "source": "ac668d81-987b-4a32-9c64-71605bf6b8e8.jpeg",
+      "source_sha256": "0de49c7ccd5c7b4f65b04544be8c676953f90656993d5dffbaad4c8be00d8f12",
+      "slug": "contrastes",
+      "role": "gallery",
+      "caption": {
+        "fr": "La danse en contrastes",
+        "en": "Dance in contrast"
+      },
+      "alt": {
+        "fr": "Des silhouettes de danseurs se reflètent dans le miroir, en noir et blanc",
+        "en": "Dancers’ silhouettes reflected in the mirror, in black and white"
+      },
+      "decoded_sha256": "1e31135b697aaafae19bae10bd7f4ed5322edbbf6e5a938c2e290c8f7a905383"
+    },
+    {
+      "source": "500acdc6-64d7-471f-8a9c-a9f82e4ca164.jpeg",
+      "source_sha256": "0aea1493f2b910e500932a8e70322b5e49dd78de61c4413dd7c9e3331d6ce8ab",
+      "slug": "concentration",
+      "role": "gallery",
+      "caption": {
+        "fr": "La concentration",
+        "en": "Focus"
+      },
+      "alt": {
+        "fr": "Des danseurs suivent un exercice de mouvement en studio",
+        "en": "Dancers follow a movement exercise in the studio"
+      },
+      "decoded_sha256": "25aa41c6dd1834d065e4a2e9d44ee3a64df63eea586b4dfc33dedc7ac804ff10"
+    },
+    {
+      "source": "c08d56f4-41d1-4693-8608-d8a13bbd780f.jpeg",
+      "source_sha256": "69946d965085354835fa707bc51efb572b6600226a72371c4a4a8984d5f6f1a5",
+      "slug": "echanges",
+      "role": "gallery",
+      "caption": {
+        "fr": "Les échanges",
+        "en": "Exchanges"
+      },
+      "alt": {
+        "fr": "Un intervenant échange avec des participantes dans le studio",
+        "en": "An instructor interacts with participants in the studio"
+      },
+      "decoded_sha256": "81f2409c4536a79ddbc04beeb92dec143c5ff2252f7f4524f9a8fa126e9d4113"
+    },
+    {
+      "source": "08ad1e22-d7b1-4828-a114-41c92a6037d7.jpeg",
+      "source_sha256": "1dc89ad453d40aa6f62e8869f2642586d3142da6f2e8b5d4c5d1b501cd8ef651",
+      "slug": "elan",
+      "role": "gallery",
+      "caption": {
+        "fr": "L’élan",
+        "en": "Taking flight"
+      },
+      "alt": {
+        "fr": "Un danseur lève une jambe pendant un cours en studio",
+        "en": "A dancer lifts a leg during a studio class"
+      },
+      "decoded_sha256": "88aced52e6fea4554233d08fb3dfbb4524432c70f82c6d53604b496191583c0f"
+    },
+    {
+      "source": "46b5f9c3-9eff-49d5-9094-8ad5f805ab0e.jpeg",
+      "source_sha256": "8f4f8dac6fb6424b8032f61bcbf057270a8895b81c0298e30f0b4cf00987b571",
+      "slug": "apprentissage",
+      "role": "gallery",
+      "caption": {
+        "fr": "L’apprentissage",
+        "en": "Learning"
+      },
+      "alt": {
+        "fr": "Des participants suivent un cours dans un studio lumineux",
+        "en": "Participants follow a class in a bright studio"
+      },
+      "decoded_sha256": "62ea509bdbdeb3697f455892fd180e2ed9df2c9dbfadcf2d8881f51c23e0a9ef"
+    },
+    {
+      "source": "186884c2-fa16-4991-9dc6-d821fa2fecc0.jpeg",
+      "source_sha256": "9dd37482716a0b13313da7713b62031e161f4e8e89d5b1d2eeca4fff35e3e3bb",
+      "slug": "ensemble",
+      "role": "gallery",
+      "caption": {
+        "fr": "Avancer ensemble",
+        "en": "Moving together"
+      },
+      "alt": {
+        "fr": "Plusieurs personnes suivent un mouvement dans le studio",
+        "en": "Several people follow a movement in the studio"
+      },
+      "decoded_sha256": "a189fdd1e7613f1969c21085d7fa8d9146b6400e421609b1271e45ce00164041"
+    },
+    {
+      "source": "c5579898-05a6-49b0-9765-5b5dbe74d9a1.jpeg",
+      "source_sha256": "ccd0da36c38cb4a2f760913ad2cd5f29e53ef83d1ad112bc4fa9650435c4c6cc",
+      "slug": "direction",
+      "role": "gallery",
+      "caption": {
+        "fr": "Donner une direction",
+        "en": "Giving direction"
+      },
+      "alt": {
+        "fr": "Un danseur en t-shirt orange indique un mouvement du bras",
+        "en": "A dancer in an orange t-shirt indicates an arm movement"
+      },
+      "decoded_sha256": "5e8e100560bbf92da42b71ade7fc75eb4581eb2044df5eaa038e5fde38b33751"
+    },
+    {
+      "source": "af550a66-045a-4946-879d-5a3f67c45d18.jpeg",
+      "source_sha256": "649d6632bfca2da327e99cda4c05d31e60a1a13e4ab94d2eee4c22d03f9ed70e",
+      "slug": "vibrations",
+      "role": "gallery",
+      "caption": {
+        "fr": "Les vibrations",
+        "en": "The vibrations"
+      },
+      "alt": {
+        "fr": "Un groupe travaille une séquence de danse sous des lumières vertes",
+        "en": "A group works on a dance sequence under green lights"
+      },
+      "decoded_sha256": "dbff42a5fa009432a4134451cb849ea4791639401bf94af3a2129db797a80f0d"
+    },
+    {
+      "source": "42a63030-3489-407f-a118-bec55a6543b3.jpeg",
+      "source_sha256": "474c686f4ae8933e2dd6b108b4ddc24624be77f1bec7cffcab577a0dff6417da",
+      "slug": "cercle",
+      "role": "gallery",
+      "caption": {
+        "fr": "Le cercle",
+        "en": "The circle"
+      },
+      "alt": {
+        "fr": "Des danseurs rassemblés autour du cercle, photographie en noir et blanc",
+        "en": "Dancers gathered around a circle, black and white photograph"
+      },
+      "decoded_sha256": "b356e4e6c65952acb18bbcecec5d3c1b325685f9c44774a02ae002335ac16187"
+    },
+    {
+      "source": "c66398ac-33fa-4cf7-a6fd-282a305977ba.jpeg",
+      "source_sha256": "10ad9aea0ad62f1b667bf884eb119b8a02c5d36812a167d232d1978c14c485a2",
+      "slug": "dynamique",
+      "role": "gallery",
+      "caption": {
+        "fr": "La dynamique du groupe",
+        "en": "Group dynamics"
+      },
+      "alt": {
+        "fr": "Des participants dansent ensemble dans une salle lumineuse",
+        "en": "Participants dance together in a bright studio"
+      },
+      "decoded_sha256": "03848f35f1da81bca36fb56426926013c9f1c436a091edae2a9a5e300dffa8c1"
+    },
+    {
+      "source": "6e4de1a8-452e-433e-ba80-a953271386d7.jpeg",
+      "source_sha256": "f9abbb5e51e784ec3b3bf789064411d285117e7fa81796d2f9cd875e0df5bc03",
+      "slug": "dans-la-salle",
+      "role": "gallery",
+      "caption": {
+        "fr": "Dans la salle",
+        "en": "In the studio"
+      },
+      "alt": {
+        "fr": "Un cours de danse vu en hauteur avec plusieurs participants",
+        "en": "An elevated view of a dance class with several participants"
+      },
+      "decoded_sha256": "a90918ff587a8d5c7613d99dc977ba12089efe3f7c9c712348942a22f0e74a6a"
+    },
+    {
+      "source": "c658969c-ac92-4a0b-aa1f-3e134a12ae6a.jpeg",
+      "source_sha256": "50401332b55d5d5b9d714f72e420cd307367f459e83f3212cf5f55d46eee6882",
+      "slug": "attention",
+      "role": "gallery",
+      "caption": {
+        "fr": "L’attention au geste",
+        "en": "Attention to movement"
+      },
+      "alt": {
+        "fr": "Un groupe suit les gestes d’un intervenant en studio",
+        "en": "A group follows an instructor’s movements in the studio"
+      },
+      "decoded_sha256": "45788490a273e2a2925e8021d2d5c9a4179aa96506dba853deec6c551847c9e7"
+    },
+    {
+      "source": "5fa07567-f641-4d4b-8ba5-20a281850090.jpeg",
+      "source_sha256": "2da7db42224de1b719df8c97081e47b96864ac0eafc512f1b73c4111b4b42f3c",
+      "slug": "transmission",
+      "role": "gallery",
+      "caption": {
+        "fr": "La transmission",
+        "en": "Passing it on"
+      },
+      "alt": {
+        "fr": "Un professeur guide un groupe pendant un cours de danse",
+        "en": "A teacher guides a group during a dance class"
+      },
+      "decoded_sha256": "803f1dd8e0d1921a1901e75b887c396f8ed2bfb5e7a954aa8a15a4ce550a7327"
+    },
+    {
+      "source": "a0bbaecb-4d15-441c-8aac-9c27503246b4.jpeg",
+      "source_sha256": "88cf3d062a8f454df8f02ceeac9b47d06ec781c6886aea940f95d6654679545a",
+      "slug": "lignes",
+      "role": "gallery",
+      "caption": {
+        "fr": "Les lignes du mouvement",
+        "en": "Lines of movement"
+      },
+      "alt": {
+        "fr": "Des danseurs devant un miroir, photographie en noir et blanc",
+        "en": "Dancers in front of a mirror, black and white photograph"
+      },
+      "decoded_sha256": "e13b1062ea99d307e22d9df7e8447fb9dbe05ff7a5e98a6c56a9c536cad0ddf1"
+    },
+    {
+      "source": "ffe3e67d-e56a-40a1-a82f-166b702cafc1.jpeg",
+      "source_sha256": "a5b8814c117b7284209956e6ee4d3d548b483be88d90a869bfb065a4463093e0",
+      "slug": "repetition",
+      "role": "gallery",
+      "caption": {
+        "fr": "La répétition",
+        "en": "Rehearsal"
+      },
+      "alt": {
+        "fr": "Un intervenant en t-shirt vert montre un mouvement à un groupe",
+        "en": "An instructor in a green t-shirt shows a movement to a group"
+      },
+      "decoded_sha256": "3de0345ac572dda15d5c50236a5d63db50a64e167f0488731c92274dff6176bc"
+    },
+    {
+      "source": "55b91366-93d9-4277-8fad-8a358b5ceb8e.jpeg",
+      "source_sha256": "0634ff1396770c70a798f68e30408b8c95c933f62ab7dbb721ec73b5eeed64b8",
+      "slug": "en-studio",
+      "role": "gallery",
+      "caption": {
+        "fr": "En studio",
+        "en": "In the studio"
+      },
+      "alt": {
+        "fr": "Des élèves dansent ensemble devant les miroirs",
+        "en": "Students dance together in front of the mirrors"
+      },
+      "decoded_sha256": "4c04ab0db198043a29e4663d0cb8e91474e26e86c7ee41bb1d17bf2e3d04d680"
+    },
+    {
+      "source": "0aff7ca5-0af8-43b5-beda-7b19c4f0ff48.jpeg",
+      "source_sha256": "89d821441b29fa9d9281be6e52c865ec58f57b9a67cc49fcf3d06ac2ca82ee11",
+      "slug": "rythme",
+      "role": "gallery",
+      "caption": {
+        "fr": "Trouver le rythme",
+        "en": "Finding the rhythm"
+      },
+      "alt": {
+        "fr": "Un cours de danse sous des lumières vertes",
+        "en": "A dance class under green lights"
+      },
+      "decoded_sha256": "b508214935b867ad86cd5da84b09f45e064ac9544746c54346c247faf7c07ace"
+    },
+    {
+      "source": "74bcdbe5-55f5-486a-9da0-4d23db9286ce.jpeg",
+      "source_sha256": "801bee7a2698a020692ffbb1b986d13fff93f073e8474608cb888300a0d9dfcc",
+      "slug": "expression",
+      "role": "gallery",
+      "caption": {
+        "fr": "L’expression",
+        "en": "Expression"
+      },
+      "alt": {
+        "fr": "Un groupe travaille un mouvement des bras en studio",
+        "en": "A group works on an arm movement in the studio"
+      },
+      "decoded_sha256": "c1f131f17a8d995a855c1d4eca32b1c75edfef6dedbb41617a2aee6d3b0ac07e"
+    },
+    {
+      "source": "fcafd298-6b0e-4ffe-a886-0376ffd9fcaf.jpeg",
+      "source_sha256": "79139ad53ed4b21407a0e81f5bf862df32cfd8c9c00ec5a5301d5c46f504527a",
+      "slug": "pratique",
+      "role": "gallery",
+      "caption": {
+        "fr": "La pratique",
+        "en": "Practice"
+      },
+      "alt": {
+        "fr": "Un groupe de danseurs travaille dans un studio avec un parquet",
+        "en": "A group of dancers works in a studio with a wooden floor"
+      },
+      "decoded_sha256": "d22853e0d135f77018539e9768d6f025b09c607c3cfcd16a878387f04d622b62"
+    },
+    {
+      "source": "0283fc5a-54d4-41f5-b1e4-958fab57b73d.jpeg",
+      "source_sha256": "ff7157ba9a274b65b5291a839f7a2f09e13e898a83c60cd520a40be0b0532773",
+      "slug": "dans-le-miroir",
+      "role": "gallery",
+      "caption": {
+        "fr": "Dans le miroir",
+        "en": "In the mirror"
+      },
+      "alt": {
+        "fr": "Un groupe de danseurs se reflète dans le miroir du studio",
+        "en": "A group of dancers reflected in the studio mirror"
+      },
+      "decoded_sha256": "e1332bd01f760ed5c360d08e85e401532fc89c7f9ca841c498d7dbd714af7660"
+    },
+    {
+      "source": "1244cee3-0397-4957-9788-e69141db3615.jpeg",
+      "source_sha256": "646fd87d401be6eb0879cfce67d95a19b8fa619baba2f56f7f026ec6db07f533",
+      "slug": "cours-core",
+      "role": "gallery",
+      "caption": {
+        "fr": "Le cours en partage",
+        "en": "Learning together"
+      },
+      "alt": {
+        "fr": "Un professeur échange avec les élèves dans le studio",
+        "en": "A teacher works with students in the studio"
+      },
+      "decoded_sha256": "8bd6874f2dc84981e52296723fdce8ca8df0317692a23c83bd2c66edd8757f6f"
+    },
+    {
+      "source": "33d15685-ceb5-4ad6-a785-6aaf5e42eba7.jpeg",
+      "source_sha256": "96809cae55ae11afd93b1769336c71b35810252a2f2ec6354b13dbda17494e66",
+      "slug": "precision",
+      "role": "gallery",
+      "caption": {
+        "fr": "La précision du geste",
+        "en": "Every detail matters"
+      },
+      "alt": {
+        "fr": "Un groupe suit les indications pendant un cours, photographie en noir et blanc",
+        "en": "A group follows instructions during class, black and white photograph"
+      },
+      "decoded_sha256": "af46beb9292b43c66ad6d81b3148d405e6ce60c52d7a77b8f44d9876aceede72"
+    },
+    {
+      "source": "53bcc0a3-aa70-4eee-be4f-464387d874dd.jpeg",
+      "source_sha256": "ccb593bd70e2bf55b1b2dae97303b51a6cc7cb42cb028b8f697c8d8ea6d08433",
+      "slug": "impulsion",
+      "role": "gallery",
+      "caption": {
+        "fr": "L’impulsion",
+        "en": "The impulse"
+      },
+      "alt": {
+        "fr": "Un danseur guide un mouvement du bras pendant un cours",
+        "en": "A dancer leads an arm movement during class"
+      },
+      "decoded_sha256": "a939c7e4d339622b2084f12a29ca6eb892fe08675a1836215d1b7f67603dc369"
+    },
+    {
+      "source": "687d74a0-5944-4668-add2-182136f868f4.jpeg",
+      "source_sha256": "446cbe4baa92c39d554b2596dea89056b23e99901e71e53a5c6618878ffe1e59",
+      "slug": "travail-equipe",
+      "role": "gallery",
+      "caption": {
+        "fr": "Le travail collectif",
+        "en": "Working together"
+      },
+      "alt": {
+        "fr": "Des personnes réunies autour d’une table de travail",
+        "en": "People gathered around a work table"
+      },
+      "decoded_sha256": "0d6ce3eda312136ce60490b6b898bfbef9b27cadb8c8b3252fa3605b76073bd2"
+    },
+    {
+      "source": "503f88ae-35fa-453a-95aa-da66c716b29e.jpeg",
+      "source_sha256": "0fe92861ff24199ee59a8e08f534f1151cadac75b244d4f2f1934d0d8750c52e",
+      "slug": "coulisses",
+      "role": "gallery",
+      "caption": {
+        "fr": "Les coulisses",
+        "en": "Behind the scenes"
+      },
+      "alt": {
+        "fr": "Des participants dans le studio, certains tiennent un téléphone",
+        "en": "Participants in the studio, some holding a phone"
+      },
+      "decoded_sha256": "1a04f2e07636c084c338e682b3d420cca387ff6e034faa52c715597fbb2ae63b"
+    },
+    {
+      "source": "810e33f2-6c61-4c44-91ad-7da450db6cca.jpeg",
+      "source_sha256": "e9293f0dcd1f437238fcf5843c0db924d8a7396da43d5ad1cb2dcbb7c43213d4",
+      "slug": "culture",
+      "role": "gallery",
+      "caption": {
+        "fr": "Une culture qui se transmet",
+        "en": "A culture to share"
+      },
+      "alt": {
+        "fr": "Le symbole Juste Debout au dos d’un vêtement dans le studio",
+        "en": "The Juste Debout symbol on the back of a garment in the studio"
+      },
+      "decoded_sha256": "56742b885e9280d813d7606e5b6ee7282572d570fc668dc2f6fcbf7b99379072"
+    },
+    {
+      "source": "ef826199-2af4-479d-ab94-277ec564641c(1).jpeg",
+      "source_sha256": "1956266699dceeb9fb11b233435ce6e40016e6e0df020f9d6d07f140f6fd2c26",
+      "slug": "identite",
+      "role": "gallery",
+      "caption": {
+        "fr": "Les détails font l’identité",
+        "en": "Details make an identity"
+      },
+      "alt": {
+        "fr": "Gros plan du symbole Juste Debout sur des vêtements noirs",
+        "en": "Close-up of the Juste Debout symbol on black clothing"
+      },
+      "decoded_sha256": "0c478d27004fa98234b7213de7608d894c4b842b8a5523c47bcfed20309e87cc"
+    },
+    {
+      "source": "93cc32e5-988a-4e89-901e-9b7d37fedff6.jpeg",
+      "source_sha256": "816676faebd25ca2b965777f5809f4ae66b7f664292061fef8a63b880433e5fb",
+      "slug": "ecoute",
+      "role": "gallery",
+      "caption": {
+        "fr": "L’écoute",
+        "en": "Listening"
+      },
+      "alt": {
+        "fr": "Des participants écoutent un intervenant devant les miroirs",
+        "en": "Participants listen to an instructor in front of the mirrors"
+      },
+      "decoded_sha256": "fe8f8ee5832e9fe1ee1e4c19b9e8321e40577d13777cbd1b849dbef9bdaf72b5"
+    },
+    {
+      "source": "96c00a2b-274c-4e7e-9640-6e880115b2de.jpeg",
+      "source_sha256": "61f2db8c75e5fe1f84bb875a4d0f1d2e61fdeeeec51de0df99d4f1144b6dfb40",
+      "slug": "rassemblement",
+      "role": "gallery",
+      "caption": {
+        "fr": "Se rassembler",
+        "en": "Coming together"
+      },
+      "alt": {
+        "fr": "Un public se rassemble autour de danseurs dans une salle éclairée en couleurs",
+        "en": "An audience gathers around dancers in a room with coloured lighting"
+      },
+      "decoded_sha256": "5f8fcbda8733f760ecfb8cad81295c6ec2b68431b75aaddfbc141a02eaa9f841"
+    },
+    {
+      "source": "b353b2fe-2cb4-493d-bce9-1086714e26da.jpeg",
+      "source_sha256": "7c8af5ecc0561d70521007953ec5e101de92937655a9a7c07493663a781736ba",
+      "slug": "mouvement",
+      "role": "gallery",
+      "caption": {
+        "fr": "En mouvement",
+        "en": "In motion"
+      },
+      "alt": {
+        "fr": "Un groupe répète une chorégraphie dans le studio",
+        "en": "A group rehearses choreography in the studio"
+      },
+      "decoded_sha256": "455267f8ff8a4f480faf2a837bbbe5dd57fdecb61b750ba37e25c1e98dba1589"
+    }
+  ],
+  "duplicates_omitted": [
+    "4d08d35f-04c2-4dcf-9475-4a7aa4d87d8d(1).jpeg",
+    "ef826199-2af4-479d-ab94-277ec564641c(2).jpeg",
+    "0283fc5a-54d4-41f5-b1e4-958fab57b73d(1).jpeg"
+  ]
+}
