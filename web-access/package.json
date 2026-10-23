@@ -5,15 +5,19 @@
   "type": "module",
   "scripts": {
     "build": "esbuild access.js --bundle --platform=browser --minify --outfile=../public/assets/school-access.js && esbuild bulletins.js --bundle --platform=browser --minify --outfile=../public/assets/bulletins.js",
-    "test": "node test-ui.cjs && node test-team-ui.cjs && node test-bulletins.cjs && node test-rental-public.cjs && node test-cockpit.cjs && node test-school-life-gallery.cjs && node test-rental-accounts.cjs && node test-tuition.cjs && node test-enrollment.cjs && node test-rental-edit.cjs",
+    "test": "node test-ui.cjs && node test-team-ui.cjs && node test-bulletins.cjs && node test-rental-public.cjs && node test-cockpit.cjs && node test-school-life-gallery.cjs && node test-rental-accounts.cjs && node test-tuition.cjs && node test-enrollment.cjs && node test-rental-edit.cjs && node test-import.cjs",
     "build:rental": "esbuild rental-public.js --bundle --platform=browser --minify --outfile=../website/assets/rental-public.js",
     "build:accounts": "esbuild rental-accounts.js --bundle --platform=browser --minify --outfile=../website/assets/rental-accounts.js",
-    "build:tuition": "esbuild tuition.js --bundle --platform=browser --minify --outfile=../website/assets/tuition.js && esbuild enrollments.js --bundle --platform=browser --minify --outfile=../website/assets/enrollments.js && esbuild enrollment.js --bundle --platform=browser --minify --outfile=../website/assets/enrollment.js"
+    "build:tuition": "esbuild tuition.js --bundle --platform=browser --minify --outfile=../website/assets/tuition.js && esbuild enrollments.js --bundle --platform=browser --minify --outfile=../website/assets/enrollments.js && esbuild enrollment.js --bundle --platform=browser --minify --outfile=../website/assets/enrollment.js",
+    "build:import": "esbuild finance-import.js --bundle --platform=browser --minify --outfile=../website/assets/finance-import.js && esbuild import-file-worker.js --bundle --platform=browser --format=iife --minify --outfile=../website/assets/import-file-worker.js && cp node_modules/pdfjs-dist/build/pdf.worker.min.mjs ../website/assets/pdf.worker.min.mjs",
+    "test:import": "node test-import.cjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.110.1",
+    "exceljs": "4.4.0",
     "jspdf": "3.0.3",
-    "jspdf-autotable": "5.0.2"
+    "jspdf-autotable": "5.0.2",
+    "pdfjs-dist": "5.4.149"
   },
   "devDependencies": {
     "esbuild": "0.25.12",
