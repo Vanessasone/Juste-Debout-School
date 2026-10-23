@@ -1,3 +1,4 @@
+import {schoolWebUrl} from '@/lib/school-web-links';
 /**
  * Écran PROFIL — identité School indépendante, progression par
  * style, carte, accès classements, langue FR/EN, déconnexion.
@@ -90,7 +91,7 @@ export default function ProfileScreen() {
         </View>
 
         <View style={styles.body}>
-          <Pressable accessibilityRole="link" style={styles.linkRow} onPress={()=>Linking.openURL('https://justedeboutschoolapp.netlify.app/confidentialite.html')}><Ionicons name="shield-checkmark-outline" size={22} color={Palette.core}/><Text style={styles.linkTitle}>{locale==='fr'?'Confidentialité et mes données':'Privacy and my data'} ↗</Text></Pressable>
+          <Pressable accessibilityRole="link" style={styles.linkRow} onPress={()=>Linking.openURL(schoolWebUrl('/confidentialite.html'))}><Ionicons name="shield-checkmark-outline" size={22} color={Palette.core}/><Text style={styles.linkTitle}>{locale==='fr'?'Confidentialité et mes données':'Privacy and my data'} ↗</Text></Pressable>
           <Pressable accessibilityRole="link" style={styles.linkRow} onPress={()=>Linking.openURL('mailto:contact@juste-debout.com?subject=Demande%20de%20fermeture%20du%20compte%20School')}><Ionicons name="mail-outline" size={22} color={Palette.text}/><View style={{flex:1}}><Text style={styles.linkTitle}>{locale==='fr'?'Demander la fermeture de mon compte':'Request account closure'} ↗</Text><Text style={styles.linkSub}>{locale==='fr'?'Prépare un email à envoyer à l’école. Aucune suppression automatique.':'Prepare an email to send to the school. No automatic deletion.'}</Text></View></Pressable>
           {isAdmin(profile) && <Pressable accessibilityRole="button" style={styles.linkRow} onPress={() => router.push('/admin')}><Ionicons name="shield-checkmark" size={22} color={Palette.core} /><Text style={[styles.linkTitle, { flex: 1 }]}>Administration School</Text><Ionicons name="chevron-forward" size={18} color={Palette.text} /></Pressable>}
           <Pressable accessibilityRole="button" style={styles.linkRow} onPress={()=>router.push('/my-rankings')}><Ionicons name="podium-outline" size={22} color={Palette.industry}/><Text style={styles.linkTitle}>Mes résultats · mon classement personnel</Text></Pressable>

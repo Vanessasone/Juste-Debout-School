@@ -1,5 +1,7 @@
 import {createClient} from '@supabase/supabase-js';
 import {key} from './config.js';
+const appBase=location.pathname==='/app'||location.pathname.startsWith('/app/')?'/app':'';
+const appPath=p=>appBase+p;
 import {downloadReport,score} from './bulletin-pdf.js';
 import coreCatalogue from './core-subject-catalogue.json';
 import coefficientCategories from './subject-coefficient-categories.json';
@@ -24,7 +26,7 @@ async function openReport(id){const r=await checked(sb.from('jds_bulletin_report
 function render(){host.replaceChildren();
  const own=area('Mes bulletins');if(!context.reports.length)own.append(el('p','Tes bulletins apparaîtront ici après publication par la direction.','muted'));
  for(const r of context.reports){const row=el('div',undefined,'report-row');row.append(el('strong',`${r.school_name} · ${r.class_name} · T${r.term} · v${r.version}`),el('p',`Publié le ${new Date(r.published_at).toLocaleDateString('fr-FR')}`),btn('Télécharger le PDF',()=>openReport(r.id)));own.append(row);}
- if(!context.groups.length){const s=area('Accès à la formation');s.append(el('p','Les professeurs accèdent à leurs classes après validation de leur fonction et attribution de leurs matières. Les élèves retrouvent leurs bulletins après validation de leur rattachement.'),Object.assign(el('a','Vérifier mes accès →'),{href:'/school-role.html'}));return;}
+ if(!context.groups.length){const s=area('Accès à la formation');s.append(el('p','Les professeurs accèdent à leurs classes après validation de leur fonction et attribution de leurs matières. Les élèves retrouvent leurs bulletins après validation de leur rattachement.'),Object.assign(el('a','Vérifier mes accès →'),{href:appPath('/school-role.html')}));return;}
  const scope=area('Espace pédagogique');const grid=el('div',undefined,'grid');grid.append(select('Classe',context.groups.map(g=>[g.id,`${g.campus} · ${g.name} · ${g.season}`]),groupId,v=>action(async()=>{groupId=v;term=context.groups.find(g=>g.id===v)?.available_terms?.[0]||1;await load();}))[0],select('Période',(context.groups.find(g=>g.id===groupId)?.available_terms||[1,2,3]).map(t=>[String(t),`Trimestre ${t}`]),String(term),v=>action(async()=>{term=Number(v);await load();}))[0]);scope.append(grid,btn('Actualiser',load));
  if(!data)return;
  if(data.can_manage)renderConfig();
@@ -92,6 +94,6 @@ function renderDirection(){const progress=area('Avancement de la classe');const 
  if(data.can_publish){const [rl,reason]=field(latest?'Motif de correction (obligatoire)':'Note de publication (facultatif)');reason.maxLength=1000;section.append(rl,btn(latest?'Publier une nouvelle version':'Publier le bulletin',async()=>{await rpc('jds_preview_bulletin',{student_member:memberId,target_term:term});if(!window.confirm(`Publier le bulletin de ${data.members.find(m=>m.id===memberId)?.name}, trimestre ${term} ? Cette version sera figée et accessible à l’élève dès que son compte est rattaché.`))return;await rpc('jds_publish_bulletin',{student_member:memberId,target_term:term,expected_version:latest,correction_reason:reason.value});context=await rpc('jds_bulletin_context');await load();},true));}else section.append(el('p','La publication est réservée à la direction de l’école ou à l’administration globale.'));
  if(versions.length){section.append(el('h3','Versions publiées'));for(const r of versions)section.append(btn(`PDF · version ${r.version} · ${new Date(r.published_at).toLocaleDateString('fr-FR')}`,()=>openReport(r.id)));}
 }
-async function init(){try{const {data:{session},error}=await sb.auth.getSession();if(error)throw error;if(!session){host.replaceChildren(el('p','Connecte-toi à ton compte School pour accéder à tes bulletins.'),Object.assign(el('a','Me connecter →','button'),{href:'/login'}));return;}context=await rpc('jds_bulletin_context');groupId=context.groups[0]?.id;term=context.groups[0]?.available_terms?.[0]||1;if(groupId)await load();else render();}catch(e){message(e.message,true);host.replaceChildren(btn('Réessayer',init));}}
+async function init(){try{const {data:{session},error}=await sb.auth.getSession();if(error)throw error;if(!session){host.replaceChildren(el('p','Connecte-toi à ton compte School pour accéder à tes bulletins.'),Object.assign(el('a','Me connecter →','button'),{href:appPath('/login')}));return;}context=await rpc('jds_bulletin_context');groupId=context.groups[0]?.id;term=context.groups[0]?.available_terms?.[0]||1;if(groupId)await load();else render();}catch(e){message(e.message,true);host.replaceChildren(btn('Réessayer',init));}}
 sb.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT'){host.replaceChildren(el('p','Session terminée. Reconnecte-toi pour continuer.'));}});
 init();

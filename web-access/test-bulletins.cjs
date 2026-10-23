@@ -1,8 +1,8 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),{JSDOM}=require('jsdom');
 let source=fs.readFileSync(__dirname+'/bulletins.js','utf8').replace(/^import .*;$/mg,'').replace('export function parseScores','function parseScores');
 const wait=()=>new Promise(r=>setTimeout(r,30));
-async function run({manager=false,publisher=false,own=false,session=true,campus='INDUSTRY'}={}){
- const dom=new JSDOM('<p id="status"></p><div id="bulletins"></div>',{url:'https://school.test/bulletins.html',runScripts:'outside-only'}),w=dom.window,calls=[];
+async function run({manager=false,publisher=false,own=false,session=true,campus='INDUSTRY',base=''}={}){
+ const dom=new JSDOM('<p id="status"></p><div id="bulletins"></div>',{url:'https://school.test'+base+'/bulletins.html',runScripts:'outside-only'}),w=dom.window,calls=[];
  const group={id:'group',campus,name:'P2',season:'2026-2027'};
  const ctx={groups:own?[]:[group],teachers:[{id:'teacher',campus:'INDUSTRY',name:'Prof Test'}],reports:own?[{id:'report',term:1,version:1,published_at:'2026-10-22',school_name:'Industry',class_name:'P2'}]:[]};
  const data={group,can_manage:manager,can_publish:publisher,subjects:[{id:'subject',subject:'Hip-Hop',teacher_profile:'teacher',teacher_name:'Prof Test',cc_coefficient:1,evaluation_coefficient:2}],members:[{id:'member',name:'Élève Test',linked:true}],grades:[],drafts:[],reports:[],archived_subjects:[{id:'archived',subject:'House',teacher_name:'Prof retiré'}]};
@@ -10,7 +10,8 @@ async function run({manager=false,publisher=false,own=false,session=true,campus=
  w.coefficientCategories=JSON.parse(fs.readFileSync(__dirname+'/subject-coefficient-categories.json','utf8'));w.coreCatalogue=JSON.parse(fs.readFileSync(__dirname+'/core-subject-catalogue.json','utf8'));w.eval(source);await wait();return{w,calls,dom};
 }
 (async()=>{
- let t=await run({session:false});assert.match(t.w.document.body.textContent,/Me connecter/);assert.equal(t.calls.length,0);t.dom.window.close();
+ let t=await run({session:false});assert.match(t.w.document.body.textContent,/Me connecter/);assert.equal(t.calls.length,0);assert.equal(t.w.document.querySelector('a').getAttribute('href'),'/login');t.dom.window.close();
+ t=await run({session:false,base:'/app'});assert.equal(t.w.document.querySelector('a').getAttribute('href'),'/app/login');assert.equal(t.calls.length,0);t.dom.window.close();
  t=await run();assert.match(t.w.document.body.textContent,/Mes évaluations/);assert.doesNotMatch(t.w.document.body.textContent,/Configurer les matières|Publier le bulletin|Synthèse ·/);
  const labels=[...t.w.document.querySelectorAll('label')];labels.find(l=>l.textContent.includes('contrôle continu /5')).querySelector('input').value='4 ; 3,5 ; 5';labels.find(l=>l.textContent.includes('évaluation /20')).querySelector('input').value='14 ; 16';labels.find(l=>l.textContent.includes('Appréciation')).querySelector('textarea').value='Bon travail';
  [...t.w.document.querySelectorAll('button')].find(b=>b.textContent==='Transmettre à l’administration').click();await wait();const save=t.calls.find(c=>c[0]==='jds_save_bulletin_grade')[1];assert.deepEqual(Array.from(save.cc),[4,3.5,5]);assert.deepEqual(Array.from(save.evaluations),[14,16]);assert.equal(save.send,true);assert.equal(save.expected_revision,0);t.dom.window.close();

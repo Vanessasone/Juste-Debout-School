@@ -1,3 +1,4 @@
+import {schoolWebUrl} from '@/lib/school-web-links';
 /**
  * Connexion — compte indépendant Juste Debout School.
  * Écran atteint uniquement quand Supabase est configuré. Style immersif sombre.
@@ -51,12 +52,12 @@ export default function LoginScreen() {
     try {
       if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) throw new Error('Renseigne une adresse email valide.');
       if(mode==='confirm'){
-        const {error}=await supabase.auth.resend({type:'signup',email:email.trim(),options:{emailRedirectTo:'https://justedeboutschoolapp.netlify.app/'}});
+        const {error}=await supabase.auth.resend({type:'signup',email:email.trim(),options:{emailRedirectTo:schoolWebUrl('/')}});
         if(error)throw error;
         setInfo('Si cette adresse correspond à une inscription en attente, un nouveau lien de confirmation va être envoyé. Vérifie aussi les courriers indésirables.');return;
       }
       if(mode==='reset') {
-        const {error}=await supabase.auth.resetPasswordForEmail(email.trim(),{redirectTo:'https://justedeboutschoolapp.netlify.app/update-password'});
+        const {error}=await supabase.auth.resetPasswordForEmail(email.trim(),{redirectTo:schoolWebUrl('/update-password')});
         if(error) throw error;
         setInfo('Si un compte correspond à cette adresse, un lien de réinitialisation va être envoyé. Vérifie aussi les courriers indésirables.');return;
       }
@@ -64,7 +65,7 @@ export default function LoginScreen() {
         if(!fullName.trim()) throw new Error('Renseigne ton prénom et ton nom.');
         if(password!==confirmation) throw new Error('Les mots de passe ne correspondent pas.');
         if(password.length<8) throw new Error('Choisis un mot de passe d’au moins 8 caractères.');
-        const { data, error } = await supabase.auth.signUp({ email: email.trim(), password, options: { data:{full_name:fullName.trim()}, emailRedirectTo: 'https://justedeboutschoolapp.netlify.app/' } });
+        const { data, error } = await supabase.auth.signUp({ email: email.trim(), password, options: { data:{full_name:fullName.trim()}, emailRedirectTo: schoolWebUrl('/') } });
         if (error) throw error;
         // Confirmation d'email activée → pas de session : on informe au lieu de renvoyer sans rien.
         if (!data.session) {
@@ -114,8 +115,8 @@ export default function LoginScreen() {
           )}
           {error && <Text accessibilityRole="alert" style={styles.error}>{error}</Text>}
           <Text style={styles.help}>Ton email et ton identité servent à gérer ton compte School. Les champs complémentaires du profil sont facultatifs. La création du compte ne t’abonne pas à une newsletter commerciale.</Text>
-          <Pressable accessibilityRole="link" onPress={()=>Linking.openURL('https://justedeboutschoolapp.netlify.app/confidentialite.html')}><Text style={styles.swap}>Confidentialité et droits sur mes données ↗</Text></Pressable>
-          <Pressable accessibilityRole="link" onPress={()=>Linking.openURL('https://justedeboutschoolapp.netlify.app/mentions-legales.html')}><Text style={styles.swap}>Mentions légales ↗</Text></Pressable>
+          <Pressable accessibilityRole="link" onPress={()=>Linking.openURL(schoolWebUrl('/confidentialite.html'))}><Text style={styles.swap}>Confidentialité et droits sur mes données ↗</Text></Pressable>
+          <Pressable accessibilityRole="link" onPress={()=>Linking.openURL(schoolWebUrl('/mentions-legales.html'))}><Text style={styles.swap}>Mentions légales ↗</Text></Pressable>
           {info && <Text accessibilityRole="alert" style={styles.info}>{info}</Text>}
 
           {busy ? (

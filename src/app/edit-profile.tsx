@@ -1,3 +1,4 @@
+import {schoolWebUrl} from '@/lib/school-web-links';
 /**
  * Éditer le profil indépendant Juste Debout School.
  */
@@ -134,7 +135,7 @@ export default function EditProfile() {
       ) : loadError ? (<View style={{padding:24,gap:20}}><Text accessibilityRole="alert" style={{color:Palette.text}}>Impossible de charger ton profil. Réessaie avant de le modifier.</Text><Pressable accessibilityRole="button" onPress={()=>setRetry(v=>v+1)}><Text style={{color:accent,fontWeight:'800'}}>Réessayer</Text></Pressable></View>) : (
         <ScrollView contentContainerStyle={{ padding: Space.lg, paddingBottom: Space.xxxl }}>
           <Text style={{color:Palette.textMute,fontSize:13,lineHeight:20,marginBottom:12}}>Les informations de présentation sont facultatives. Elles servent à ton espace School et ne sont pas automatiquement publiées sur le site vitrine.</Text>
-          <Pressable accessibilityRole="link" onPress={()=>Linking.openURL('https://justedeboutschoolapp.netlify.app/confidentialite.html')}><Text style={{color:accent,fontSize:13,marginBottom:20}}>Confidentialité et droits sur mes données ↗</Text></Pressable>
+          <Pressable accessibilityRole="link" onPress={()=>Linking.openURL(schoolWebUrl('/confidentialite.html'))}><Text style={{color:accent,fontSize:13,marginBottom:20}}>Confidentialité et droits sur mes données ↗</Text></Pressable>
           <View style={styles.shared}>
             <Ionicons name="shield-checkmark-outline" size={14} color={Palette.textDim} />
             <Text style={styles.sharedText}>{t('ep.shared')}</Text>
