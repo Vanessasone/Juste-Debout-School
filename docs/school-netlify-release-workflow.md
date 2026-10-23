@@ -56,3 +56,13 @@ Publication complète 6adb3b5dc395842caea02379 (379 fichiers, 9 règles de redir
 Prévisualisation contrôlée avant publication : créneau libre Salle 1 à 10 h le 1er novembre, réservation fusionnée bloquée à 12 h, Salle 2 bloquée à 16 h, absence de disponibilité en décembre, liens sociaux et lien Louer un studio, vidéo native toujours chargée et muette. Contrôle du domaine officiel : calendrier chargé avec les données réelles et pied de page Instagram visible. Le cockpit sans session redirige vers `/app/login` après le parcours d’accueil. La lecture du cockpit a été vérifiée avec le rôle SQL authenticated et le contexte de Nicolas ; aucun login réel de direction n’a été simulé dans le navigateur.
 
 Auto-publication rétablie après la publication. Les tests de l’interface utilisent des données fictives ; aucune modification de droits, compte, évaluation, justificatif ou décision d’absence n’a été effectuée. Stripe School reste à connecter. La capture `docs/assets/school-instagram-live.jpg` montre le pied de page en production. Le récapitulatif quotidien existant de Nicolas conserve son horaire de 9 h et utilise maintenant le domaine officiel et l’entrée du cockpit.
+
+## Photos des studios — 23 octobre 2026
+
+Ajout des trois photographies fournies par Vanessa via SwissTransfer (IMG_8535, IMG_8536, IMG_8537). Elles montrent des studios mais aucune correspondance campus/numéro de salle n'est confirmée : la galerie reste commune à la School et ne prétend pas identifier une salle à réserver.
+
+Les JPEG originaux de 640 × 480 sont conservés sans recompression ni agrandissement : 154 553 octets au total. Dimensions explicites, chargement différé et décodage asynchrone ; trois colonnes sur grand écran, une sur mobile. Les images restent entièrement visibles, sans recadrage. Un lien permet d'ouvrir chaque photo dans sa taille originale. Aucun GPS dans les métadonnées source.
+
+Reproduction : `python scripts/package-school-studio-photos.py ARCHIVE_PRODUCTION_COMPLETE.zip SORTIE.zip`. La base utilisée est le déploiement complet 6adb3b5dc395842caea02379. Seul index.html change parmi les fichiers existants ; ajout du bundle public, du CSS et des trois images. Tous les fichiers /app, le cockpit, le calendrier et Instagram restent identiques.
+
+Publication 6adb3fc9b5cd408f9ab01b1b : 384 fichiers, six fichiers nouveaux/modifiés. Vérification syntaxique du bundle et comparaison de l'archive réussies ; les trois images sont chargées en production avec naturalWidth=640 et naturalHeight=480. La navigation Les studios ouvre la nouvelle galerie. Capture : `docs/assets/school-studio-photos-live.jpg`.
