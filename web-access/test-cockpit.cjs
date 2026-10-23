@@ -23,9 +23,13 @@ const mocks={
  const root=createRoot(document.getElementById('root'));await act(async()=>{root.render(React.createElement(Screen));});
  assert.match(document.body.textContent,/Bonjour Direction test/);assert.equal(calls.length,1);assert.doesNotMatch(document.body.textContent,/Ranking professeurs · confidentiel/);
  assert.match(document.body.textContent,/Demandes d’accès à valider/);assert.doesNotMatch(document.body.textContent,/Documents et annonces en brouillon/);
- const click=async text=>act(async()=>{[...document.querySelectorAll('button')].find(b=>b.textContent===text).click();});
+ const click=async text=>act(async()=>{[...document.querySelectorAll('button')].find(b=>b.textContent===text||b.textContent.startsWith(text)).click();});
  await click('Brouillons et prévisions');assert.match(document.body.textContent,/Documents et annonces en brouillon/);assert.match(document.body.textContent,/ne sont pas des validations en retard/);
  await click('INDUSTRY');assert.equal(calls.at(-1)[0],'INDUSTRY');
+ assert.doesNotMatch(document.body.textContent,/Finances des formations ↗|Formations et inscriptions ↗/);
+ data.can_finance=true;await act(async()=>root.render(React.createElement(Screen)));
+ assert.match(document.body.textContent,/Formations et inscriptions ↗/);assert.match(document.body.textContent,/Finances des formations ↗/);
+ await click('Formations et inscriptions ↗');assert.equal(routes.at(-1),'https://school.test/app/enrollments.html');
  await act(async()=>root.unmount());loggedIn=false;const signedOut=createRoot(document.getElementById('root'));await act(async()=>signedOut.render(React.createElement(Screen)));
  assert.match(document.body.textContent,/Connexion School requise/);assert.doesNotMatch(document.body.textContent,/Direction test/);await click('Me connecter');assert.equal(routes.at(-1),'/login');
  await act(async()=>signedOut.unmount());dom.window.close();console.log('PASS: authenticated cockpit data, campus refresh, separate drafts, restricted teacher-ranking module, signed-out login gate.');

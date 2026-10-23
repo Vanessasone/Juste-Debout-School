@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "build": "esbuild access.js --bundle --platform=browser --minify --outfile=../public/assets/school-access.js && esbuild bulletins.js --bundle --platform=browser --minify --outfile=../public/assets/bulletins.js",
-    "test": "node test-ui.cjs && node test-team-ui.cjs && node test-bulletins.cjs && node test-rental-public.cjs && node test-cockpit.cjs && node test-school-life-gallery.cjs && node test-rental-accounts.cjs",
+    "test": "node test-ui.cjs && node test-team-ui.cjs && node test-bulletins.cjs && node test-rental-public.cjs && node test-cockpit.cjs && node test-school-life-gallery.cjs && node test-rental-accounts.cjs && node test-tuition.cjs && node test-enrollment.cjs && node test-rental-edit.cjs",
     "build:rental": "esbuild rental-public.js --bundle --platform=browser --minify --outfile=../website/assets/rental-public.js",
-    "build:accounts": "esbuild rental-accounts.js --bundle --platform=browser --minify --outfile=../website/assets/rental-accounts.js"
+    "build:accounts": "esbuild rental-accounts.js --bundle --platform=browser --minify --outfile=../website/assets/rental-accounts.js",
+    "build:tuition": "esbuild tuition.js --bundle --platform=browser --minify --outfile=../website/assets/tuition.js && esbuild enrollments.js --bundle --platform=browser --minify --outfile=../website/assets/enrollments.js && esbuild enrollment.js --bundle --platform=browser --minify --outfile=../website/assets/enrollment.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.110.1",

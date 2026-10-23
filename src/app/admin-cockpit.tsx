@@ -52,6 +52,7 @@ export default function SchoolCockpit(){
     {title:'Documents et annonces',sub:'Préparer et publier pour chaque promotion',path:'/admin-training?tab=posts'},
     ...(data.campuses.includes('CORE')?[{title:'Salles et locations CORE',sub:'Planning de novembre, occupations et réservations annuelles',path:'/admin-rentals'},{title:'Locations et règlements',sub:'Dossiers, factures Qonto, encaissements vérifiés et soldes',path:'/rental-accounts.html'}]:[]),
     ...(data.central?[{title:'Planning des cours open',sub:'Cours ponctuels et récurrents',path:'/admin-planning'},{title:'Communication',sub:'Notifications et messages School',path:'/admin-notif'},{title:'Droits et responsables',sub:'Comptes et périmètres de gestion',path:'/admin-responsibilities'}]:[]),
+    ...(data.can_finance?[{title:'Formations et inscriptions',sub:'Modalités, pièces demandées, liens individuels et validation des dossiers',path:'/enrollments.html'},{title:'Finances des formations',sub:'Tarifs, bourses, subventions, échéanciers et règlements',path:'/tuition.html'}]:[]),
     ...(data.can_teacher_ranking?[{title:'Ranking professeurs · confidentiel',sub:'Réservé aux quatre directeurs autorisés',path:'/teacher-ranking'}]:[]),
     {title:'Tous les outils',sub:'Retrouver les autres fonctions d’administration',path:'/admin-tools'}
    ].map(m=><Pressable key={m.title} accessibilityRole="button" style={s.module} onPress={()=>open(m.path)}><Text style={s.actionTitle}>{m.title} ↗</Text><Text style={s.text}>{m.sub}</Text></Pressable>)}</View>

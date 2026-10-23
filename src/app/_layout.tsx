@@ -11,6 +11,8 @@ import { I18nProvider } from '@/lib/i18n';
 import { OnboardingProvider, useOnboarding } from '@/lib/onboarding';
 import { registerForPush } from '@/lib/push';
 import {getSchoolAccess} from '@/lib/school-access';
+import {schoolWebUrl} from '@/lib/school-web-links';
+import {Platform} from 'react-native';
 
 function RootNavigator() {
   const { session, initializing, configured } = useAuth();
@@ -23,6 +25,12 @@ function RootNavigator() {
   useEffect(() => {
     if (initializing || !ready) return;
     if(segments[0]==='update-password') return;
+    if(session&&Platform.OS==='web'){
+      try{if(window.sessionStorage.getItem('jds_enrollment_return')==='1'){
+        window.sessionStorage.removeItem('jds_enrollment_return');
+        window.location.assign(schoolWebUrl('/enrollment.html'));return;
+      }}catch{}
+    }
     const inOnboarding = segments[0] === 'onboarding';
 
     // 1) Premier lancement → onboarding
