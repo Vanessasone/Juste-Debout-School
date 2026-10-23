@@ -2,6 +2,8 @@ import {createClient} from '@supabase/supabase-js';
 import {key} from './config.js';
 import {downloadReport,score} from './bulletin-pdf.js';
 import coreCatalogue from './core-subject-catalogue.json';
+import coefficientCategories from './subject-coefficient-categories.json';
+const inferredCategory=title=>coefficientCategories[title.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]/g,'')]||'';
 const sb=createClient('https://zmzunjphubbdumowcurk.supabase.co',key,{auth:{storageKey:'jds-school-auth-v1',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
 const host=document.getElementById('bulletins'),status=document.getElementById('status');
 let context,data,groupId,term=1,memberId,subjectId,busy=false,loadedTerm=1;
@@ -30,7 +32,7 @@ function render(){host.replaceChildren();
  if(!data.members.length){scope.append(el('p','Aucun élève rattaché à cette classe.'));return;}
  renderGrades();if(data.can_manage)renderDirection();
 }
-function renderConfig(){const details=el('details');details.append(el('summary',`Configurer les matières · ${data.subjects.length} matière(s)`),el('p','Choisis un professeur validé pour cette école et les coefficients du modèle. Laisser un coefficient vide bloque la publication. Un coefficient 0 exclut cette composante.','muted'));host.append(details);
+function renderConfig(){const details=el('details');details.append(el('summary',`Configurer les matières · ${data.subjects.length} matière(s)`),el('p','Barème CORE et INDUSTRY : Street dance 4, autres danses 2, théorie 1. Avec 0, 1 ou 2 cours réellement dispensés dans le trimestre : coefficient 0, hors moyennes et classement des notes. La catégorie et le nombre de cours sont confirmés par l’administration ; les professeurs saisissent leurs évaluations.','muted'));host.append(details);
  const subjectLabel=s=>`${s.subject}${s.teacher_name?' · '+s.teacher_name:''}`;
  const options=[['','Nouvelle matière'],...data.subjects.map(s=>[s.id,subjectLabel(s)])];const [sl,choice]=select('Matière à configurer',options,'',()=>draw());details.append(sl);const form=el('div');details.append(form);
  function draw(){form.replaceChildren();const s=data.subjects.find(s=>s.id===choice.value)||{};
@@ -38,15 +40,19 @@ function renderConfig(){const details=el('details');details.append(el('summary',
  const teachers=context.teachers.filter(t=>t.campus===data.group.campus);
  const [pl,teacher]=select('Professeur validé',[['','À attribuer'],...teachers.map(t=>[t.id,t.name])],s.teacher_profile,()=>{label.value=teachers.find(t=>t.id===teacher.value)?.name||'';});
  const [nl,label]=field('Nom affiché sur le bulletin',s.teacher_name);label.maxLength=150;
- const [cl,cc]=field('Coefficient contrôle continu',s.cc_coefficient,'number'),[vl,ev]=field('Coefficient évaluation',s.evaluation_coefficient,'number'),[ol,order]=field('Ordre d’affichage',s.sort_order??0,'number');cc.step=ev.step='any';
+ const [kl,category]=select('Catégorie du cours',[['','À classer'],['street','Street dance · coefficient 4'],['dance','Autre danse · coefficient 2'],['theory','Cours théorique · coefficient 1']],s.coefficient_category??inferredCategory(s.subject||''),()=>previewWeight());
+ const [ql,count]=field('Cours réellement dispensés ce trimestre',s.taught_course_count,'number');count.min='0';count.max='10000';count.step='1';count.placeholder='À vérifier';
+ const [ol,order]=field('Ordre d’affichage',s.sort_order??0,'number'),weight=el('p',undefined,'muted');
+ function previewWeight(){const n=count.value.trim()===''?null:Number(count.value);const base={street:4,dance:2,theory:1}[category.value];weight.textContent=n!==null&&Number.isInteger(n)&&n>=0&&n<=2?'Coefficient 0 en CC et évaluation · hors moyennes et classement des notes (moins de 3 cours).':`Coefficient CC et évaluation : ${base??'à classer'}${n===null?' · nombre de cours à vérifier avant publication':''}.`;}
+ count.oninput=previewWeight;title.onchange=()=>{category.value=inferredCategory(title.value);count.value='';previewWeight();};previewWeight();
  if(data.group.campus==='CORE'&&!s.id){
  const [catalogueLabel]=select('Reprendre une matière du catalogue CORE',[['','Saisie libre'],...coreCatalogue.map((entry,index)=>[String(index),`${entry.subject}${entry.teacher?' · '+entry.teacher:''}`])],'',value=>{
  if(value==='')return;
- const entry=coreCatalogue[Number(value)];title.value=entry.subject;label.value=entry.teacher;teacher.value='';
+ const entry=coreCatalogue[Number(value)];title.value=entry.subject;label.value=entry.teacher;teacher.value='';category.value=inferredCategory(entry.subject);count.value='';previewWeight();
  });
- form.append(catalogueLabel,el('p','Catalogue du modèle CORE. Sélectionne uniquement les enseignements de cette classe et de ce trimestre, puis attribue le compte professeur validé et les coefficients.','muted'));
+ form.append(catalogueLabel,el('p','Catalogue du modèle CORE. Sélectionne uniquement les enseignements de cette classe et de ce trimestre, puis attribue le compte professeur validé et vérifie la catégorie et le nombre de cours.','muted'));
  }
- form.append(tl,pl,nl,cl,vl,ol,btn('Enregistrer la matière',async()=>{await rpc('jds_save_bulletin_subject',{target_group:groupId,target_term:term,title:title.value,teacher:teacher.value||null,teacher_label:label.value,cc_weight:number(cc),eval_weight:number(ev),sort_position:number(order)??0,subject_key:s.id||null});await load();},true));
+ form.append(tl,pl,nl,kl,ql,weight,el('p','Compte les cours de cette matière et de cet intervenant effectivement dispensés à la classe pendant ce trimestre, pas les notes ni les présences individuelles. Les cours annulés ou seulement prévus ne comptent pas. Laisse vide si le total est inconnu ; cela bloque la publication, sans le transformer en zéro.','muted'),ol,btn('Enregistrer la matière',async()=>{const taught=number(count);if(taught!==null&&(!Number.isInteger(taught)||taught>10000))throw Error('Le nombre de cours doit être un entier entre 0 et 10000.');await rpc('jds_save_bulletin_subject_policy',{target_group:groupId,target_term:term,title:title.value,teacher:teacher.value||null,teacher_label:label.value,category:category.value||null,taught_courses:taught,sort_position:number(order)??0,subject_key:s.id||null});await load();},true));
  if(s.id)form.append(btn('Retirer de ce trimestre',async()=>{
  if(!window.confirm(`Retirer ${subjectLabel(s)} de ce trimestre ? Ses évaluations seront conservées. Les bulletins déjà publiés resteront inchangés.`))return;
  await rpc('jds_set_bulletin_subject_active',{subject_key:s.id,enabled:false});await load();
@@ -60,6 +66,7 @@ function renderConfig(){const details=el('details');details.append(el('summary',
 function renderGrades(){const section=area(data.can_manage?'Suivi et saisie des évaluations':'Mes évaluations');
  const grid=el('div',undefined,'grid');grid.append(select('Élève',data.members.map(m=>[m.id,m.name]),memberId,v=>{memberId=v;render();})[0],select('Matière',data.subjects.map(s=>[s.id,`${s.subject}${s.teacher_name?' · '+s.teacher_name:''}`]),subjectId,v=>{subjectId=v;render();})[0]);section.append(grid);
  const g=data.grades.find(g=>g.member_id===memberId&&g.subject_id===subjectId)||{},s=data.subjects.find(s=>s.id===subjectId);
+ section.append(el('p',s.taught_course_count==null?'Nombre de cours du trimestre à vérifier par l’administration.':s.taught_course_count<=2?`${s.taught_course_count} cours dispensé(s) · coefficient 0, hors moyennes et classement des notes.`:`${s.taught_course_count} cours dispensés · coefficient CC ${s.cc_coefficient??'à classer'} · évaluation ${s.evaluation_coefficient??'à classer'}.`,'muted'));
  section.append(el('p',`${s.teacher_name||'Professeur à attribuer'} · ${g.submitted?'Évaluation transmise':'Brouillon'}`,'muted'));
  if(g.submitted&&!data.can_manage){section.append(el('p',`Contrôle continu /5 : ${g.cc_exempt?'Non évalué':(g.cc_scores||[]).join(' ; ')} · Évaluation /20 : ${g.evaluation_exempt?'Non évaluée':(g.evaluation_scores||[]).join(' ; ')}`),el('p',g.appreciation),el('p','Évaluation transmise à l’administration. Pour corriger, demande une réouverture.'));return;}
  const [cl,cc]=field('Notes de contrôle continu /5 · séparées par ;',(g.cc_scores||[]).join(' ; '));cc.placeholder='Exemple : 4 ; 3,5 ; 5';
@@ -71,7 +78,7 @@ function renderGrades(){const section=area(data.can_manage?'Suivi et saisie des 
  async function save(send){await rpc('jds_save_bulletin_grade',{subject_key:subjectId,student_member:memberId,cc:ce.checked?[]:parseScores(cc.value,5),evaluations:ee.checked?[]:parseScores(ev.value,20),no_cc:ce.checked,no_evaluations:ee.checked,comment:app.value,send,expected_revision:g.revision||0});await load();}
  section.append(btn(g.submitted?'Enregistrer et rouvrir le brouillon':'Enregistrer le brouillon',()=>save(false)),btn('Transmettre à l’administration',()=>save(true),true));
 }
-function renderDirection(){const progress=area('Avancement de la classe');const wrap=el('div',undefined,'table-wrap'),table=el('table'),head=el('thead'),tr=el('tr');['Élève','Évaluations transmises','Compte lié'].forEach(v=>tr.append(el('th',v)));head.append(tr);table.append(head);const body=el('tbody');for(const m of data.members){const tr=el('tr');[m.name,`${data.grades.filter(g=>g.member_id===m.id&&g.submitted).length} / ${data.subjects.length}`,m.linked?'Oui':'À rattacher'].forEach(v=>tr.append(el('td',v)));body.append(tr);}table.append(body);wrap.append(table);progress.append(wrap);
+function renderDirection(){const progress=area('Avancement de la classe');const wrap=el('div',undefined,'table-wrap'),table=el('table'),head=el('thead'),tr=el('tr');['Élève','Évaluations transmises','Compte lié'].forEach(v=>tr.append(el('th',v)));head.append(tr);table.append(head);const body=el('tbody');for(const m of data.members){const tr=el('tr');[m.name,`${data.grades.filter(g=>g.member_id===m.id&&g.submitted&&data.subjects.some(s=>s.id===g.subject_id&&(s.taught_course_count==null||s.taught_course_count>=3))).length} / ${data.subjects.filter(s=>s.taught_course_count==null||s.taught_course_count>=3).length}`,m.linked?'Oui':'À rattacher'].forEach(v=>tr.append(el('td',v)));body.append(tr);}table.append(body);wrap.append(table);progress.append(wrap);
  const section=area(`Synthèse · ${data.members.find(m=>m.id===memberId)?.name}`),d=data.drafts.find(d=>d.member_id===memberId)||{};
  const [sl,summary]=field('Synthèse de la direction',d.summary,'textarea');summary.maxLength=5000;
  const [jl,j]=field('Nombre d’absences justifiées',d.justified_absences,'number'),[ul,u]=field('Nombre d’absences non justifiées',d.unjustified_absences,'number');j.min=u.min='0';j.step=u.step='1';const grid=el('div',undefined,'grid');grid.append(jl,ul);

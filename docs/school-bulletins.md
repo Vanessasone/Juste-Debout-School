@@ -51,3 +51,24 @@ Plusieurs professeurs peuvent désormais avoir la même discipline avec des éva
 Retirer de ce trimestre désactive la ligne : exclusion des prochains calculs, contrôles de publication et accès de saisie. Les notes sont conservées, les versions déjà publiées ne changent pas. Réintégrer restaure les évaluations. Les deux opérations sont contrôlées côté serveur par école et journalisées. L’ajout libre reste disponible.
 Tests : suite SQL transactionnelle sous identités et rôles authentifiés (retrait, restauration, notes conservées, anciens PDF immuables, permissions, calculs), répétition du préremplissage sans doublons, tests DOM ajout/retrait/restauration, construction web.
 Appliquer schema-bulletin-management.sql après schema-bulletins.sql, puis seed-all-bulletin-teachers.sql. Le schéma et le préremplissage ont été appliqués au seul projet School.
+
+
+## Barème confirmé — 23 octobre 2026
+
+Appliquer `supabase/schema-bulletin-coefficient-policy.sql` après le module de gestion. Migration appliquée au projet School dédié uniquement.
+
+- Street dance (Hip-hop et variantes, Popping, Locking, House, Break/B.boying) : coefficient 4.
+- Autres styles de danse : coefficient 2.
+- Théorie (Anatomie, Histoire de la musique, etc.) : coefficient 1.
+- 0, 1 ou 2 cours effectivement dispensés par matière/intervenant à la classe dans le trimestre : coefficient 0, exclusion des moyennes et du classement des notes. Le nombre concerne les cours dispensés à la classe, jamais les présences d’un élève ou le nombre de notes.
+- CC et évaluation utilisent le même barème ; les notes CC restent converties de /5 en /20.
+
+L’administration confirme la catégorie et le nombre de cours pour chaque ligne/trimestre dans Configurer les matières. Le poids est calculé côté serveur, y compris pour les anciens clients : aucune saisie libre de coefficient ne contourne la règle. Les professeurs ne peuvent modifier ni catégorie ni nombre de cours.
+
+Les nombres de cours sont initialement inconnus : aucun total n’est déduit d’un planning incomplet. Une valeur inconnue ne devient jamais 0 ; elle bloque la publication et exclut provisoirement la ligne du classement. Les modules non identifiables sans décision pédagogique (chant, beatmaking, coaching, projets, etc.) gardent la catégorie « À classer ».
+
+Une ligne avec moins de 3 cours apparaît sur le bulletin avec coefficient 0 et la mention du nombre de cours ; elle ne bloque pas la publication faute d’évaluation ou de compte professeur. À partir du troisième cours, la pondération et les contrôles d’évaluation reprennent. Les bulletins déjà publiés ne sont pas réécrits.
+
+Les tests SQL `supabase/tests/bulletin_coefficient_policy.sql` doivent être exécutés dans BEGIN/ROLLBACK. Ils vérifient 4/2/1/0, les vrais zéros, le seuil 2→3, le classement pondéré, le refus de modification par un professeur, l’impossibilité de contourner la règle depuis l’ancien endpoint et les snapshots immuables. Tests réussis avant et après migration. Tests DOM des catégories et totaux, nombres entiers et droits d’affichage réussis.
+
+Interface construite dans `public/assets/bulletins.js` et `app-release/assets/bulletins.js`. Publication Netlify distincte : le push GitHub ne déploie pas l’application. Le 23 octobre, la session Netlify de ce navigateur nécessite une connexion avant de récupérer le dernier export complet et de publier ce bundle. Ne pas uploader app-release seul.
