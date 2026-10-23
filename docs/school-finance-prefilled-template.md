@@ -1,0 +1,9 @@
+# Prefilled financial intake template
+
+The protected finance importer now generates a CSV in the authenticated director's browser for the selected promotion. It uses the live authorized roster, includes known student names and emails, and leaves all monetary, payment, payer and date fields blank. It excludes any member with an existing tuition account, including cancelled accounts, because the importer deliberately never overwrites existing accounts. No private roster is bundled or published as a static download.
+
+CSV uses UTF-8 BOM, semicolon delimiters, quoted/escaped cells and CRLF for French Excel/LibreOffice. Exported identity strings that could start spreadsheet formulas are prefixed with an apostrophe. All headers map automatically to the existing importer. Missing emails stay blank; the existing unambiguous name match or explicit selection applies during reimport. No validation checkbox is preselected by the export or the import. One row per student, at most one installment and receipt per row; additional entries belong in the financial dossier. Importing an arbitrary existing CSV/XLSX remains available.
+
+This is an application export feature, not a static spreadsheet deliverable. Source and tests use synthetic data only. test-finance-template.cjs verifies selected-group scope, exclusion of existing dossiers, blank financial cells, safe formula escaping, complete header mapping and identity round-trip. test-import.cjs checks the authorized download action creates a CSV without saving an account, in addition to its existing review/edit/logout tests. Both pass.
+
+Packaging: scripts/package-school-finance-template.py overlays only the import bundle and its HTML cache key on the full live archive. Base production is 6adbaff6302ae37f62a420b2 (school-tasks-production.zip). Galaxy, task workspace, media and redirects remain byte-identical.

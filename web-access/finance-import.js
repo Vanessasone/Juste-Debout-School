@@ -2,6 +2,7 @@ import {createClient} from '@supabase/supabase-js';
 import {key} from './config.js';
 import {fields,detectMapping,proposals,buildDraft,matchedMember,MAX_ROWS} from './import-core.js';
 import {euro} from './tuition-core.js';
+import {financialTemplate} from './finance-template.js';
 const sb=createClient('https://zmzunjphubbdumowcurk.supabase.co',key,{auth:{storageKey:'jds-school-auth-v1',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
 const host=document.getElementById('importer'),message=document.getElementById('message');
 let authorized=false,epoch=0,data=null,group='',analysis=null,sheet=0,header=0,mapping={},items=[],source='',busy=false,worker=null,timer=null,abortRead=null;
@@ -15,6 +16,13 @@ function check(box,label,value,change){const l=el('label',undefined,'check'),i=e
 async function checked(p){const r=await p;if(r.error)throw Error(r.error.message);return r.data;}
 async function loadData(){const [finance,enrollment]=await Promise.all([checked(sb.rpc('jds_tuition_data')),checked(sb.rpc('jds_enrollment_workspace'))]);return {...finance,roster:finance.roster.map(m=>({...m,email:enrollment.roster.find(e=>e.member_id===m.member_id)?.email||''}))};}
 function roster(){return data.roster.filter(m=>m.group_id===group);}
+function downloadTemplate(){
+ if(!authorized||busy||!group)return;
+ const result=financialTemplate(data.roster,data.accounts,group);
+ if(!result.count){status('Tous les élèves de cette promotion ont déjà un dossier financier. Complète-les dans les finances.');return;}
+ const url=URL.createObjectURL(new Blob([result.csv],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download=result.filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+ status(result.count+' élève(s) dans le tableau prérempli. '+result.excluded+' dossier(s) financier(s) existant(s) exclus. Complète les montants réels puis réimporte le CSV pour vérification.');
+}
 function cancelWorker(){if(worker){worker.terminate();worker=null;}clearTimeout(timer);timer=null;if(abortRead){const reject=abortRead;abortRead=null;reject(Error('Lecture annulée.'));}}
 function clear(){epoch++;cancelWorker();authorized=false;data=null;analysis=null;items=[];mapping={};source='';busy=false;host.replaceChildren(link('Me connecter','/app/login'));status('Connexion School requise.');}
 function invalidate(p){p.selected=false;p.terms=false;p.receiptVerified=false;p.fundingConfirmed=false;p.scheduleConfirmed=false;p.error='';}
@@ -50,6 +58,7 @@ function render(){if(!authorized||!data)return;host.replaceChildren();const intr
  host.append(intro);const groups=data.groups?.map(g=>[g.group_id,g.campus+' · '+g.promotion+' · '+g.season])||[...new Map(data.roster.map(m=>[m.group_id,[m.group_id,m.campus+' · '+m.promotion+' · '+m.season]])).values()];
  select(host,'Formation / promotion',[[ '', 'Choisir une formation' ],...groups],group,v=>{group=v;analysis=null;items=[];mapping={};source='';render();});
  if(!group){host.append(el('p','Choisis la promotion concernée pour rapprocher les personnes du bon groupe.'));return;}
+ const template=el('section',undefined,'card');const ready=financialTemplate(data.roster,data.accounts,group);template.append(el('h2','Un tableau déjà préparé pour cette promotion'),el('p',ready.count+' élève(s) avec leur nom et leur email connus. Complète uniquement les informations financières réelles. Les champs inconnus restent vides. '+ready.excluded+' dossier(s) déjà existant(s) à compléter directement dans les finances.'),button('Télécharger le tableau prérempli (CSV)',downloadTemplate),el('p','Ouvre ce CSV dans Excel ou LibreOffice. Enregistre-le en CSV ou XLSX, puis charge-le ci-dessous. Une ligne par élève, une échéance et un règlement au maximum par ligne ; complète les autres dans le dossier financier. Les adresses manquantes restent à renseigner dans l’annuaire.','muted'));host.append(template);
  const start=el('section',undefined,'card');start.append(el('h2','Comment veux-tu commencer ?'));const file=input(start,'Fichier à analyser','','', 'file');file.oninput=null;file.accept='.xlsx,.csv,.tsv,.pdf,.txt';file.onchange=()=>{if(file.files?.[0])void read(file.files[0]);};start.append(el('p','Excel XLSX, CSV/TSV, PDF avec texte ou TXT. 5 Mo, 300 lignes ou 30 pages maximum. Les scans et photos nécessitent une transcription.','muted'),button('Saisir un dossier à la main',manual),link('Modifier les modalités et les pièces demandées','/app/enrollments.html?group='+encodeURIComponent(group)));host.append(start);
  if(analysis?.type==='table'){
   const box=el('section',undefined,'card');box.append(el('h2','Associer les colonnes'));select(box,'Feuille',analysis.sheets.map((s,i)=>[String(i),s.name]),String(sheet),v=>{sheet=Number(v);header=0;mapping={};items=[];render();});const rows=analysis.sheets[sheet].rows;
