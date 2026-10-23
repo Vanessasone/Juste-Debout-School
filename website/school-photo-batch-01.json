@@ -1,0 +1,134 @@
+{
+  "studio_campus": "CORE",
+  "photos": [
+    {
+      "source": "5fa07567-f641-4d4b-8ba5-20a281850090.jpeg",
+      "source_sha256": "2da7db42224de1b719df8c97081e47b96864ac0eafc512f1b73c4111b4b42f3c",
+      "slug": "transmission",
+      "role": "formation",
+      "caption": {
+        "fr": "La transmission",
+        "en": "Passing it on"
+      },
+      "alt": {
+        "fr": "Un professeur guide un groupe pendant un cours de danse",
+        "en": "A teacher guides a group during a dance class"
+      }
+    },
+    {
+      "source": "1244cee3-0397-4957-9788-e69141db3615.jpeg",
+      "source_sha256": "646fd87d401be6eb0879cfce67d95a19b8fa619baba2f56f7f026ec6db07f533",
+      "slug": "cours-core",
+      "role": "campus",
+      "caption": {
+        "fr": "Le cours en partage",
+        "en": "Learning together"
+      },
+      "alt": {
+        "fr": "Un professeur échange avec les élèves dans le studio",
+        "en": "A teacher works with students in the studio"
+      }
+    },
+    {
+      "source": "b353b2fe-2cb4-493d-bce9-1086714e26da.jpeg",
+      "source_sha256": "7c8af5ecc0561d70521007953ec5e101de92937655a9a7c07493663a781736ba",
+      "slug": "mouvement",
+      "role": "schedule",
+      "caption": {
+        "fr": "En mouvement",
+        "en": "In motion"
+      },
+      "alt": {
+        "fr": "Un groupe répète une chorégraphie dans le studio",
+        "en": "A group rehearses choreography in the studio"
+      }
+    },
+    {
+      "source": "55b91366-93d9-4277-8fad-8a358b5ceb8e.jpeg",
+      "source_sha256": "0634ff1396770c70a798f68e30408b8c95c933f62ab7dbb721ec73b5eeed64b8",
+      "slug": "en-studio",
+      "role": "gallery",
+      "caption": {
+        "fr": "En studio",
+        "en": "In the studio"
+      },
+      "alt": {
+        "fr": "Des élèves dansent ensemble devant les miroirs",
+        "en": "Students dance together in front of the mirrors"
+      }
+    },
+    {
+      "source": "33d15685-ceb5-4ad6-a785-6aaf5e42eba7.jpeg",
+      "source_sha256": "96809cae55ae11afd93b1769336c71b35810252a2f2ec6354b13dbda17494e66",
+      "slug": "precision",
+      "role": "gallery",
+      "caption": {
+        "fr": "La précision du geste",
+        "en": "Every detail matters"
+      },
+      "alt": {
+        "fr": "Un groupe suit les indications pendant un cours, photographie en noir et blanc",
+        "en": "A group follows instructions during class, black and white photograph"
+      }
+    },
+    {
+      "source": "42a63030-3489-407f-a118-bec55a6543b3.jpeg",
+      "source_sha256": "474c686f4ae8933e2dd6b108b4ddc24624be77f1bec7cffcab577a0dff6417da",
+      "slug": "cercle",
+      "role": "gallery",
+      "caption": {
+        "fr": "Le cercle",
+        "en": "The circle"
+      },
+      "alt": {
+        "fr": "Des danseurs rassemblés autour du cercle, photographie en noir et blanc",
+        "en": "Dancers gathered around a circle, black and white photograph"
+      }
+    },
+    {
+      "source": "503f88ae-35fa-453a-95aa-da66c716b29e.jpeg",
+      "source_sha256": "0fe92861ff24199ee59a8e08f534f1151cadac75b244d4f2f1934d0d8750c52e",
+      "slug": "coulisses",
+      "role": "gallery",
+      "caption": {
+        "fr": "Les coulisses",
+        "en": "Behind the scenes"
+      },
+      "alt": {
+        "fr": "Des participants dans le studio, certains tiennent un téléphone",
+        "en": "Participants in the studio, some holding a phone"
+      }
+    },
+    {
+      "source": "810e33f2-6c61-4c44-91ad-7da450db6cca.jpeg",
+      "source_sha256": "e9293f0dcd1f437238fcf5843c0db924d8a7396da43d5ad1cb2dcbb7c43213d4",
+      "slug": "culture",
+      "role": "gallery",
+      "caption": {
+        "fr": "Une culture qui se transmet",
+        "en": "A culture to share"
+      },
+      "alt": {
+        "fr": "Le symbole Juste Debout au dos d’un vêtement dans le studio",
+        "en": "The Juste Debout symbol on the back of a garment in the studio"
+      }
+    },
+    {
+      "source": "ef826199-2af4-479d-ab94-277ec564641c(1).jpeg",
+      "source_sha256": "1956266699dceeb9fb11b233435ce6e40016e6e0df020f9d6d07f140f6fd2c26",
+      "slug": "identite",
+      "role": "gallery",
+      "caption": {
+        "fr": "Les détails font l’identité",
+        "en": "Details make an identity"
+      },
+      "alt": {
+        "fr": "Gros plan du symbole Juste Debout sur des vêtements noirs",
+        "en": "Close-up of the Juste Debout symbol on black clothing"
+      }
+    }
+  ],
+  "duplicates_omitted": [
+    "ef826199-2af4-479d-ab94-277ec564641c(2).jpeg"
+  ]
+}

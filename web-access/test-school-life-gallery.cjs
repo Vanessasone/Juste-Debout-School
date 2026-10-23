@@ -1,0 +1,12 @@
+const {JSDOM}=require('jsdom'),fs=require('node:fs'),assert=require('node:assert/strict');
+const dom=new JSDOM('<body style="overflow:auto"><div class="school-life-grid" data-language="fr"><figure><button data-photo-full="/first.webp"><img alt="Premier cours"></button><figcaption><span>En studio</span></figcaption></figure><figure><button data-photo-full="/second.webp"><img alt="Deuxième cours"></button><figcaption><span>Le cercle</span></figcaption></figure></div></body>',{url:'https://school.test',runScripts:'outside-only'}),w=dom.window,d=w.document,images=[];
+w.HTMLDialogElement.prototype.showModal=function(){this.setAttribute('open','');};
+w.HTMLDialogElement.prototype.close=function(){this.removeAttribute('open');this.dispatchEvent(new w.Event('close'));};
+w.Image=function(){const image=d.createElement('img');images.push(image);return image;};
+w.eval(fs.readFileSync(__dirname+'/../website/assets/school-life-gallery.js','utf8'));
+assert.equal(images.length,0,'Full images must wait for user interaction');
+const opener=d.querySelector('button[data-photo-full]');opener.focus();opener.click();let dialog=d.querySelector('dialog');assert(dialog.open);assert.equal(d.body.style.overflow,'hidden');assert.equal(images[0].getAttribute('src'),'/first.webp');assert.equal(d.activeElement.textContent,'Fermer ✕');
+dialog.querySelector('nav button:last-child').click();assert.equal(images[1].getAttribute('src'),'/second.webp');images[0].onload();assert.equal(dialog.querySelector('img'),null,'Old image must not replace the selected photo');images[1].onload();assert.equal(dialog.querySelector('img').alt,'Deuxième cours');
+dialog.dispatchEvent(new w.KeyboardEvent('keydown',{key:'ArrowRight',bubbles:true}));assert.equal(images[2].getAttribute('src'),'/first.webp');
+dialog.querySelector('header button').click();assert(!dialog.open);assert.equal(d.body.style.overflow,'auto');assert.equal(d.activeElement,opener);images[2].onload();assert.equal(dialog.children.length,0);
+dom.window.close();console.log('PASS: full photos load only on demand, stale loads are ignored, previous/next cycle, close restores scroll and focus.');

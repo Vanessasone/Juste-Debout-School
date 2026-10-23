@@ -20,7 +20,7 @@ def gallery():
     for name, fr, en, alt_fr, alt_en in PHOTOS:
         url = '/assets/studios/school-studio-' + name + '.jpg'
         cards.append('(0,k.jsxs)(`figure`,{children:[(0,k.jsx)(`a`,{href:`'+url+'`,target:`_blank`,rel:`noopener noreferrer`,"aria-label":a===`fr`?`Ouvrir la photo : '+fr+'`:`Open photo: '+en+'`,children:(0,k.jsx)(`img`,{src:`'+url+'`,alt:a===`fr`?`'+alt_fr+'`:`'+alt_en+'`,width:640,height:480,loading:`lazy`,decoding:`async`})}),(0,k.jsxs)(`figcaption`,{children:[(0,k.jsx)(`span`,{children:a===`fr`?`'+fr+'`:`'+en+'`}),(0,k.jsx)(`span`,{"aria-hidden":`true`,children:`↗`})]})]})')
-    return '(0,k.jsxs)(`section`,{className:`school-studio-gallery`,id:`studios`,children:[(0,k.jsx)(`h2`,{children:a===`fr`?`Les studios, en images.`:`Inside the studios.`}),(0,k.jsx)(`p`,{children:a===`fr`?`Du parquet, des miroirs et de la lumière. Un aperçu des espaces de la School pour danser et répéter.`:`Wooden floors, mirrors and light. A look inside the School’s spaces for dance and rehearsal.`}),(0,k.jsx)(`div`,{className:`school-studio-grid`,children:['+','.join(cards)+']})]}),'
+    return '(0,k.jsxs)(`section`,{className:`school-studio-gallery`,id:`studios`,children:[(0,k.jsx)(`h2`,{children:a===`fr`?`CORE · Les studios en images.`:`CORE · Inside the studios.`}),(0,k.jsx)(`p`,{children:a===`fr`?`Du parquet, des miroirs et de la lumière. Un aperçu des espaces de CORE pour danser et répéter.`:`Wooden floors, mirrors and light. A look inside CORE’s spaces for dance and rehearsal.`}),(0,k.jsx)(`div`,{className:`school-studio-grid`,children:['+','.join(cards)+']})]}),'
 
 def package(source, output):
     with ZipFile(source) as z:

@@ -66,3 +66,20 @@ Les JPEG originaux de 640 × 480 sont conservés sans recompression ni agrandiss
 Reproduction : `python scripts/package-school-studio-photos.py ARCHIVE_PRODUCTION_COMPLETE.zip SORTIE.zip`. La base utilisée est le déploiement complet 6adb3b5dc395842caea02379. Seul index.html change parmi les fichiers existants ; ajout du bundle public, du CSS et des trois images. Tous les fichiers /app, le cockpit, le calendrier et Instagram restent identiques.
 
 Publication 6adb3fc9b5cd408f9ab01b1b : 384 fichiers, six fichiers nouveaux/modifiés. Vérification syntaxique du bundle et comparaison de l'archive réussies ; les trois images sont chargées en production avec naturalWidth=640 et naturalHeight=480. La navigation Les studios ouvre la nouvelle galerie. Capture : `docs/assets/school-studio-photos-live.jpg`.
+
+
+## Première salve de vie de l’école — 23 octobre 2026
+
+Vanessa confirme que les trois photographies de salles précédentes montrent CORE. La galerie des salles est identifiée CORE ; les numéros individuels restent inconnus. Les informations de salles sont conservées, mais le même ancien visuel n’est plus répété sous chaque accordéon : les trois vues CORE sont présentées dans leur galerie commune.
+
+La nouvelle salve contient dix fichiers et neuf photographies distinctes. Le doublon ef826199 est exclu. Trois photos différentes illustrent le campus CORE, le planning et la formation. Six autres alimentent la galerie de la vie School : cours, précision du geste, cercle, coulisses, identité et détails. Aucun nom de personne, date ou numéro de salle n’est déduit pour les nouvelles scènes. L’illustration INDUSTRY reste indépendante en attendant les vrais visuels.
+
+`website/school-photo-batch-01.json` conserve la sélection, les sources, empreintes et légendes FR/EN. `scripts/prepare-school-photo-batch.py` génère des WebP responsives (480, 960 et maximum 1600 px, sans agrandissement). Les originaux fournis restent intacts. Les neuf miniatures totalisent 171 020 octets ; l’ensemble des 27 variantes fait 1 974 808 octets. Les grands fichiers de la galerie ne se chargent qu’à la demande.
+
+`school-life-gallery.js` ajoute une visionneuse modale native, avec précédent/suivant, flèches clavier, Échap, restitution du focus et du défilement, gestion des erreurs et protection contre les anciens chargements arrivant après un changement de photo. Les légendes, commandes et textes alternatifs suivent FR/EN. Grille de trois, deux ou une colonne selon la largeur. Aucun défilement automatique.
+
+`python scripts/package-school-life-photos.py ARCHIVE_STUDIOS_COMPLETE.zip SORTIE.zip` prépare la version complète. Seul index.html change parmi les anciens fichiers ; les fichiers /app, données, disponibilités et fonctions de paiement restent identiques. Syntaxe et présence de tous les nouveaux assets vérifiées ; le test de visionneuse passe (chargement à la demande, changement de photo, absence de remplacement par une ancienne réponse, fermeture et focus).
+
+Prévisualisation puis publication 6adb432ce247fba54e2f7168 : 414 fichiers. Contrôles navigateur : six vues distinctes, chargement du grand format 1600 × 1066, commandes FR/EN, suivant/flèches clavier, Échap et retour du focus au bouton initial ; libellé des studios CORE confirmé.
+
+Version finale 6adb457cbae6c61f2bb5fd56 : correction du seul grand format Le cercle, initialement incomplet. La préparation écrit désormais chaque image de façon atomique ; le packager vérifie taille, dimensions et décodage des 27 variantes avant publication. Les 27 fichiers ont été décodés depuis l’archive finale. Le grand format Le cercle a été chargé et vérifié en production (1600 × 1066). Capture finale : `docs/assets/school-life-gallery-live.jpg`. Auto-publication rétablie.
