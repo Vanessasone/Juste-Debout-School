@@ -14,6 +14,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { getMyAttendance } from '@/lib/member-data';
 import { Coin } from '@/components/Coin';
+import { SchoolInstagram } from '@/components/SchoolInstagram';
 import { Wavetruv } from '@/components/Logo';
 import { Palette, Radius, Space, Type } from '@/constants/brand';
 import { useAuth } from '@/lib/auth';
@@ -150,6 +151,7 @@ export default function ProfileScreen() {
           <Text style={styles.secTitle}>{t('profile.history')}</Text>
           <View style={styles.card}>{attendance.length ? attendance.slice(0,10).map(a=><Text key={a.id} style={styles.linkTitle}>{(a.jds_sessions as unknown as {style:string}|null)?.style??'Cours'} · {new Date(a.checked_at).toLocaleDateString(locale)}</Text>) : <Text style={styles.linkSub}>{attendanceError?'Impossible de charger les présences.':'Aucune présence enregistrée pour le moment.'}</Text>}</View>
 
+          <SchoolInstagram />
           {/* Réglages */}
           <View style={styles.langHeaderRow}>
             <Text style={styles.langTitle}>{t('profile.language')}</Text>

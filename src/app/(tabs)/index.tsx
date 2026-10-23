@@ -12,6 +12,7 @@ import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-nati
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CoreOpenCatalogue } from '@/components/CoreOpenCatalogue';
+import { SchoolInstagram } from '@/components/SchoolInstagram';
 import { Coin } from '@/components/Coin';
 import { Wavetruv, Wordmark } from '@/components/Logo';
 import { RateSheet } from '@/components/RateSheet';
@@ -282,6 +283,7 @@ export default function HomeScreen() {
             <QuickTile icon="gift" color={Palette.core} tint="rgba(255,106,22,0.12)" title={t('ref.homeCta')} sub={t('ref.homeSub')} onPress={() => router.push('/referral')} />
             <QuickTile icon="people" color="#7C3AED" tint="rgba(124,58,237,0.12)" title={t('kids.homeCta')} sub={t('kids.homeSub')} onPress={() => router.push('/children')} />
           </View>
+          <SchoolInstagram />
         </View>
         </FadeInView>
         {campus !== 'INDUSTRY' && <CoreOpenCatalogue compact />}

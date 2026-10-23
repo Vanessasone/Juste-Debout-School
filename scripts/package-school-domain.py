@@ -42,6 +42,9 @@ def package(site_zip, app_export, output):
                 continue
             name = path.relative_to(app_export).as_posix()
             data = path.read_bytes()
+            # Keep the production catalogue's optimised images and repaired photos.
+            if name == 'assets/industry-formation/catalogue-v2.json' and name in site_names:
+                data = site.read(name)
             if path.suffix == '.html':
                 text = data.decode().replace(OLD_APP, '/app').replace('https://justedeboutschool-site.netlify.app', DOMAIN)
                 if name == 'index.html' and 'data-school-surface="app"' not in text:

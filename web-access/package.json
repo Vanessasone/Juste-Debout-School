@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "esbuild access.js --bundle --platform=browser --minify --outfile=../public/assets/school-access.js && esbuild bulletins.js --bundle --platform=browser --minify --outfile=../public/assets/bulletins.js",
-    "test": "node test-ui.cjs && node test-team-ui.cjs && node test-bulletins.cjs"
+    "test": "node test-ui.cjs && node test-team-ui.cjs && node test-bulletins.cjs && node test-rental-public.cjs && node test-cockpit.cjs",
+    "build:rental": "esbuild rental-public.js --bundle --platform=browser --minify --outfile=../website/assets/rental-public.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.110.1",

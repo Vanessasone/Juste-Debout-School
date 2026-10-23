@@ -86,7 +86,7 @@ export default function LoginScreen() {
           if (pending) { await redeemReferral(pending); await AsyncStorage.removeItem('jds_pending_ref'); }
         } catch {}
       }
-      router.replace('/(tabs)');
+      // RootNavigator selects the authorized School landing page after sign-in.
     } catch (e: any) {
       setError(schoolAuthError(e));
     } finally {

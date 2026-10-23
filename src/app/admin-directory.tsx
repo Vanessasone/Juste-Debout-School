@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState, useRef } from 'react';
-import { useRouter } from 'expo-router';
+import { useRouter,useLocalSearchParams } from 'expo-router';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Palette, Radius, Space } from '@/constants/brand';
@@ -8,15 +8,16 @@ import {getSchoolAccess} from '@/lib/school-access';
 import { DirectoryInput, DirectoryPerson, getPrivateDirectory, importPrivateDirectory, parseDirectoryCsv, verifyDirectoryPerson, updateDirectoryPerson } from '@/lib/private-directory';
 
 export default function AdminDirectory() {
+  const params=useLocalSearchParams<{campus?:string;kind?:string;review?:string}>();
   const scrollRef=useRef<ScrollView>(null);
   const router = useRouter(); const insets = useSafeAreaInsets();
   const [allowed, setAllowed] = useState<boolean | null>(null);
   const [people, setPeople] = useState<DirectoryPerson[]>([]);
   const [search, setSearch] = useState('');
   const [editing,setEditing]=useState<DirectoryPerson|null>(null);
-  const [kind,setKind]=useState('ALL'); const [status,setStatus]=useState('ALL');
+  const [kind,setKind]=useState(['student','teacher'].includes(params.kind||'')?params.kind!:'ALL'); const [status,setStatus]=useState(params.review==='pending'?'pending':'ALL');
   const [editingBusy,setEditingBusy]=useState(false);
-  const [campus, setCampus] = useState('ALL');
+  const [campus, setCampus] = useState(['CORE','INDUSTRY'].includes(params.campus||'')?params.campus!:'ALL');
   const [csv, setCsv] = useState(''); const [preview, setPreview] = useState<DirectoryInput[]>([]);
   const [importing, setImporting] = useState(false); const [showImport, setShowImport] = useState(false);
   const [verifying, setVerifying] = useState<string | null>(null);

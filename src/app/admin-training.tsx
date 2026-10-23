@@ -1,5 +1,5 @@
 import {createElement,useCallback,useEffect,useMemo,useRef,useState} from 'react';
-import {useRouter} from 'expo-router';
+import {useRouter,useLocalSearchParams} from 'expo-router';
 import {ActivityIndicator,Platform,ScrollView,Text,View} from 'react-native';
 import * as Linking from 'expo-linking';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -17,16 +17,17 @@ const tabs=[['members','Élèves'],['planning','Planning'],['attendance','Appel'
 type Account={id:string;full_name:string|null;alias:string|null;roles:string[]};
 const emptyLesson={id:undefined as string|undefined,title:'',teacher:'',room:'',date:'',start:'',end:'',repeat:'1'};
 export default function AdminTraining(){
+ const params=useLocalSearchParams<{group?:string;campus?:string;tab?:string}>();
  const router=useRouter(),insets=useSafeAreaInsets(),scroll=useRef<ScrollView>(null);
  const {session:authSession,initializing}=useAuth();
  const [central,setCentral]=useState(false);
  const [allowed,setAllowed]=useState<boolean|null>(null),[data,setData]=useState<TrainingData>(EMPTY_TRAINING),[people,setPeople]=useState<DirectoryPerson[]>([]),[accounts,setAccounts]=useState<Account[]>([]);
- const [groupId,setGroupId]=useState(''),[tab,setTab]=useState('members'),[busy,setBusy]=useState(false),[error,setError]=useState(''),[message,setMessage]=useState('');
+ const [groupId,setGroupId]=useState(''),[tab,setTab]=useState(tabs.some(([id])=>id===params.tab)?params.tab!:'members'),[busy,setBusy]=useState(false),[error,setError]=useState(''),[message,setMessage]=useState('');
  const [templateTerm,setTemplateTerm]=useState(1),[selectedTemplate,setSelectedTemplate]=useState<IndustrySlot|null>(null);
  const [query,setQuery]=useState(''),[lesson,setLesson]=useState(emptyLesson),[calling,setCalling]=useState(''),[linking,setLinking]=useState('');
  const [attendanceRecords,setAttendanceRecords]=useState<Attendance[]>([]),[attendanceLoading,setAttendanceLoading]=useState(false),[attendanceError,setAttendanceError]=useState(''),[attendanceRevision,setAttendanceRevision]=useState(0),[attendanceQuery,setAttendanceQuery]=useState('');
  const [title,setTitle]=useState(''),[body,setBody]=useState(''),[file,setFile]=useState<File|null>(null),[fileKey,setFileKey]=useState(0);
- const load=useCallback(async()=>{const [workspace,records,users]=await Promise.all([getTraining(''),getPrivateDirectory(),supabase.from('profiles').select('id,full_name,alias,roles').order('full_name')]);if(users.error)throw users.error;setData(workspace);setPeople(records);setAccounts((users.data??[]).filter(p=>!p.roles?.includes('admin')&&!p.roles?.includes('staff')));setGroupId(old=>workspace.groups.some(g=>g.id===old)?old:workspace.groups[0]?.id??'');},[]);
+ const load=useCallback(async()=>{const [workspace,records,users]=await Promise.all([getTraining(''),getPrivateDirectory(),supabase.from('profiles').select('id,full_name,alias,roles').order('full_name')]);if(users.error)throw users.error;setData(workspace);setPeople(records);setAccounts((users.data??[]).filter(p=>!p.roles?.includes('admin')&&!p.roles?.includes('staff')));setGroupId(old=>workspace.groups.some(g=>g.id===old)?old:workspace.groups.find(g=>g.id===params.group)?.id??workspace.groups.find(g=>g.campus===params.campus)?.id??workspace.groups[0]?.id??'');},[params.group,params.campus]);
  useEffect(()=>{if(initializing)return;if(!authSession){setAllowed(false);return;}let active=true;(async()=>{try{const access=await getSchoolAccess();const ok=access.campuses.length>0;if(!active)return;setCentral(access.admin);setAllowed(ok);if(ok)await load();}catch(e){if(active){setAllowed(false);setError('Chargement impossible. Réessaie depuis l’administration.');}}})();return()=>{active=false};},[load,initializing,authSession?.user.id]);
  useEffect(()=>{let active=true;setAttendanceRecords([]);setAttendanceError('');if(!calling||!authSession){setAttendanceLoading(false);return;}setAttendanceLoading(true);(async()=>{try{const {data:rows,error:failure}=await supabase.from('jds_training_attendance').select('*').eq('lesson_id',calling).order('recorded_at',{ascending:false}).limit(1000);if(failure)throw failure;if(active)setAttendanceRecords(rows??[]);}catch(e){if(active)setAttendanceError('Impossible de charger cet appel. Réessaie avant de modifier les présences.');}finally{if(active)setAttendanceLoading(false);}})();return()=>{active=false};},[calling,authSession?.user.id,attendanceRevision]);
  const run=async(action:()=>Promise<unknown>,success:string)=>{setBusy(true);setError('');setMessage('');try{await action();await load();setMessage(success);}catch(e){setError(typeof e==='object'&&e&&'message'in e?String(e.message):'Action impossible.');}finally{setBusy(false);}};

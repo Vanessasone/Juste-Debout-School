@@ -10,6 +10,7 @@ import { FavoritesProvider } from '@/lib/favorites';
 import { I18nProvider } from '@/lib/i18n';
 import { OnboardingProvider, useOnboarding } from '@/lib/onboarding';
 import { registerForPush } from '@/lib/push';
+import {getSchoolAccess} from '@/lib/school-access';
 
 function RootNavigator() {
   const { session, initializing, configured } = useAuth();
@@ -36,7 +37,9 @@ function RootNavigator() {
     if (configured && !session && !inAuth) {
       router.replace('/login');
     } else if (session && inAuth) {
-      router.replace('/(tabs)');
+      let active=true;
+      getSchoolAccess().then(access=>{if(active)router.replace(access.campuses.length?'/admin':'/(tabs)');}).catch(()=>{if(active)router.replace('/(tabs)');});
+      return()=>{active=false};
     }
   }, [session, initializing, configured, ready, onboarded, segments, router]);
 
@@ -55,6 +58,8 @@ function RootNavigator() {
         <Stack.Screen name="onboarding" />
         <Stack.Screen name="rankings" />
         <Stack.Screen name="admin" />
+        <Stack.Screen name="admin-cockpit" />
+        <Stack.Screen name="admin-tools" />
         <Stack.Screen name="admin-points" />
         <Stack.Screen name="admin-poll" />
         <Stack.Screen name="admin-planning" />

@@ -1,5 +1,5 @@
 import {useCallback,useState} from 'react';
-import {useFocusEffect,useRouter} from 'expo-router';
+import {useFocusEffect,useRouter,useLocalSearchParams} from 'expo-router';
 import {ActivityIndicator,ScrollView,Text,View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {TrainingButton as Button,trainingStyles as s} from '@/components/training/ui';
@@ -10,8 +10,9 @@ import {getPrivateDirectory,type DirectoryPerson} from '@/lib/private-directory'
 import {getTraining,EMPTY_TRAINING,type TrainingData} from '@/lib/training';
 import {getStudentAttendanceSummary,type StudentAttendanceSummary} from '@/lib/student-attendance-ranking';
 export default function AttendanceRanking(){
+ const params=useLocalSearchParams<{group?:string;campus?:string}>();
  const router=useRouter(),insets=useSafeAreaInsets(),{session}=useAuth();
- const [data,setData]=useState<TrainingData>(EMPTY_TRAINING),[rows,setRows]=useState<StudentAttendanceSummary[]>([]),[people,setPeople]=useState<DirectoryPerson[]>([]),[campuses,setCampuses]=useState<string[]>([]),[group,setGroup]=useState(''),[loading,setLoading]=useState(true),[error,setError]=useState(''),[revision,setRevision]=useState(0);
+ const [data,setData]=useState<TrainingData>(EMPTY_TRAINING),[rows,setRows]=useState<StudentAttendanceSummary[]>([]),[people,setPeople]=useState<DirectoryPerson[]>([]),[campuses,setCampuses]=useState<string[]>([]),[group,setGroup]=useState(params.group||''),[loading,setLoading]=useState(true),[error,setError]=useState(''),[revision,setRevision]=useState(0);
  useFocusEffect(useCallback(()=>{let active=true;setLoading(true);setRows([]);setError('');(async()=>{try{if(!session)return;const access=await getSchoolAccess();const [workspace,summary,directory]=await Promise.all([getTraining(''),getStudentAttendanceSummary(),access.campuses.length?getPrivateDirectory():Promise.resolve([])]);if(active){setData(workspace);setRows(summary);setPeople(directory);setCampuses(access.campuses);setGroup(old=>summary.some(r=>r.group_id===old)?old:summary[0]?.group_id??'');}}catch{if(active)setError('Impossible de charger le cumul. Réessaie.');}finally{if(active)setLoading(false);}})();return()=>{active=false};},[session?.user.id,revision]));
  const current=data.groups.find(g=>g.id===group),manager=campuses.includes(current?.campus??'');
  const shown=rows.filter(r=>r.group_id===group).sort((a,b)=>(a.attendance_rank??Infinity)-(b.attendance_rank??Infinity)||a.member_id.localeCompare(b.member_id));
