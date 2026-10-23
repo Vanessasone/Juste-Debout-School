@@ -48,3 +48,11 @@ Validation : `node tests/school-hero.cjs` (autoplay natif, source mobile/bureau,
 La page de test __qa-mobile.html n'est présente que dans la prévisualisation de contrôle, jamais dans l'archive destinée à la production. Le cockpit de Nicolas fait l'objet d'une proposition fonctionnelle séparée ; il n'est pas implémenté par cette publication.
 
 Archive finale de production : 6adb30f8d80dc77afdc682ca ; même contenu testé, sans la page de contrôle mobile.
+
+## Cockpit, locations de novembre et Instagram — 23 octobre 2026
+
+Publication complète 6adb3b5dc395842caea02379 (379 fichiers, 9 règles de redirection sans erreur). Le cockpit est maintenant implémenté dans cette version : accès par la connexion School puis `/app/admin` pour les gestionnaires autorisés. Le calendrier public est `/locations-core.html` ; novembre est alimenté par la source de disponibilités validée, tandis que décembre reste non confirmé. Les deux comptes Instagram sont visibles sur le site et intégrés à l’accueil/profil de l’application.
+
+Prévisualisation contrôlée avant publication : créneau libre Salle 1 à 10 h le 1er novembre, réservation fusionnée bloquée à 12 h, Salle 2 bloquée à 16 h, absence de disponibilité en décembre, liens sociaux et lien Louer un studio, vidéo native toujours chargée et muette. Contrôle du domaine officiel : calendrier chargé avec les données réelles et pied de page Instagram visible. Le cockpit sans session redirige vers `/app/login` après le parcours d’accueil. La lecture du cockpit a été vérifiée avec le rôle SQL authenticated et le contexte de Nicolas ; aucun login réel de direction n’a été simulé dans le navigateur.
+
+Auto-publication rétablie après la publication. Les tests de l’interface utilisent des données fictives ; aucune modification de droits, compte, évaluation, justificatif ou décision d’absence n’a été effectuée. Stripe School reste à connecter. La capture `docs/assets/school-instagram-live.jpg` montre le pied de page en production. Le récapitulatif quotidien existant de Nicolas conserve son horaire de 9 h et utilise maintenant le domaine officiel et l’entrée du cockpit.
