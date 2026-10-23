@@ -1,0 +1,21 @@
+const assert=require('node:assert/strict'),esbuild=require('esbuild'),{JSDOM}=require('jsdom');
+(async()=>{
+ const saves=[];let authChanged;let signedIn=true,allowed=true,rows=[{id:'r1',reference:'LOC-TEST',client_name:'Client exemple',amount_due_cents:10000,amount_received_cents:2500,invoice_reference:'FAC-TEST',payment_reference:'TEST',state:'active',revision:1},{id:'r2',reference:'LOC-QUOTE',client_name:'Devis exemple',amount_due_cents:null,amount_received_cents:0,state:'active',revision:1}];
+ const dom=new JSDOM('<p id="message"></p><div id="accounts"></div>',{url:'https://school.test/app/rental-accounts.html',runScripts:'outside-only'});
+ const sb={auth:{onAuthStateChange:cb=>{authChanged=cb;},getSession:async()=>({data:{session:signedIn?{user:{id:'test'}}:null}})},rpc:async(name,args)=>{if(name==='jds_can_manage_school')return {data:allowed};saves.push(args);return {data:'test-id'};},from:table=>{const q={select:()=>q,order:()=>q,range:()=>q,eq:()=>q,limit:()=>q,then:resolve=>resolve({data:table==='jds_rental_accounts'?rows:[]})};return q;}};
+ dom.window.__sb=sb;
+ const result=await esbuild.build({absWorkingDir:__dirname,entryPoints:['rental-accounts.js'],bundle:true,write:false,format:'iife',globalName:'rentalAccounts',plugins:[{name:'mocks',setup(b){b.onResolve({filter:/^@supabase\/supabase-js$/},()=>({path:'sb',namespace:'mock'}));b.onLoad({filter:/.*/,namespace:'mock'},()=>({contents:'export const createClient=()=>window.__sb;'}));}}]});
+ const settle=async()=>{for(let i=0;i<4;i++)await new Promise(setImmediate);};
+ dom.window.eval(result.outputFiles[0].text+";window.rentalAccounts=rentalAccounts;");await settle();
+ const text=()=>dom.window.document.body.textContent;
+ assert.match(text(),/Client exemple/);assert.match(text(),/75,00/);assert.match(text(),/1 dossier\(s\) sans montant convenu/);
+ const {cents,accountStatus}=dom.window.rentalAccounts;assert.equal(cents('1 234,56'),123456);assert.equal(cents('',true),null);for(const bad of ['-1','1e2','1.999','abc'])assert.throws(()=>cents(bad));assert.equal(accountStatus(rows[0]),'Partiellement encaissé');
+ const click=t=>[...dom.window.document.querySelectorAll('button')].find(b=>b.textContent===t).click();click('Nouveau dossier');
+ const input=(label,value)=>{const i=[...dom.window.document.querySelectorAll('label')].find(l=>l.firstChild.textContent===label).querySelector('input');i.value=value;};
+ input('Client / structure','Location test');input('Montant convenu TTC (€) · vide si devis à établir','100');input('Total encaissé vérifié dans Qonto (€)','101');input('Référence(s) des encaissements constatés dans Qonto','REF');
+ const submit=()=>dom.window.document.querySelector('form').dispatchEvent(new dom.window.Event('submit',{bubbles:true,cancelable:true}));submit();await settle();assert.equal(saves.length,0);assert.match(text(),/Vérifie le montant encaissé/);
+ input('Total encaissé vérifié dans Qonto (€)','25');input('Lien de paiement Qonto · facultatif','https://pay.qonto.com@evil.example');submit();await settle();assert.equal(saves.length,0);assert.match(text(),/Utilise uniquement un lien/);
+ input('Lien de paiement Qonto · facultatif','https://pay.qonto.com/test?resource_id=test');submit();await settle();assert.equal(saves.length,1);assert.equal(saves[0].details.amount_received_cents,2500);assert.equal(saves[0].details.amount_due_cents,10000);assert.match(text(),/Aucun paiement bancaire ni réservation/);assert.equal([...dom.window.document.querySelectorAll('button')].find(b=>b.textContent==='Nouveau dossier').disabled,false);
+ authChanged('SIGNED_OUT');assert.doesNotMatch(text(),/Client exemple/);assert.match(text(),/Connexion School requise/);
+ dom.window.close();console.log('PASS: exact money parsing, balances, quote exclusion, overpayment rejection, Qonto URL validation, manual save without bank or calendar mutation.');
+})().catch(e=>{console.error(e);process.exitCode=1;});
