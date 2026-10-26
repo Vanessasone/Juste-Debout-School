@@ -697,35 +697,35 @@
     }
   ],
   "identity_mapping_source": "Names and disciplines printed on the teacher cards supplied by Vanessa on 26 October 2026.",
-  "selected_scenes": [
+  "album_photos": [
     {
-      "id": "core-pro-17-63214158d0",
-      "source_number": 17,
+      "id": "core-pro-02-ef9f258f25",
+      "source_number": 2,
       "role": "formation",
       "teacher": null,
       "discipline": null,
       "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
-      "source_file": "53618349_2297570330274374_9023896644478828544_n.jpg",
-      "source_sha256": "63214158d0f1f8690b6ed899919213dc706077a22d225671082a5e7c916ba82e",
-      "credit": "Baptiste Fauchille / Juste Debout",
+      "source_file": "JD_04.03_@MarcoConiglione-150.jpg",
+      "source_sha256": "ef9f258f258e5e3be508bb5e51b207a294769fe31a42143786194442b140e5e4",
+      "credit": "Marco Coniglione",
       "variants": {
         "480": {
-          "src": "/assets/core-formation/core-pro-17-63214158d0-480.webp",
+          "src": "/assets/core-formation/core-pro-02-ef9f258f25-480.webp",
           "width": 480,
-          "height": 319,
-          "bytes": 19366
+          "height": 320,
+          "bytes": 13316
         },
         "960": {
-          "src": "/assets/core-formation/core-pro-17-63214158d0-960.webp",
+          "src": "/assets/core-formation/core-pro-02-ef9f258f25-960.webp",
           "width": 960,
-          "height": 638,
-          "bytes": 57450
+          "height": 640,
+          "bytes": 46624
         },
         "1600": {
-          "src": "/assets/core-formation/core-pro-17-63214158d0-1600.webp",
+          "src": "/assets/core-formation/core-pro-02-ef9f258f25-1600.webp",
           "width": 1600,
-          "height": 1064,
-          "bytes": 157546
+          "height": 1066,
+          "bytes": 163608
         }
       }
     },
@@ -761,6 +761,130 @@
       }
     },
     {
+      "id": "core-pro-04-c67b5a9095",
+      "source_number": 4,
+      "role": "formation",
+      "teacher": null,
+      "discipline": null,
+      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
+      "source_file": "JD_04.03_@MarcoConiglione-144.jpg",
+      "source_sha256": "c67b5a90954c7f17281cd01fd63d60f18aa919fdf9f638dcd6db9b618b367bd2",
+      "credit": "Marco Coniglione",
+      "variants": {
+        "480": {
+          "src": "/assets/core-formation/core-pro-04-c67b5a9095-480.webp",
+          "width": 480,
+          "height": 320,
+          "bytes": 15958
+        },
+        "960": {
+          "src": "/assets/core-formation/core-pro-04-c67b5a9095-960.webp",
+          "width": 960,
+          "height": 640,
+          "bytes": 51474
+        },
+        "1600": {
+          "src": "/assets/core-formation/core-pro-04-c67b5a9095-1600.webp",
+          "width": 1600,
+          "height": 1066,
+          "bytes": 187938
+        }
+      }
+    },
+    {
+      "id": "core-pro-05-a8972c35e1",
+      "source_number": 5,
+      "role": "formation",
+      "teacher": null,
+      "discipline": null,
+      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
+      "source_file": "JD_3.03_@MarcoConiglione-089.jpg",
+      "source_sha256": "a8972c35e11940b683cd3a89494e8ad4811a745c2432ceac3081b01c7f3b5e25",
+      "credit": "Marco Coniglione",
+      "variants": {
+        "480": {
+          "src": "/assets/core-formation/core-pro-05-a8972c35e1-480.webp",
+          "width": 360,
+          "height": 480,
+          "bytes": 18466
+        },
+        "960": {
+          "src": "/assets/core-formation/core-pro-05-a8972c35e1-960.webp",
+          "width": 720,
+          "height": 960,
+          "bytes": 61158
+        },
+        "1600": {
+          "src": "/assets/core-formation/core-pro-05-a8972c35e1-1600.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 227552
+        }
+      }
+    },
+    {
+      "id": "core-pro-06-6ae29ec031",
+      "source_number": 6,
+      "role": "formation",
+      "teacher": null,
+      "discipline": null,
+      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
+      "source_file": "JD_3.03_@MarcoConiglione-083.jpg",
+      "source_sha256": "6ae29ec03175e7cf6182ca784511cb767678e0fed23efa4cbec360198d2453cc",
+      "credit": "Marco Coniglione",
+      "variants": {
+        "480": {
+          "src": "/assets/core-formation/core-pro-06-6ae29ec031-480.webp",
+          "width": 360,
+          "height": 480,
+          "bytes": 12546
+        },
+        "960": {
+          "src": "/assets/core-formation/core-pro-06-6ae29ec031-960.webp",
+          "width": 720,
+          "height": 960,
+          "bytes": 55162
+        },
+        "1600": {
+          "src": "/assets/core-formation/core-pro-06-6ae29ec031-1600.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 344780
+        }
+      }
+    },
+    {
+      "id": "core-pro-07-f9355dee39",
+      "source_number": 7,
+      "role": "formation",
+      "teacher": null,
+      "discipline": null,
+      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
+      "source_file": "JD_3.03_@MarcoConiglione-42.jpg",
+      "source_sha256": "f9355dee39e53510ea1a6e393d9cd6d0c419c76bdd5030a65fddcf2baa7b1de6",
+      "credit": "Marco Coniglione",
+      "variants": {
+        "480": {
+          "src": "/assets/core-formation/core-pro-07-f9355dee39-480.webp",
+          "width": 480,
+          "height": 320,
+          "bytes": 21538
+        },
+        "960": {
+          "src": "/assets/core-formation/core-pro-07-f9355dee39-960.webp",
+          "width": 960,
+          "height": 640,
+          "bytes": 86784
+        },
+        "1600": {
+          "src": "/assets/core-formation/core-pro-07-f9355dee39-1600.webp",
+          "width": 1600,
+          "height": 1066,
+          "bytes": 332524
+        }
+      }
+    },
+    {
       "id": "core-pro-08-ec6dc9390e",
       "source_number": 8,
       "role": "formation",
@@ -790,11 +914,285 @@
           "bytes": 148594
         }
       }
+    },
+    {
+      "id": "core-pro-09-2cc79477dd",
+      "source_number": 9,
+      "role": "formation",
+      "teacher": null,
+      "discipline": null,
+      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
+      "source_file": "LittleShao_JD2026_0302_ASC0480_WEBLOGO.jpg",
+      "source_sha256": "2cc79477dd3688b9000524c46eda0a581342cfe78523f9c98cf41ed7bda6b261",
+      "credit": "Little Shao",
+      "variants": {
+        "480": {
+          "src": "/assets/core-formation/core-pro-09-2cc79477dd-480.webp",
+          "width": 360,
+          "height": 480,
+          "bytes": 14610
+        },
+        "960": {
+          "src": "/assets/core-formation/core-pro-09-2cc79477dd-960.webp",
+          "width": 720,
+          "height": 960,
+          "bytes": 72280
+        },
+        "1600": {
+          "src": "/assets/core-formation/core-pro-09-2cc79477dd-1600.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 375230
+        }
+      }
+    },
+    {
+      "id": "core-pro-10-2088e8451c",
+      "source_number": 10,
+      "role": "formation",
+      "teacher": null,
+      "discipline": null,
+      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
+      "source_file": "LittleShao_JD2026_0302_ASC0462_WEBLOGO.jpg",
+      "source_sha256": "2088e8451cb0d8085473c38cc0b9501a78f56d20a516e9b5a77d329402351c52",
+      "credit": "Little Shao",
+      "variants": {
+        "480": {
+          "src": "/assets/core-formation/core-pro-10-2088e8451c-480.webp",
+          "width": 360,
+          "height": 480,
+          "bytes": 17976
+        },
+        "960": {
+          "src": "/assets/core-formation/core-pro-10-2088e8451c-960.webp",
+          "width": 720,
+          "height": 960,
+          "bytes": 60424
+        },
+        "1600": {
+          "src": "/assets/core-formation/core-pro-10-2088e8451c-1600.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 151966
+        }
+      }
+    },
+    {
+      "id": "core-pro-11-ce2916ff54",
+      "source_number": 11,
+      "role": "formation",
+      "teacher": null,
+      "discipline": null,
+      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
+      "source_file": "LittleShao_JD2026_0302_ASC0023_WEBLOGO.jpg",
+      "source_sha256": "ce2916ff54d172dfc7dc0438760c9cbc735691f8f3f597ff09fb9efc262fccf1",
+      "credit": "Little Shao",
+      "variants": {
+        "480": {
+          "src": "/assets/core-formation/core-pro-11-ce2916ff54-480.webp",
+          "width": 360,
+          "height": 480,
+          "bytes": 18208
+        },
+        "960": {
+          "src": "/assets/core-formation/core-pro-11-ce2916ff54-960.webp",
+          "width": 720,
+          "height": 960,
+          "bytes": 62262
+        },
+        "1600": {
+          "src": "/assets/core-formation/core-pro-11-ce2916ff54-1600.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 238502
+        }
+      }
+    },
+    {
+      "id": "core-pro-12-974a467c07",
+      "source_number": 12,
+      "role": "formation",
+      "teacher": null,
+      "discipline": null,
+      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
+      "source_file": "LittleShao_JD2026_0302_ASC0060_WEBLOGO.jpg",
+      "source_sha256": "974a467c072a2f0f9e4b3f9f63162be71f609a36378df79402f708707a93d4ae",
+      "credit": "Little Shao",
+      "variants": {
+        "480": {
+          "src": "/assets/core-formation/core-pro-12-974a467c07-480.webp",
+          "width": 360,
+          "height": 480,
+          "bytes": 20722
+        },
+        "960": {
+          "src": "/assets/core-formation/core-pro-12-974a467c07-960.webp",
+          "width": 720,
+          "height": 960,
+          "bytes": 88090
+        },
+        "1600": {
+          "src": "/assets/core-formation/core-pro-12-974a467c07-1600.webp",
+          "width": 1200,
+          "height": 1600,
+          "bytes": 382076
+        }
+      }
+    },
+    {
+      "id": "core-pro-13-0123b56222",
+      "source_number": 13,
+      "role": "formation",
+      "teacher": null,
+      "discipline": null,
+      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
+      "source_file": "53585263_2303469473017793_1017533909119795200_n (1).jpg",
+      "source_sha256": "0123b56222d8921bbbbe0957a56b897a7880cf41fc8b0dee4a0e793555d4e55f",
+      "credit": "Lemzo",
+      "variants": {
+        "480": {
+          "src": "/assets/core-formation/core-pro-13-0123b56222-480.webp",
+          "width": 371,
+          "height": 480,
+          "bytes": 23648
+        },
+        "960": {
+          "src": "/assets/core-formation/core-pro-13-0123b56222-960.webp",
+          "width": 742,
+          "height": 960,
+          "bytes": 85242
+        },
+        "1600": {
+          "src": "/assets/core-formation/core-pro-13-0123b56222-1600.webp",
+          "width": 1236,
+          "height": 1600,
+          "bytes": 240992
+        }
+      }
+    },
+    {
+      "id": "core-pro-14-d46088dea6",
+      "source_number": 14,
+      "role": "formation",
+      "teacher": null,
+      "discipline": null,
+      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
+      "source_file": "89070146_3004799499551450_50992716481298432_n.jpg",
+      "source_sha256": "d46088dea68e31d6b90f0bf9a884237fb9637c5fa2f69565c789c42ce9799d2f",
+      "credit": "Doumam / Juste Debout",
+      "variants": {
+        "480": {
+          "src": "/assets/core-formation/core-pro-14-d46088dea6-480.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 12880
+        },
+        "960": {
+          "src": "/assets/core-formation/core-pro-14-d46088dea6-960.webp",
+          "width": 640,
+          "height": 960,
+          "bytes": 46770
+        },
+        "1600": {
+          "src": "/assets/core-formation/core-pro-14-d46088dea6-1600.webp",
+          "width": 1066,
+          "height": 1600,
+          "bytes": 128942
+        }
+      }
+    },
+    {
+      "id": "core-pro-15-f674d7f711",
+      "source_number": 15,
+      "role": "formation",
+      "teacher": null,
+      "discipline": null,
+      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
+      "source_file": "89263602_3004777199553680_1543024613779308544_n.jpg",
+      "source_sha256": "f674d7f7115949b54bf50703f264a69020938def1c4e24d42682086468bfd1b5",
+      "credit": "Doumam / Juste Debout",
+      "variants": {
+        "480": {
+          "src": "/assets/core-formation/core-pro-15-f674d7f711-480.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 18950
+        },
+        "960": {
+          "src": "/assets/core-formation/core-pro-15-f674d7f711-960.webp",
+          "width": 640,
+          "height": 960,
+          "bytes": 70702
+        },
+        "1600": {
+          "src": "/assets/core-formation/core-pro-15-f674d7f711-1600.webp",
+          "width": 1066,
+          "height": 1600,
+          "bytes": 223916
+        }
+      }
+    },
+    {
+      "id": "core-pro-16-808dd8643e",
+      "source_number": 16,
+      "role": "formation",
+      "teacher": null,
+      "discipline": null,
+      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
+      "source_file": "53399733_2297569700274437_9046478818017017856_n.jpg",
+      "source_sha256": "808dd8643e038d8e0d8ebc7fa09a23b7b6e403d48bcc5144930be3abcd3883f6",
+      "credit": "Baptiste Fauchille / Juste Debout",
+      "variants": {
+        "480": {
+          "src": "/assets/core-formation/core-pro-16-808dd8643e-480.webp",
+          "width": 480,
+          "height": 322,
+          "bytes": 16406
+        },
+        "960": {
+          "src": "/assets/core-formation/core-pro-16-808dd8643e-960.webp",
+          "width": 960,
+          "height": 644,
+          "bytes": 49266
+        },
+        "1600": {
+          "src": "/assets/core-formation/core-pro-16-808dd8643e-1600.webp",
+          "width": 1600,
+          "height": 1074,
+          "bytes": 152430
+        }
+      }
+    },
+    {
+      "id": "core-pro-17-63214158d0",
+      "source_number": 17,
+      "role": "formation",
+      "teacher": null,
+      "discipline": null,
+      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
+      "source_file": "53618349_2297570330274374_9023896644478828544_n.jpg",
+      "source_sha256": "63214158d0f1f8690b6ed899919213dc706077a22d225671082a5e7c916ba82e",
+      "credit": "Baptiste Fauchille / Juste Debout",
+      "variants": {
+        "480": {
+          "src": "/assets/core-formation/core-pro-17-63214158d0-480.webp",
+          "width": 480,
+          "height": 319,
+          "bytes": 19366
+        },
+        "960": {
+          "src": "/assets/core-formation/core-pro-17-63214158d0-960.webp",
+          "width": 960,
+          "height": 638,
+          "bytes": 57450
+        },
+        "1600": {
+          "src": "/assets/core-formation/core-pro-17-63214158d0-1600.webp",
+          "width": 1600,
+          "height": 1064,
+          "bytes": 157546
+        }
+      }
     }
-  ],
-  "scene_placements": [
-    ".campus-depth img",
-    ".schedule-image img",
-    ".formation-image img"
   ]
 }

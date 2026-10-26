@@ -8,8 +8,16 @@ function ordered(data){
  if(featured.length!==3||featured.some((p,i)=>!p||p.teacher!==data.priority_teachers[i])||new Set(data.featured_photo_ids).size!==3)throw Error('Invalid featured portraits');
  return [...featured,...portraits.filter(p=>!data.featured_photo_ids.includes(p.id))];
 }
+function appendAlbum(data){
+ const section=document.querySelector('.school-life-section');if(!section||document.getElementById('core-course-album')||!data.album_photos?.length)return;
+ const album=node('details','school-life-more');album.id='core-course-album';
+ const summary=node('summary'),title=node('span','',`Formation CORE · ${data.album_photos.length} photos de cours`),sign=node('span','','+');sign.setAttribute('aria-hidden','true');summary.append(title,sign);album.append(summary);
+ const grid=node('div','school-life-grid');album.append(grid);
+ data.album_photos.forEach((photo,i)=>{const figure=node('figure'),button=node('button'),img=node('img'),caption=node('figcaption'),label=`Formation CORE · ${String(i+1).padStart(2,'0')}`,small=photo.variants['480'];button.type='button';button.dataset.photoFull=photo.variants['1600'].src;button.setAttribute('aria-label','Agrandir : '+label);img.dataset.photoSrc=small.src;img.dataset.photoSrcset=Object.values(photo.variants).map(v=>v.src+' '+v.width+'w').join(', ');img.sizes='(max-width:600px) 88vw, (max-width:900px) 44vw, 30vw';img.width=small.width;img.height=small.height;img.alt=photo.alt;img.loading='lazy';img.decoding='async';button.append(img);caption.append(node('span','',label),node('span','',photo.credit||'↗'));figure.append(button,caption);grid.append(figure)});
+ section.append(album);
+}
 function mount(host,data,full){
- const photos=ordered(data);host.className='jdc-pro';host.replaceChildren();
+ const photos=ordered(data);if(!full)appendAlbum(data);host.className='jdc-pro';host.replaceChildren();
  host.append(node('p','jdc-pro__kicker','CORE · Formation professionnelle'),node(full?'h1':'h2','','Les professeurs de la formation CORE.'),node('p','jdc-pro__intro','Ness, Ricky Soul et Krissy ouvrent la présentation de l’équipe pédagogique CORE.'));
  const dialog=node('dialog','jdc-pro__dialog');const head=node('header'),title=node('h2'),close=node('button','','Fermer ×'),image=node('img'),credit=node('p','jdc-pro__credit');close.type='button';head.append(title,close);dialog.append(head,image,credit);document.body.append(dialog);let previous;
  close.onclick=()=>dialog.close();dialog.addEventListener('close',()=>{image.removeAttribute('src');previous?.focus()});
