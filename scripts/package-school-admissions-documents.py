@@ -13,6 +13,7 @@ PDFS = {
     'JDS PRO TRAINING 2027.pdf': 'jds-pro-training-2027-en.pdf',
     'Regles_location_salles.pdf': 'reglement-location-salles-fr.pdf',
     'Studio_Rental_Rules.pdf': 'studio-rental-rules-en.pdf',
+    'Tarifs_Open_Classes.pdf': 'tarifs-cours-open.pdf',
 }
 
 def once(text, old, new):
@@ -37,7 +38,7 @@ def update_home(html, bundle):
         new = '(0,k.jsx)(`a`,{className:`school-documents-link`,href:`/documents.html#brochure-qualiopi`,children:t?`lien pour télécharger la brochure et le certificat Qualiopi`:`Download the brochure and Qualiopi certificate`})'
         bundle = once(bundle, old, new)
         old = '(0,k.jsx)(`p`,{children:s.scheduleIntro})'
-        new = old + ',(0,k.jsx)(`a`,{className:`school-documents-link`,href:`/documents.html#cours-open`,children:t?`Règlement des cours open`:`Open class rules`})'
+        new = old + ',(0,k.jsx)(`a`,{className:`school-documents-link`,href:`/documents.html#cours-open`,children:t?`Tarifs et règlement des cours open`:`Open class prices and rules`})'
         bundle = once(bundle, old, new)
     name = 'assets/public-site-'+hashlib.sha256(bundle.encode()).hexdigest()[:12]+'.js'
     html = html.replace(old_bundle, '/'+name)
