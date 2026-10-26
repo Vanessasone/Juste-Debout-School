@@ -25,14 +25,17 @@ def package(source,output):
     paths += [v['src'].lstrip('/') for photo in cat['photos']+cat['album_photos'] for v in photo['variants'].values()]
     for name in paths:files[name]=(ROOT/'website'/name).read_bytes()
     html=files['index.html'].decode()
+    version=hashlib.sha256(files['assets/core-pro-gallery.js']).hexdigest()[:12]
+    css_version=hashlib.sha256(files['assets/core-pro-gallery.css']).hexdigest()[:12]
     if '/assets/core-pro-gallery.js' not in html:
-        version=hashlib.sha256(files['assets/core-pro-gallery.js']).hexdigest()[:12]
         tag=f'<link rel="stylesheet" href="/assets/core-pro-gallery.css"><script src="/assets/core-pro-gallery.js?v={version}" defer></script>'
         assert html.count('</head>')==1
         html=html.replace('</head>',tag+'</head>')
+    html=re.sub(r'/assets/core-pro-gallery\.js(?:\?v=[a-f0-9]+)?',f'/assets/core-pro-gallery.js?v={version}',html)
+    html=re.sub(r'/assets/core-pro-gallery\.css(?:\?v=[a-f0-9]+)?',f'/assets/core-pro-gallery.css?v={css_version}',html)
     files['index.html']=html.encode()
     for name,data in original.items():
-        if name!='index.html':assert files[name]==data,name
+        if name not in {'index.html',*paths}:assert files[name]==data,name
     with ZipFile(output,'w',ZIP_DEFLATED) as z:
         for name,data in files.items():z.writestr(name,data)
     with ZipFile(output) as z:assert z.testzip() is None
