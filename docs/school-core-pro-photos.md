@@ -1,0 +1,13 @@
+# CORE professional training photographs — 26 October 2026
+
+Vanessa supplied SwissTransfer 01a177e6-194c-734a-a256-a4269e74502c and requested priority placement for Ness, Ricky Soul and Krissy, in that order. Transfer downloaded and ZIP verified: 17 JPEGs, 16 course/training images plus one facade view. No image is renamed as an identified teacher without a supplied name mapping. Filenames and available IPTC/XMP captions do not identify the depicted teachers. Photographer credits are not treated as teacher identities.
+
+All 17 originals were preserved in a separate source archive. Public derivatives are generated in 480/960/1600 bounds, without enlarging or cropping; orientation and embedded colour profiles are applied, full frames and visible photographer marks retained, and camera/location metadata omitted from public derivatives. The 17 smallest derivatives total 296,392 bytes versus 18,014,144 bytes in the original JPEGs. The 16 teaching images belong to the CORE professional gallery; the facade is catalogued separately as a campus image and is not a teacher portrait.
+
+The standalone gallery and homepage preview implementation are prepared. The first three featured images must be explicitly mapped to Ness, Ricky Soul and Krissy. The full gallery can include additional course views without assigning unknown people names or disciplines. Full images load on viewer opening; responsive sources, keyboard-accessible buttons, close/focus return and photographer credits are included.
+
+`website/assets/core-formation/catalogue.json` preserves the stable numbers from the contact sheet and sets `identity_mapping_confirmed=false`. `scripts/package-school-core-pro-photos.py` refuses packaging until three distinct formation photos are confirmed for the requested names. This prevents an unrelated future publication from silently assigning guessed portraits. The preview script is not yet attached to the homepage source.
+
+After confirming the mapping, start from the complete current production ZIP, apply `package-school-admissions-documents.py`, then `package-school-core-pro-photos.py`. The second overlay preserves every pre-existing byte other than homepage navigation loading of the new preview. Existing CORE open classes and INDUSTRY visuals remain separate and unchanged. No app roles, grades, attendance, finances or bank configuration are changed.
+
+Publication remains deferred, as Vanessa requested before adding Netlify credits. No production or paid preview deployment was started. Names for the featured photos are the remaining input; no face-based identification is used.
