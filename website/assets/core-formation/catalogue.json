@@ -6,68 +6,726 @@
     "Ricky Soul",
     "Krissy"
   ],
-  "identity_mapping_confirmed": false,
-  "featured_photo_ids": [],
+  "identity_mapping_confirmed": true,
+  "featured_photo_ids": [
+    "core-teacher-16-8dc9aa281d",
+    "core-teacher-21-fbc13e1f04",
+    "core-teacher-11-a5ce4eb779"
+  ],
   "photos": [
     {
-      "id": "core-pro-01-2f4cf3c579",
-      "source_number": 1,
-      "role": "campus",
-      "teacher": null,
-      "discipline": null,
-      "alt": "Façade de la Juste Debout School CORE",
-      "source_file": "3ebe54f61cfdd9639c44e1453afeec87.jpg",
-      "source_sha256": "2f4cf3c5797a66c7738e9eb010809e75ad6a42bb7596381d30c9968972f0b22c",
+      "id": "core-teacher-03-d6d250e9b9",
+      "source_number": 3,
+      "role": "formation",
+      "teacher": "Régis Truchy",
+      "discipline": "Théâtre gestuel",
+      "alt": "Fiche professeur CORE : Régis Truchy · Théâtre gestuel",
+      "source_file": "Fiche Profs/3.png",
+      "source_sha256": "d6d250e9b97d42366ed896315fe0ff4c61ea8b4044982bf4b66bc575b15fd8ea",
       "credit": null,
       "variants": {
         "480": {
-          "src": "/assets/core-formation/core-pro-01-2f4cf3c579-480.webp",
-          "width": 360,
-          "height": 480,
-          "bytes": 24482
+          "src": "/assets/core-teachers/core-teacher-03-d6d250e9b9-480.webp",
+          "width": 480,
+          "height": 600,
+          "bytes": 53708
         },
         "960": {
-          "src": "/assets/core-formation/core-pro-01-2f4cf3c579-960.webp",
-          "width": 720,
-          "height": 960,
-          "bytes": 114704
+          "src": "/assets/core-teachers/core-teacher-03-d6d250e9b9-960.webp",
+          "width": 960,
+          "height": 1200,
+          "bytes": 127402
         },
         "1600": {
-          "src": "/assets/core-formation/core-pro-01-2f4cf3c579-1600.webp",
-          "width": 736,
-          "height": 981,
-          "bytes": 138530
+          "src": "/assets/core-teachers/core-teacher-03-d6d250e9b9-1600.webp",
+          "width": 1080,
+          "height": 1350,
+          "bytes": 149336
         }
       }
     },
     {
-      "id": "core-pro-02-ef9f258f25",
-      "source_number": 2,
+      "id": "core-teacher-04-e81f9d8c0d",
+      "source_number": 4,
+      "role": "formation",
+      "teacher": "Dysdys",
+      "discipline": "B-boying",
+      "alt": "Fiche professeur CORE : Dysdys · B-boying",
+      "source_file": "Fiche Profs/4.png",
+      "source_sha256": "e81f9d8c0d0b306392f4ea871f4cb074c71a1f6dc01c1552c99b34e37755c2b5",
+      "credit": null,
+      "variants": {
+        "480": {
+          "src": "/assets/core-teachers/core-teacher-04-e81f9d8c0d-480.webp",
+          "width": 480,
+          "height": 600,
+          "bytes": 49914
+        },
+        "960": {
+          "src": "/assets/core-teachers/core-teacher-04-e81f9d8c0d-960.webp",
+          "width": 960,
+          "height": 1200,
+          "bytes": 127638
+        },
+        "1600": {
+          "src": "/assets/core-teachers/core-teacher-04-e81f9d8c0d-1600.webp",
+          "width": 1080,
+          "height": 1350,
+          "bytes": 159364
+        }
+      }
+    },
+    {
+      "id": "core-teacher-05-55a9732918",
+      "source_number": 5,
+      "role": "formation",
+      "teacher": "JP Mano",
+      "discipline": "Histoire des musiques",
+      "alt": "Fiche professeur CORE : JP Mano · Histoire des musiques",
+      "source_file": "Fiche Profs/5.png",
+      "source_sha256": "55a9732918197cd5ca083ed34e24b8cb92e6852f7ded00e21134a1aa5165d911",
+      "credit": null,
+      "variants": {
+        "480": {
+          "src": "/assets/core-teachers/core-teacher-05-55a9732918-480.webp",
+          "width": 480,
+          "height": 600,
+          "bytes": 56266
+        },
+        "960": {
+          "src": "/assets/core-teachers/core-teacher-05-55a9732918-960.webp",
+          "width": 960,
+          "height": 1200,
+          "bytes": 150162
+        },
+        "1600": {
+          "src": "/assets/core-teachers/core-teacher-05-55a9732918-1600.webp",
+          "width": 1080,
+          "height": 1350,
+          "bytes": 189528
+        }
+      }
+    },
+    {
+      "id": "core-teacher-06-b53c5c72d3",
+      "source_number": 6,
+      "role": "formation",
+      "teacher": "Bastien Nozeran",
+      "discipline": "Modern jazz",
+      "alt": "Fiche professeur CORE : Bastien Nozeran · Modern jazz",
+      "source_file": "Fiche Profs/6.png",
+      "source_sha256": "b53c5c72d370e92de562cad29ea3ffca05e442dd973d5861345099ebd2f28059",
+      "credit": null,
+      "variants": {
+        "480": {
+          "src": "/assets/core-teachers/core-teacher-06-b53c5c72d3-480.webp",
+          "width": 480,
+          "height": 600,
+          "bytes": 51108
+        },
+        "960": {
+          "src": "/assets/core-teachers/core-teacher-06-b53c5c72d3-960.webp",
+          "width": 960,
+          "height": 1200,
+          "bytes": 120258
+        },
+        "1600": {
+          "src": "/assets/core-teachers/core-teacher-06-b53c5c72d3-1600.webp",
+          "width": 1080,
+          "height": 1350,
+          "bytes": 146036
+        }
+      }
+    },
+    {
+      "id": "core-teacher-07-d3d87dcb67",
+      "source_number": 7,
+      "role": "formation",
+      "teacher": "Roxane Butterfly",
+      "discipline": "Tap dance",
+      "alt": "Fiche professeur CORE : Roxane Butterfly · Tap dance",
+      "source_file": "Fiche Profs/7.png",
+      "source_sha256": "d3d87dcb67a206e4dca78e3642fb06ce2aa5fedb1118158f88e9aef65ee88692",
+      "credit": null,
+      "variants": {
+        "480": {
+          "src": "/assets/core-teachers/core-teacher-07-d3d87dcb67-480.webp",
+          "width": 480,
+          "height": 600,
+          "bytes": 51020
+        },
+        "960": {
+          "src": "/assets/core-teachers/core-teacher-07-d3d87dcb67-960.webp",
+          "width": 960,
+          "height": 1200,
+          "bytes": 126212
+        },
+        "1600": {
+          "src": "/assets/core-teachers/core-teacher-07-d3d87dcb67-1600.webp",
+          "width": 1080,
+          "height": 1350,
+          "bytes": 153440
+        }
+      }
+    },
+    {
+      "id": "core-teacher-08-72fa8d53dd",
+      "source_number": 8,
+      "role": "formation",
+      "teacher": "Sophie May",
+      "discipline": "Hip Hop",
+      "alt": "Fiche professeur CORE : Sophie May · Hip Hop",
+      "source_file": "Fiche Profs/8.png",
+      "source_sha256": "72fa8d53ddd2b44e6a4b320f54b3e325a54f40bdd127e4f556e953ec8f0b0f34",
+      "credit": null,
+      "variants": {
+        "480": {
+          "src": "/assets/core-teachers/core-teacher-08-72fa8d53dd-480.webp",
+          "width": 480,
+          "height": 600,
+          "bytes": 59968
+        },
+        "960": {
+          "src": "/assets/core-teachers/core-teacher-08-72fa8d53dd-960.webp",
+          "width": 960,
+          "height": 1200,
+          "bytes": 142604
+        },
+        "1600": {
+          "src": "/assets/core-teachers/core-teacher-08-72fa8d53dd-1600.webp",
+          "width": 1080,
+          "height": 1350,
+          "bytes": 170118
+        }
+      }
+    },
+    {
+      "id": "core-teacher-09-949a682a32",
+      "source_number": 9,
+      "role": "formation",
+      "teacher": "Max Loove",
+      "discipline": "Hip Hop",
+      "alt": "Fiche professeur CORE : Max Loove · Hip Hop",
+      "source_file": "Fiche Profs/9.png",
+      "source_sha256": "949a682a3201e30d278634aa8e3a7c7eb1dd8f3780eacda43bebfab5aa6d2c2d",
+      "credit": null,
+      "variants": {
+        "480": {
+          "src": "/assets/core-teachers/core-teacher-09-949a682a32-480.webp",
+          "width": 480,
+          "height": 600,
+          "bytes": 62122
+        },
+        "960": {
+          "src": "/assets/core-teachers/core-teacher-09-949a682a32-960.webp",
+          "width": 960,
+          "height": 1200,
+          "bytes": 149700
+        },
+        "1600": {
+          "src": "/assets/core-teachers/core-teacher-09-949a682a32-1600.webp",
+          "width": 1080,
+          "height": 1350,
+          "bytes": 184626
+        }
+      }
+    },
+    {
+      "id": "core-teacher-10-a54c61d87e",
+      "source_number": 10,
+      "role": "formation",
+      "teacher": "Spider",
+      "discipline": "Hip Hop",
+      "alt": "Fiche professeur CORE : Spider · Hip Hop",
+      "source_file": "Fiche Profs/10.png",
+      "source_sha256": "a54c61d87eb2feda310563b1c1c718af87a1a3ab286546215d6e6c4bf3b34e25",
+      "credit": null,
+      "variants": {
+        "480": {
+          "src": "/assets/core-teachers/core-teacher-10-a54c61d87e-480.webp",
+          "width": 480,
+          "height": 600,
+          "bytes": 59480
+        },
+        "960": {
+          "src": "/assets/core-teachers/core-teacher-10-a54c61d87e-960.webp",
+          "width": 960,
+          "height": 1200,
+          "bytes": 154024
+        },
+        "1600": {
+          "src": "/assets/core-teachers/core-teacher-10-a54c61d87e-1600.webp",
+          "width": 1080,
+          "height": 1350,
+          "bytes": 194872
+        }
+      }
+    },
+    {
+      "id": "core-teacher-11-a5ce4eb779",
+      "source_number": 11,
+      "role": "formation",
+      "teacher": "Krissy",
+      "discipline": "Hip Hop",
+      "alt": "Fiche professeur CORE : Krissy · Hip Hop",
+      "source_file": "Fiche Profs/11.png",
+      "source_sha256": "a5ce4eb77900f0adc04dccff87427046c8c2a0150c0cdcf453ce04e17113b6af",
+      "credit": null,
+      "variants": {
+        "480": {
+          "src": "/assets/core-teachers/core-teacher-11-a5ce4eb779-480.webp",
+          "width": 480,
+          "height": 600,
+          "bytes": 52690
+        },
+        "960": {
+          "src": "/assets/core-teachers/core-teacher-11-a5ce4eb779-960.webp",
+          "width": 960,
+          "height": 1200,
+          "bytes": 125196
+        },
+        "1600": {
+          "src": "/assets/core-teachers/core-teacher-11-a5ce4eb779-1600.webp",
+          "width": 1080,
+          "height": 1350,
+          "bytes": 147746
+        }
+      }
+    },
+    {
+      "id": "core-teacher-12-1163bd2ac2",
+      "source_number": 12,
+      "role": "formation",
+      "teacher": "Meech de France",
+      "discipline": "Hip Hop",
+      "alt": "Fiche professeur CORE : Meech de France · Hip Hop",
+      "source_file": "Fiche Profs/12.png",
+      "source_sha256": "1163bd2ac297b2da956fda6e93b8e84e1674dbf1f44dbe867fc9f621f1493c7a",
+      "credit": null,
+      "variants": {
+        "480": {
+          "src": "/assets/core-teachers/core-teacher-12-1163bd2ac2-480.webp",
+          "width": 480,
+          "height": 600,
+          "bytes": 58312
+        },
+        "960": {
+          "src": "/assets/core-teachers/core-teacher-12-1163bd2ac2-960.webp",
+          "width": 960,
+          "height": 1200,
+          "bytes": 138342
+        },
+        "1600": {
+          "src": "/assets/core-teachers/core-teacher-12-1163bd2ac2-1600.webp",
+          "width": 1080,
+          "height": 1350,
+          "bytes": 167904
+        }
+      }
+    },
+    {
+      "id": "core-teacher-13-3cfc99320b",
+      "source_number": 13,
+      "role": "formation",
+      "teacher": "Bruce Ykanji",
+      "discipline": "Popping",
+      "alt": "Fiche professeur CORE : Bruce Ykanji · Popping",
+      "source_file": "Fiche Profs/13.png",
+      "source_sha256": "3cfc99320bdf22e9ec50ad973f6b35297d2170a3b78b7698fcf8f9119e617758",
+      "credit": null,
+      "variants": {
+        "480": {
+          "src": "/assets/core-teachers/core-teacher-13-3cfc99320b-480.webp",
+          "width": 480,
+          "height": 600,
+          "bytes": 55690
+        },
+        "960": {
+          "src": "/assets/core-teachers/core-teacher-13-3cfc99320b-960.webp",
+          "width": 960,
+          "height": 1200,
+          "bytes": 136050
+        },
+        "1600": {
+          "src": "/assets/core-teachers/core-teacher-13-3cfc99320b-1600.webp",
+          "width": 1080,
+          "height": 1350,
+          "bytes": 161194
+        }
+      }
+    },
+    {
+      "id": "core-teacher-14-fc8b4f1a43",
+      "source_number": 14,
+      "role": "formation",
+      "teacher": "Creesto",
+      "discipline": "Popping",
+      "alt": "Fiche professeur CORE : Creesto · Popping",
+      "source_file": "Fiche Profs/14.png",
+      "source_sha256": "fc8b4f1a43a24e0408ac39dc9c08a6ab70a1670e826355f82ede0363e0717005",
+      "credit": null,
+      "variants": {
+        "480": {
+          "src": "/assets/core-teachers/core-teacher-14-fc8b4f1a43-480.webp",
+          "width": 480,
+          "height": 600,
+          "bytes": 54998
+        },
+        "960": {
+          "src": "/assets/core-teachers/core-teacher-14-fc8b4f1a43-960.webp",
+          "width": 960,
+          "height": 1200,
+          "bytes": 127862
+        },
+        "1600": {
+          "src": "/assets/core-teachers/core-teacher-14-fc8b4f1a43-1600.webp",
+          "width": 1080,
+          "height": 1350,
+          "bytes": 147574
+        }
+      }
+    },
+    {
+      "id": "core-teacher-15-6f3080dfab",
+      "source_number": 15,
+      "role": "formation",
+      "teacher": "Sonya",
+      "discipline": "Popping",
+      "alt": "Fiche professeur CORE : Sonya · Popping",
+      "source_file": "Fiche Profs/15.png",
+      "source_sha256": "6f3080dfab23c1ee383ae323cfc065ae14f5f06cf76635177094ff08f6e3c688",
+      "credit": null,
+      "variants": {
+        "480": {
+          "src": "/assets/core-teachers/core-teacher-15-6f3080dfab-480.webp",
+          "width": 480,
+          "height": 600,
+          "bytes": 68116
+        },
+        "960": {
+          "src": "/assets/core-teachers/core-teacher-15-6f3080dfab-960.webp",
+          "width": 960,
+          "height": 1200,
+          "bytes": 194434
+        },
+        "1600": {
+          "src": "/assets/core-teachers/core-teacher-15-6f3080dfab-1600.webp",
+          "width": 1080,
+          "height": 1350,
+          "bytes": 244992
+        }
+      }
+    },
+    {
+      "id": "core-teacher-16-8dc9aa281d",
+      "source_number": 16,
+      "role": "formation",
+      "teacher": "Ness",
+      "discipline": "Popping",
+      "alt": "Fiche professeur CORE : Ness · Popping",
+      "source_file": "Fiche Profs/16.png",
+      "source_sha256": "8dc9aa281df8eedc8b4538f8ab40f4034d94feb0d5f72a64effa00dfb59b8c4c",
+      "credit": null,
+      "variants": {
+        "480": {
+          "src": "/assets/core-teachers/core-teacher-16-8dc9aa281d-480.webp",
+          "width": 480,
+          "height": 600,
+          "bytes": 59752
+        },
+        "960": {
+          "src": "/assets/core-teachers/core-teacher-16-8dc9aa281d-960.webp",
+          "width": 960,
+          "height": 1200,
+          "bytes": 140668
+        },
+        "1600": {
+          "src": "/assets/core-teachers/core-teacher-16-8dc9aa281d-1600.webp",
+          "width": 1080,
+          "height": 1350,
+          "bytes": 164026
+        }
+      }
+    },
+    {
+      "id": "core-teacher-17-f28ef5269f",
+      "source_number": 17,
+      "role": "formation",
+      "teacher": "Kota",
+      "discipline": "Locking",
+      "alt": "Fiche professeur CORE : Kota · Locking",
+      "source_file": "Fiche Profs/17.png",
+      "source_sha256": "f28ef5269f2ef5fff394e92c631b4e2ec537a35b3b57939a69fc5c507ebc789f",
+      "credit": null,
+      "variants": {
+        "480": {
+          "src": "/assets/core-teachers/core-teacher-17-f28ef5269f-480.webp",
+          "width": 480,
+          "height": 600,
+          "bytes": 55844
+        },
+        "960": {
+          "src": "/assets/core-teachers/core-teacher-17-f28ef5269f-960.webp",
+          "width": 960,
+          "height": 1200,
+          "bytes": 132312
+        },
+        "1600": {
+          "src": "/assets/core-teachers/core-teacher-17-f28ef5269f-1600.webp",
+          "width": 1080,
+          "height": 1350,
+          "bytes": 155004
+        }
+      }
+    },
+    {
+      "id": "core-teacher-18-f2a17e3e8b",
+      "source_number": 18,
+      "role": "formation",
+      "teacher": "Loïc",
+      "discipline": "Locking",
+      "alt": "Fiche professeur CORE : Loïc · Locking",
+      "source_file": "Fiche Profs/18.png",
+      "source_sha256": "f2a17e3e8b497caa688934286c878089ce43029cd5cc28c489af6cca8c9d30df",
+      "credit": null,
+      "variants": {
+        "480": {
+          "src": "/assets/core-teachers/core-teacher-18-f2a17e3e8b-480.webp",
+          "width": 480,
+          "height": 600,
+          "bytes": 52802
+        },
+        "960": {
+          "src": "/assets/core-teachers/core-teacher-18-f2a17e3e8b-960.webp",
+          "width": 960,
+          "height": 1200,
+          "bytes": 122698
+        },
+        "1600": {
+          "src": "/assets/core-teachers/core-teacher-18-f2a17e3e8b-1600.webp",
+          "width": 1080,
+          "height": 1350,
+          "bytes": 145696
+        }
+      }
+    },
+    {
+      "id": "core-teacher-19-81e09c98f5",
+      "source_number": 19,
+      "role": "formation",
+      "teacher": "Jimmy Soul",
+      "discipline": "Locking",
+      "alt": "Fiche professeur CORE : Jimmy Soul · Locking",
+      "source_file": "Fiche Profs/19.png",
+      "source_sha256": "81e09c98f5b99251dd6a8e79f638bb1eec1fc71d34d289981f83c202752a74d3",
+      "credit": null,
+      "variants": {
+        "480": {
+          "src": "/assets/core-teachers/core-teacher-19-81e09c98f5-480.webp",
+          "width": 480,
+          "height": 600,
+          "bytes": 57146
+        },
+        "960": {
+          "src": "/assets/core-teachers/core-teacher-19-81e09c98f5-960.webp",
+          "width": 960,
+          "height": 1200,
+          "bytes": 143442
+        },
+        "1600": {
+          "src": "/assets/core-teachers/core-teacher-19-81e09c98f5-1600.webp",
+          "width": 1080,
+          "height": 1350,
+          "bytes": 166354
+        }
+      }
+    },
+    {
+      "id": "core-teacher-20-ab103c6756",
+      "source_number": 20,
+      "role": "formation",
+      "teacher": "P.Lock",
+      "discipline": "Locking",
+      "alt": "Fiche professeur CORE : P.Lock · Locking",
+      "source_file": "Fiche Profs/20.png",
+      "source_sha256": "ab103c67569d8191572a9ebd8e1a981fd2cca6e7afd226b1b04974bad1bdc180",
+      "credit": null,
+      "variants": {
+        "480": {
+          "src": "/assets/core-teachers/core-teacher-20-ab103c6756-480.webp",
+          "width": 480,
+          "height": 600,
+          "bytes": 59934
+        },
+        "960": {
+          "src": "/assets/core-teachers/core-teacher-20-ab103c6756-960.webp",
+          "width": 960,
+          "height": 1200,
+          "bytes": 152624
+        },
+        "1600": {
+          "src": "/assets/core-teachers/core-teacher-20-ab103c6756-1600.webp",
+          "width": 1080,
+          "height": 1350,
+          "bytes": 180840
+        }
+      }
+    },
+    {
+      "id": "core-teacher-21-fbc13e1f04",
+      "source_number": 21,
+      "role": "formation",
+      "teacher": "Ricky Soul",
+      "discipline": "House dance",
+      "alt": "Fiche professeur CORE : Ricky Soul · House dance",
+      "source_file": "Fiche Profs/21.png",
+      "source_sha256": "fbc13e1f04fbf513315e0b90ff18bcf3e1468c2cc38e4f92be72cf75665dcfe3",
+      "credit": null,
+      "variants": {
+        "480": {
+          "src": "/assets/core-teachers/core-teacher-21-fbc13e1f04-480.webp",
+          "width": 480,
+          "height": 600,
+          "bytes": 73270
+        },
+        "960": {
+          "src": "/assets/core-teachers/core-teacher-21-fbc13e1f04-960.webp",
+          "width": 960,
+          "height": 1200,
+          "bytes": 190816
+        },
+        "1600": {
+          "src": "/assets/core-teachers/core-teacher-21-fbc13e1f04-1600.webp",
+          "width": 1080,
+          "height": 1350,
+          "bytes": 237400
+        }
+      }
+    },
+    {
+      "id": "core-teacher-22-e0d8410212",
+      "source_number": 22,
+      "role": "formation",
+      "teacher": "Ulijen",
+      "discipline": "House dance",
+      "alt": "Fiche professeur CORE : Ulijen · House dance",
+      "source_file": "Fiche Profs/22.png",
+      "source_sha256": "e0d8410212e7d285100d053c01e60966026597c37fdc79e67f77a4300572427b",
+      "credit": null,
+      "variants": {
+        "480": {
+          "src": "/assets/core-teachers/core-teacher-22-e0d8410212-480.webp",
+          "width": 480,
+          "height": 600,
+          "bytes": 60588
+        },
+        "960": {
+          "src": "/assets/core-teachers/core-teacher-22-e0d8410212-960.webp",
+          "width": 960,
+          "height": 1200,
+          "bytes": 142390
+        },
+        "1600": {
+          "src": "/assets/core-teachers/core-teacher-22-e0d8410212-1600.webp",
+          "width": 1080,
+          "height": 1350,
+          "bytes": 165632
+        }
+      }
+    },
+    {
+      "id": "core-teacher-23-443cbfc628",
+      "source_number": 23,
+      "role": "formation",
+      "teacher": "Raza",
+      "discipline": "House dance",
+      "alt": "Fiche professeur CORE : Raza · House dance",
+      "source_file": "Fiche Profs/23.png",
+      "source_sha256": "443cbfc62872c52c453d29cbe48c49b34bb4a696b3a14e091d00ac4b9b6d2eed",
+      "credit": null,
+      "variants": {
+        "480": {
+          "src": "/assets/core-teachers/core-teacher-23-443cbfc628-480.webp",
+          "width": 480,
+          "height": 600,
+          "bytes": 59814
+        },
+        "960": {
+          "src": "/assets/core-teachers/core-teacher-23-443cbfc628-960.webp",
+          "width": 960,
+          "height": 1200,
+          "bytes": 143596
+        },
+        "1600": {
+          "src": "/assets/core-teachers/core-teacher-23-443cbfc628-1600.webp",
+          "width": 1080,
+          "height": 1350,
+          "bytes": 169376
+        }
+      }
+    },
+    {
+      "id": "core-teacher-24-d1177a00aa",
+      "source_number": 24,
+      "role": "formation",
+      "teacher": "Rabah",
+      "discipline": "House dance",
+      "alt": "Fiche professeur CORE : Rabah · House dance",
+      "source_file": "Fiche Profs/24.png",
+      "source_sha256": "d1177a00aaca33179d3225072c22e0fd1dcdf8c571af079df56eb1b72b8b688f",
+      "credit": null,
+      "variants": {
+        "480": {
+          "src": "/assets/core-teachers/core-teacher-24-d1177a00aa-480.webp",
+          "width": 480,
+          "height": 600,
+          "bytes": 71166
+        },
+        "960": {
+          "src": "/assets/core-teachers/core-teacher-24-d1177a00aa-960.webp",
+          "width": 960,
+          "height": 1200,
+          "bytes": 178518
+        },
+        "1600": {
+          "src": "/assets/core-teachers/core-teacher-24-d1177a00aa-1600.webp",
+          "width": 1080,
+          "height": 1350,
+          "bytes": 215136
+        }
+      }
+    }
+  ],
+  "identity_mapping_source": "Names and disciplines printed on the teacher cards supplied by Vanessa on 26 October 2026.",
+  "selected_scenes": [
+    {
+      "id": "core-pro-17-63214158d0",
+      "source_number": 17,
       "role": "formation",
       "teacher": null,
       "discipline": null,
       "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
-      "source_file": "JD_04.03_@MarcoConiglione-150.jpg",
-      "source_sha256": "ef9f258f258e5e3be508bb5e51b207a294769fe31a42143786194442b140e5e4",
-      "credit": "Marco Coniglione",
+      "source_file": "53618349_2297570330274374_9023896644478828544_n.jpg",
+      "source_sha256": "63214158d0f1f8690b6ed899919213dc706077a22d225671082a5e7c916ba82e",
+      "credit": "Baptiste Fauchille / Juste Debout",
       "variants": {
         "480": {
-          "src": "/assets/core-formation/core-pro-02-ef9f258f25-480.webp",
+          "src": "/assets/core-formation/core-pro-17-63214158d0-480.webp",
           "width": 480,
-          "height": 320,
-          "bytes": 13316
+          "height": 319,
+          "bytes": 19366
         },
         "960": {
-          "src": "/assets/core-formation/core-pro-02-ef9f258f25-960.webp",
+          "src": "/assets/core-formation/core-pro-17-63214158d0-960.webp",
           "width": 960,
-          "height": 640,
-          "bytes": 46624
+          "height": 638,
+          "bytes": 57450
         },
         "1600": {
-          "src": "/assets/core-formation/core-pro-02-ef9f258f25-1600.webp",
+          "src": "/assets/core-formation/core-pro-17-63214158d0-1600.webp",
           "width": 1600,
-          "height": 1066,
-          "bytes": 163608
+          "height": 1064,
+          "bytes": 157546
         }
       }
     },
@@ -103,130 +761,6 @@
       }
     },
     {
-      "id": "core-pro-04-c67b5a9095",
-      "source_number": 4,
-      "role": "formation",
-      "teacher": null,
-      "discipline": null,
-      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
-      "source_file": "JD_04.03_@MarcoConiglione-144.jpg",
-      "source_sha256": "c67b5a90954c7f17281cd01fd63d60f18aa919fdf9f638dcd6db9b618b367bd2",
-      "credit": "Marco Coniglione",
-      "variants": {
-        "480": {
-          "src": "/assets/core-formation/core-pro-04-c67b5a9095-480.webp",
-          "width": 480,
-          "height": 320,
-          "bytes": 15958
-        },
-        "960": {
-          "src": "/assets/core-formation/core-pro-04-c67b5a9095-960.webp",
-          "width": 960,
-          "height": 640,
-          "bytes": 51474
-        },
-        "1600": {
-          "src": "/assets/core-formation/core-pro-04-c67b5a9095-1600.webp",
-          "width": 1600,
-          "height": 1066,
-          "bytes": 187938
-        }
-      }
-    },
-    {
-      "id": "core-pro-05-a8972c35e1",
-      "source_number": 5,
-      "role": "formation",
-      "teacher": null,
-      "discipline": null,
-      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
-      "source_file": "JD_3.03_@MarcoConiglione-089.jpg",
-      "source_sha256": "a8972c35e11940b683cd3a89494e8ad4811a745c2432ceac3081b01c7f3b5e25",
-      "credit": "Marco Coniglione",
-      "variants": {
-        "480": {
-          "src": "/assets/core-formation/core-pro-05-a8972c35e1-480.webp",
-          "width": 360,
-          "height": 480,
-          "bytes": 18466
-        },
-        "960": {
-          "src": "/assets/core-formation/core-pro-05-a8972c35e1-960.webp",
-          "width": 720,
-          "height": 960,
-          "bytes": 61158
-        },
-        "1600": {
-          "src": "/assets/core-formation/core-pro-05-a8972c35e1-1600.webp",
-          "width": 1200,
-          "height": 1600,
-          "bytes": 227552
-        }
-      }
-    },
-    {
-      "id": "core-pro-06-6ae29ec031",
-      "source_number": 6,
-      "role": "formation",
-      "teacher": null,
-      "discipline": null,
-      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
-      "source_file": "JD_3.03_@MarcoConiglione-083.jpg",
-      "source_sha256": "6ae29ec03175e7cf6182ca784511cb767678e0fed23efa4cbec360198d2453cc",
-      "credit": "Marco Coniglione",
-      "variants": {
-        "480": {
-          "src": "/assets/core-formation/core-pro-06-6ae29ec031-480.webp",
-          "width": 360,
-          "height": 480,
-          "bytes": 12546
-        },
-        "960": {
-          "src": "/assets/core-formation/core-pro-06-6ae29ec031-960.webp",
-          "width": 720,
-          "height": 960,
-          "bytes": 55162
-        },
-        "1600": {
-          "src": "/assets/core-formation/core-pro-06-6ae29ec031-1600.webp",
-          "width": 1200,
-          "height": 1600,
-          "bytes": 344780
-        }
-      }
-    },
-    {
-      "id": "core-pro-07-f9355dee39",
-      "source_number": 7,
-      "role": "formation",
-      "teacher": null,
-      "discipline": null,
-      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
-      "source_file": "JD_3.03_@MarcoConiglione-42.jpg",
-      "source_sha256": "f9355dee39e53510ea1a6e393d9cd6d0c419c76bdd5030a65fddcf2baa7b1de6",
-      "credit": "Marco Coniglione",
-      "variants": {
-        "480": {
-          "src": "/assets/core-formation/core-pro-07-f9355dee39-480.webp",
-          "width": 480,
-          "height": 320,
-          "bytes": 21538
-        },
-        "960": {
-          "src": "/assets/core-formation/core-pro-07-f9355dee39-960.webp",
-          "width": 960,
-          "height": 640,
-          "bytes": 86784
-        },
-        "1600": {
-          "src": "/assets/core-formation/core-pro-07-f9355dee39-1600.webp",
-          "width": 1600,
-          "height": 1066,
-          "bytes": 332524
-        }
-      }
-    },
-    {
       "id": "core-pro-08-ec6dc9390e",
       "source_number": 8,
       "role": "formation",
@@ -256,285 +790,11 @@
           "bytes": 148594
         }
       }
-    },
-    {
-      "id": "core-pro-09-2cc79477dd",
-      "source_number": 9,
-      "role": "formation",
-      "teacher": null,
-      "discipline": null,
-      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
-      "source_file": "LittleShao_JD2026_0302_ASC0480_WEBLOGO.jpg",
-      "source_sha256": "2cc79477dd3688b9000524c46eda0a581342cfe78523f9c98cf41ed7bda6b261",
-      "credit": "Little Shao",
-      "variants": {
-        "480": {
-          "src": "/assets/core-formation/core-pro-09-2cc79477dd-480.webp",
-          "width": 360,
-          "height": 480,
-          "bytes": 14610
-        },
-        "960": {
-          "src": "/assets/core-formation/core-pro-09-2cc79477dd-960.webp",
-          "width": 720,
-          "height": 960,
-          "bytes": 72280
-        },
-        "1600": {
-          "src": "/assets/core-formation/core-pro-09-2cc79477dd-1600.webp",
-          "width": 1200,
-          "height": 1600,
-          "bytes": 375230
-        }
-      }
-    },
-    {
-      "id": "core-pro-10-2088e8451c",
-      "source_number": 10,
-      "role": "formation",
-      "teacher": null,
-      "discipline": null,
-      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
-      "source_file": "LittleShao_JD2026_0302_ASC0462_WEBLOGO.jpg",
-      "source_sha256": "2088e8451cb0d8085473c38cc0b9501a78f56d20a516e9b5a77d329402351c52",
-      "credit": "Little Shao",
-      "variants": {
-        "480": {
-          "src": "/assets/core-formation/core-pro-10-2088e8451c-480.webp",
-          "width": 360,
-          "height": 480,
-          "bytes": 17976
-        },
-        "960": {
-          "src": "/assets/core-formation/core-pro-10-2088e8451c-960.webp",
-          "width": 720,
-          "height": 960,
-          "bytes": 60424
-        },
-        "1600": {
-          "src": "/assets/core-formation/core-pro-10-2088e8451c-1600.webp",
-          "width": 1200,
-          "height": 1600,
-          "bytes": 151966
-        }
-      }
-    },
-    {
-      "id": "core-pro-11-ce2916ff54",
-      "source_number": 11,
-      "role": "formation",
-      "teacher": null,
-      "discipline": null,
-      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
-      "source_file": "LittleShao_JD2026_0302_ASC0023_WEBLOGO.jpg",
-      "source_sha256": "ce2916ff54d172dfc7dc0438760c9cbc735691f8f3f597ff09fb9efc262fccf1",
-      "credit": "Little Shao",
-      "variants": {
-        "480": {
-          "src": "/assets/core-formation/core-pro-11-ce2916ff54-480.webp",
-          "width": 360,
-          "height": 480,
-          "bytes": 18208
-        },
-        "960": {
-          "src": "/assets/core-formation/core-pro-11-ce2916ff54-960.webp",
-          "width": 720,
-          "height": 960,
-          "bytes": 62262
-        },
-        "1600": {
-          "src": "/assets/core-formation/core-pro-11-ce2916ff54-1600.webp",
-          "width": 1200,
-          "height": 1600,
-          "bytes": 238502
-        }
-      }
-    },
-    {
-      "id": "core-pro-12-974a467c07",
-      "source_number": 12,
-      "role": "formation",
-      "teacher": null,
-      "discipline": null,
-      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
-      "source_file": "LittleShao_JD2026_0302_ASC0060_WEBLOGO.jpg",
-      "source_sha256": "974a467c072a2f0f9e4b3f9f63162be71f609a36378df79402f708707a93d4ae",
-      "credit": "Little Shao",
-      "variants": {
-        "480": {
-          "src": "/assets/core-formation/core-pro-12-974a467c07-480.webp",
-          "width": 360,
-          "height": 480,
-          "bytes": 20722
-        },
-        "960": {
-          "src": "/assets/core-formation/core-pro-12-974a467c07-960.webp",
-          "width": 720,
-          "height": 960,
-          "bytes": 88090
-        },
-        "1600": {
-          "src": "/assets/core-formation/core-pro-12-974a467c07-1600.webp",
-          "width": 1200,
-          "height": 1600,
-          "bytes": 382076
-        }
-      }
-    },
-    {
-      "id": "core-pro-13-0123b56222",
-      "source_number": 13,
-      "role": "formation",
-      "teacher": null,
-      "discipline": null,
-      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
-      "source_file": "53585263_2303469473017793_1017533909119795200_n (1).jpg",
-      "source_sha256": "0123b56222d8921bbbbe0957a56b897a7880cf41fc8b0dee4a0e793555d4e55f",
-      "credit": "Lemzo",
-      "variants": {
-        "480": {
-          "src": "/assets/core-formation/core-pro-13-0123b56222-480.webp",
-          "width": 371,
-          "height": 480,
-          "bytes": 23648
-        },
-        "960": {
-          "src": "/assets/core-formation/core-pro-13-0123b56222-960.webp",
-          "width": 742,
-          "height": 960,
-          "bytes": 85242
-        },
-        "1600": {
-          "src": "/assets/core-formation/core-pro-13-0123b56222-1600.webp",
-          "width": 1236,
-          "height": 1600,
-          "bytes": 240992
-        }
-      }
-    },
-    {
-      "id": "core-pro-14-d46088dea6",
-      "source_number": 14,
-      "role": "formation",
-      "teacher": null,
-      "discipline": null,
-      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
-      "source_file": "89070146_3004799499551450_50992716481298432_n.jpg",
-      "source_sha256": "d46088dea68e31d6b90f0bf9a884237fb9637c5fa2f69565c789c42ce9799d2f",
-      "credit": "Doumam / Juste Debout",
-      "variants": {
-        "480": {
-          "src": "/assets/core-formation/core-pro-14-d46088dea6-480.webp",
-          "width": 320,
-          "height": 480,
-          "bytes": 12880
-        },
-        "960": {
-          "src": "/assets/core-formation/core-pro-14-d46088dea6-960.webp",
-          "width": 640,
-          "height": 960,
-          "bytes": 46770
-        },
-        "1600": {
-          "src": "/assets/core-formation/core-pro-14-d46088dea6-1600.webp",
-          "width": 1066,
-          "height": 1600,
-          "bytes": 128942
-        }
-      }
-    },
-    {
-      "id": "core-pro-15-f674d7f711",
-      "source_number": 15,
-      "role": "formation",
-      "teacher": null,
-      "discipline": null,
-      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
-      "source_file": "89263602_3004777199553680_1543024613779308544_n.jpg",
-      "source_sha256": "f674d7f7115949b54bf50703f264a69020938def1c4e24d42682086468bfd1b5",
-      "credit": "Doumam / Juste Debout",
-      "variants": {
-        "480": {
-          "src": "/assets/core-formation/core-pro-15-f674d7f711-480.webp",
-          "width": 320,
-          "height": 480,
-          "bytes": 18950
-        },
-        "960": {
-          "src": "/assets/core-formation/core-pro-15-f674d7f711-960.webp",
-          "width": 640,
-          "height": 960,
-          "bytes": 70702
-        },
-        "1600": {
-          "src": "/assets/core-formation/core-pro-15-f674d7f711-1600.webp",
-          "width": 1066,
-          "height": 1600,
-          "bytes": 223916
-        }
-      }
-    },
-    {
-      "id": "core-pro-16-808dd8643e",
-      "source_number": 16,
-      "role": "formation",
-      "teacher": null,
-      "discipline": null,
-      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
-      "source_file": "53399733_2297569700274437_9046478818017017856_n.jpg",
-      "source_sha256": "808dd8643e038d8e0d8ebc7fa09a23b7b6e403d48bcc5144930be3abcd3883f6",
-      "credit": "Baptiste Fauchille / Juste Debout",
-      "variants": {
-        "480": {
-          "src": "/assets/core-formation/core-pro-16-808dd8643e-480.webp",
-          "width": 480,
-          "height": 322,
-          "bytes": 16406
-        },
-        "960": {
-          "src": "/assets/core-formation/core-pro-16-808dd8643e-960.webp",
-          "width": 960,
-          "height": 644,
-          "bytes": 49266
-        },
-        "1600": {
-          "src": "/assets/core-formation/core-pro-16-808dd8643e-1600.webp",
-          "width": 1600,
-          "height": 1074,
-          "bytes": 152430
-        }
-      }
-    },
-    {
-      "id": "core-pro-17-63214158d0",
-      "source_number": 17,
-      "role": "formation",
-      "teacher": null,
-      "discipline": null,
-      "alt": "Un moment de transmission dans un studio de la formation professionnelle CORE",
-      "source_file": "53618349_2297570330274374_9023896644478828544_n.jpg",
-      "source_sha256": "63214158d0f1f8690b6ed899919213dc706077a22d225671082a5e7c916ba82e",
-      "credit": "Baptiste Fauchille / Juste Debout",
-      "variants": {
-        "480": {
-          "src": "/assets/core-formation/core-pro-17-63214158d0-480.webp",
-          "width": 480,
-          "height": 319,
-          "bytes": 19366
-        },
-        "960": {
-          "src": "/assets/core-formation/core-pro-17-63214158d0-960.webp",
-          "width": 960,
-          "height": 638,
-          "bytes": 57450
-        },
-        "1600": {
-          "src": "/assets/core-formation/core-pro-17-63214158d0-1600.webp",
-          "width": 1600,
-          "height": 1064,
-          "bytes": 157546
-        }
-      }
     }
+  ],
+  "scene_placements": [
+    ".campus-depth img",
+    ".schedule-image img",
+    ".formation-image img"
   ]
 }
