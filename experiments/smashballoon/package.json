@@ -1,0 +1,1 @@
+{"name":"school-smashballoon-proof","private":true,"type":"module","scripts":{"test":"node --use-env-proxy test-integration.mjs"},"dependencies":{"@wp-playground/cli":"3.1.61"}}

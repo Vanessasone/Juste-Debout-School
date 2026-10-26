@@ -1,0 +1,34 @@
+{
+  "date": "2026-10-26",
+  "environment": "isolated WordPress Playground; SQLite; anonymous HTTP requests",
+  "versions": {
+    "php": "8.3.33",
+    "wordpress": "7.1.3",
+    "plugin": "6.14.0",
+    "shortcode": true,
+    "anonymous": true
+  },
+  "bridgeSha256": "643689029a529e13db0dba0f3dd53c6ad1fc46f17121e8caccb393b7ee77955c",
+  "checks": [
+    "Official plugin activated and shortcode registered",
+    "Test runs anonymously",
+    "Unconnected feed returns truthful unavailable state",
+    "Only canonical School origin may embed the feed",
+    "Feed route has no conflicting X-Frame-Options",
+    "Feed endpoint is excluded from indexing",
+    "Resize messages target the exact School origin",
+    "Login frame protection remains enabled",
+    "Configured endpoint executes actual Smash Balloon shortcode",
+    "Missing Instagram configuration is reported by official plugin",
+    "Plugin frontend CSS and JS are enqueued",
+    "All enqueued plugin frontend assets return HTTP 200"
+  ],
+  "notTested": [
+    "Paid Pro plugin and licence",
+    "Real Instagram authorization and posts",
+    "Automatic refresh and WP-Cron on permanent hosting",
+    "Cross-origin rendering, resize and mobile/lightbox behaviour in a browser",
+    "Actual WordPress hosting security headers and integration with Netlify"
+  ],
+  "productionChanged": false
+}
