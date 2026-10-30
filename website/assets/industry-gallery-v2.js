@@ -1,5 +1,5 @@
 (()=>{'use strict';
-const catalogue='/assets/industry-formation/catalogue-v2.json?v=teacher-review-20261023';
+const catalogue='/assets/industry-formation/catalogue-v2.json?v=industry-posters-20261030';
 const inApp=document.documentElement.dataset.schoolSurface==='app';
 function el(tag,cls,text){const n=document.createElement(tag);if(cls)n.className=cls;if(text)n.textContent=text;return n}
 let roster;

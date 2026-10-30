@@ -3,114 +3,196 @@
     "id": "amelie",
     "name": "Amélie",
     "subject": "Techniques académiques",
-    "image": "/assets/industry-formation/amelie.png"
+    "image": "/assets/industry-formation/amelie-1080.webp",
+    "thumbnail": "/assets/industry-formation/amelie-640.webp"
   },
   {
     "id": "ashley-khelif",
     "name": "Ashley Khelif",
     "subject": "Heels / Techniques académiques",
-    "image": "/assets/industry-formation/ashley-khelif.png"
+    "image": "/assets/industry-formation/ashley-khelif-1080.webp",
+    "thumbnail": "/assets/industry-formation/ashley-khelif-640.webp"
   },
   {
     "id": "bruce-ykanji",
     "name": "Bruce Ykanji",
     "subject": "Popping / Hip-Hop",
-    "image": "/assets/industry-formation/bruce-ykanji.png"
+    "image": "/assets/industry-formation/bruce-ykanji-1080.webp",
+    "thumbnail": "/assets/industry-formation/bruce-ykanji-640.webp"
   },
   {
     "id": "creesto",
     "name": "Creesto",
     "subject": "Popping",
-    "image": "/assets/industry-formation/creesto.png"
+    "image": "/assets/industry-formation/creesto-1080.webp",
+    "thumbnail": "/assets/industry-formation/creesto-640.webp"
   },
   {
     "id": "enzo-hacini",
     "name": "Enzo Hacini",
     "subject": "Heels",
-    "image": "/assets/industry-formation/enzo-hacini.png"
+    "image": "/assets/industry-formation/enzo-hacini-1080.webp",
+    "thumbnail": "/assets/industry-formation/enzo-hacini-640.webp"
+  },
+  {
+    "id": "helene",
+    "name": "Hélène",
+    "subject": "Danse classique",
+    "image": "/assets/industry-formation/helene-1080.webp",
+    "thumbnail": "/assets/industry-formation/helene-640.webp"
   },
   {
     "id": "joel-tenda",
     "name": "Joël Tenda",
     "subject": "Ndombolo",
-    "image": "/assets/industry-formation/joel-tenda.png"
+    "image": "/assets/industry-formation/joel-tenda-1080.webp",
+    "thumbnail": "/assets/industry-formation/joel-tenda-640.webp"
+  },
+  {
+    "id": "jp-mano",
+    "name": "JP Mano",
+    "subject": "Histoire de la musique",
+    "image": "/assets/industry-formation/jp-mano-1080.webp",
+    "thumbnail": "/assets/industry-formation/jp-mano-640.webp"
   },
   {
     "id": "loic",
     "name": "Loïc",
     "subject": "Locking",
-    "image": "/assets/industry-formation/loic.png"
+    "image": "/assets/industry-formation/loic-1080.webp",
+    "thumbnail": "/assets/industry-formation/loic-640.webp"
   },
   {
     "id": "loriane",
     "name": "Loriane",
     "subject": "Heels / Techniques académiques",
-    "image": "/assets/industry-formation/loriane.png"
+    "image": "/assets/industry-formation/loriane-1080.webp",
+    "thumbnail": "/assets/industry-formation/loriane-640.webp"
   },
   {
     "id": "marie-mwiza-ndutiye",
     "name": "Marie Mwiza Ndutiye",
     "subject": "Yoga",
-    "image": "/assets/industry-formation/marie-mwiza-ndutiye.png"
+    "image": "/assets/industry-formation/marie-mwiza-ndutiye-1080.webp",
+    "thumbnail": "/assets/industry-formation/marie-mwiza-ndutiye-640.webp"
+  },
+  {
+    "id": "maxime-garvi",
+    "name": "Maxime Garvi",
+    "subject": "Hip Hop Choreo",
+    "image": "/assets/industry-formation/maxime-garvi-1080.webp",
+    "thumbnail": "/assets/industry-formation/maxime-garvi-640.webp"
+  },
+  {
+    "id": "meech",
+    "name": "Meech",
+    "subject": "Hip Hop",
+    "image": "/assets/industry-formation/meech-1080.webp",
+    "thumbnail": "/assets/industry-formation/meech-640.webp"
   },
   {
     "id": "melissa-fromentin",
     "name": "Mélissa Fromentin",
     "subject": "Street Jazz",
-    "image": "/assets/industry-formation/melissa-fromentin.png"
+    "image": "/assets/industry-formation/melissa-fromentin-1080.webp",
+    "thumbnail": "/assets/industry-formation/melissa-fromentin-640.webp"
   },
   {
     "id": "michmich",
     "name": "Michmich",
     "subject": "Urban contemporain",
-    "image": "/assets/industry-formation/michmich.png"
+    "image": "/assets/industry-formation/michmich-1080.webp",
+    "thumbnail": "/assets/industry-formation/michmich-640.webp"
+  },
+  {
+    "id": "namu-serpentard",
+    "name": "Namu Serpentard",
+    "subject": "Beatmaking",
+    "image": "/assets/industry-formation/namu-serpentard-1080.webp",
+    "thumbnail": "/assets/industry-formation/namu-serpentard-640.webp"
   },
   {
     "id": "p-lock",
     "name": "P.lock",
     "subject": "Locking",
-    "image": "/assets/industry-formation/p-lock.png"
+    "image": "/assets/industry-formation/p-lock-1080.webp",
+    "thumbnail": "/assets/industry-formation/p-lock-640.webp"
   },
   {
     "id": "queensy",
     "name": "Queensy",
     "subject": "Dancehall",
-    "image": "/assets/industry-formation/queensy.png"
+    "image": "/assets/industry-formation/queensy-1080.webp",
+    "thumbnail": "/assets/industry-formation/queensy-640.webp"
   },
   {
     "id": "quentin",
     "name": "Quentin",
     "subject": "Modern",
-    "image": "/assets/industry-formation/quentin.png"
+    "image": "/assets/industry-formation/quentin-1080.webp",
+    "thumbnail": "/assets/industry-formation/quentin-640.webp"
+  },
+  {
+    "id": "rabah-mahfoufi",
+    "name": "Rabah Mahfoufi",
+    "subject": "House",
+    "image": "/assets/industry-formation/rabah-mahfoufi-1080.webp",
+    "thumbnail": "/assets/industry-formation/rabah-mahfoufi-640.webp"
   },
   {
     "id": "rickysoul",
     "name": "Rickysoul",
     "subject": "House Dance",
-    "image": "/assets/industry-formation/rickysoul.png"
+    "image": "/assets/industry-formation/rickysoul-1080.webp",
+    "thumbnail": "/assets/industry-formation/rickysoul-640.webp"
+  },
+  {
+    "id": "sofy",
+    "name": "Sofy",
+    "subject": "Chant",
+    "image": "/assets/industry-formation/sofy-1080.webp",
+    "thumbnail": "/assets/industry-formation/sofy-640.webp"
   },
   {
     "id": "ulijen",
     "name": "ULIJEN",
     "subject": "House Choreo",
-    "image": "/assets/industry-formation/ulijen.png"
+    "image": "/assets/industry-formation/ulijen-1080.webp",
+    "thumbnail": "/assets/industry-formation/ulijen-640.webp"
+  },
+  {
+    "id": "victoria-prevel",
+    "name": "Victoria Prevel",
+    "subject": "Jazz",
+    "image": "/assets/industry-formation/victoria-prevel-1080.webp",
+    "thumbnail": "/assets/industry-formation/victoria-prevel-640.webp"
   },
   {
     "id": "vision",
     "name": "Vision",
     "subject": "Électro",
-    "image": "/assets/industry-formation/vision.png"
+    "image": "/assets/industry-formation/vision-1080.webp",
+    "thumbnail": "/assets/industry-formation/vision-640.webp"
   },
   {
     "id": "william",
     "name": "William",
     "subject": "Coaching physique",
-    "image": "/assets/industry-formation/william.png"
+    "image": "/assets/industry-formation/william-1080.webp",
+    "thumbnail": "/assets/industry-formation/william-640.webp"
   },
   {
     "id": "xtana",
     "name": "Xtana",
     "subject": "Afro House",
-    "image": "/assets/industry-formation/xtana.png"
+    "image": "/assets/industry-formation/xtana-1080.webp",
+    "thumbnail": "/assets/industry-formation/xtana-640.webp"
+  },
+  {
+    "id": "yanou",
+    "name": "Yanou",
+    "subject": "Voguing",
+    "image": "/assets/industry-formation/yanou-1080.webp",
+    "thumbnail": "/assets/industry-formation/yanou-640.webp"
   }
 ]
