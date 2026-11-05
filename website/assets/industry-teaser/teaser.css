@@ -9,3 +9,5 @@
 @media(min-width:701px){.industry-opening-page .industry-scroll{left:5%;transform:none;bottom:24px}.industry-opening-page .industry-opening-hero .industry-motion-toggle{bottom:24px}}
 
 @media(max-width:700px){.industry-opening-page .industry-opening-hero .industry-teaser{object-position:center center}.industry-opening-page .industry-hero-title span{color:#fff}.industry-opening-page.industry-hero-visible jd-galaxy{visibility:hidden;pointer-events:none}.industry-opening-hero:after{background:linear-gradient(90deg,#070a1070,#070a1015),linear-gradient(0deg,#070a10a0,transparent 65%)}}
+
+@media(max-width:700px){.industry-opening-page .industry-hero-title{font-family:Arial,Helvetica,sans-serif}}

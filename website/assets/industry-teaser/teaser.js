@@ -17,7 +17,7 @@
     for(const [video,item] of items){if(!video.isConnected){observer.unobserve(video);item.button.remove();items.delete(video)}else label(item)}
     document.querySelectorAll('video[data-industry-teaser]').forEach(video=>{
       if(items.has(video))return;
-      video.controls=false;video.removeAttribute('controls');video.disablePictureInPicture=true;video.muted=true;video.defaultMuted=true;video.setAttribute('muted','');video.playsInline=true;video.setAttribute('playsinline','');video.setAttribute('webkit-playsinline','');if(video.closest('.industry-opening-hero')&&matchMedia('(max-width:700px)').matches){video.src='/assets/industry-teaser/voile-bleu-mobile.mp4';video.poster='/assets/industry-teaser/voile-bleu-mobile.jpg';video.preload='auto'}
+      video.controls=false;video.removeAttribute('controls');video.disablePictureInPicture=true;video.muted=true;video.defaultMuted=true;video.setAttribute('muted','');video.playsInline=true;video.setAttribute('playsinline','');video.setAttribute('webkit-playsinline','');if(video.closest('.industry-opening-hero')&&matchMedia('(max-width:700px)').matches){video.src='/assets/industry-teaser/voile-bleu-mobile-v2.mp4';video.poster='/assets/industry-teaser/voile-bleu-mobile.jpg';video.preload='auto'}
       const button=document.createElement('button');button.type='button';button.className='industry-motion-toggle';
       const item={video,button,userPaused:reduce.matches,visible:true,systemPause:false};items.set(video,item);
       video.insertAdjacentElement('afterend',button);
