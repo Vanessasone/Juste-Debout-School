@@ -1,6 +1,14 @@
 (()=>{'use strict';
-const catalogue='/assets/core-formation/catalogue.json';
+const catalogue='/assets/core-formation/catalogue.json?v=fe5e4d4cd9cd';
 const node=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text)e.textContent=text;return e};
+function instagramLink(teacher,handle){
+ if(!/^[a-z0-9_.]+$/i.test(handle||''))return null;
+ const link=node('a','jdc-pro__instagram','Instagram ↗');
+ link.href='https://www.instagram.com/'+handle+'/';
+ link.target='_blank';link.rel='noopener noreferrer';
+ link.setAttribute('aria-label',teacher+' · Instagram');
+ return link;
+}
 function ordered(data){
  if(!data.identity_mapping_confirmed)throw Error('Unconfirmed photo names');
  const portraits=data.photos.filter(p=>p.role==='formation');
@@ -18,7 +26,7 @@ function appendAlbum(data){
 }
 function carousel(host,photos,open,dialog){
  const stage=node('div','jdc-carousel__stage');stage.setAttribute('role','group');stage.setAttribute('aria-roledescription','carrousel');stage.setAttribute('aria-label','Les professeurs de la formation CORE');host.append(stage);
- const caption=node('div','jdc-carousel__caption'),name=node('h3'),subject=node('p');caption.append(name,subject);host.append(caption);
+ const caption=node('div','jdc-carousel__caption'),name=node('h3'),subject=node('p');const social=node('div');caption.append(name,subject,social);host.append(caption);
  const controls=node('div','jdc-carousel__controls'),prev=node('button','','←'),pause=node('button','','Pause'),next=node('button','','→'),details=node('button','','Voir sa fiche ↗');
  prev.setAttribute('aria-label','Professeur précédent');next.setAttribute('aria-label','Professeur suivant');[prev,pause,next,details].forEach(b=>b.type='button');controls.append(prev,pause,next,details);host.append(controls);
  const count=node('p','jdc-carousel__count'),status=node('span','jdc-carousel__status');status.setAttribute('aria-live','polite');status.setAttribute('aria-atomic','true');host.append(count,status);
@@ -30,7 +38,7 @@ function carousel(host,photos,open,dialog){
    if(shown&&!b.firstChild.hasAttribute('src')){const img=b.firstChild;img.loading='eager';img.srcset=Object.values(photos[i].variants).map(v=>v.src+' '+v.width+'w').join(', ');img.src=photos[i].variants['480'].src;}
    const x=Math.sin(delta*Math.PI/3)*radius,scale=delta===0?1:.68-Math.abs(delta)*.07;b.style.transform=`translateX(calc(-50% + ${x}px)) translateY(${Math.abs(delta)*26}px) scale(${scale}) rotateY(${-delta*13}deg)`;b.style.zIndex=String(10-Math.abs(delta));b.style.opacity=delta===0?'1':'.48';
   });
-  name.textContent=photos[active].teacher;subject.textContent=photos[active].discipline;count.textContent=String(active+1).padStart(2,'0')+' / '+photos.length+' professeurs';pause.textContent=playing?'Pause':'Lecture';pause.setAttribute('aria-label',playing?'Mettre le carrousel en pause':'Lancer le carrousel');pause.setAttribute('aria-pressed',String(!playing));
+  name.textContent=photos[active].teacher;subject.textContent=photos[active].discipline;const link=instagramLink(photos[active].teacher,photos[active].instagram);social.replaceChildren(...(link?[link]:[]));count.textContent=String(active+1).padStart(2,'0')+' / '+photos.length+' professeurs';pause.textContent=playing?'Pause':'Lecture';pause.setAttribute('aria-label',playing?'Mettre le carrousel en pause':'Lancer le carrousel');pause.setAttribute('aria-pressed',String(!playing));
  }
  function select(i){active=(i+photos.length)%photos.length;render();status.textContent=photos[active].teacher+' · '+photos[active].discipline;}
  prev.onclick=()=>select(active-1);next.onclick=()=>select(active+1);pause.onclick=()=>{playing=!playing;render()};details.onclick=()=>open(photos[active]);
@@ -51,7 +59,17 @@ function mount(host,data,full){
  function open(photo){previous=document.activeElement;title.textContent=photo.teacher||'Formation professionnelle CORE';image.src=photo.variants['1600'].src;image.alt=photo.alt;credit.textContent=photo.credit?'Photographie : '+photo.credit:'';dialog.showModal();close.focus()}
  carousel(host,photos,open,dialog);
  if(full){const grid=node('div','jdc-pro__grid');host.append(grid);
- photos.forEach((photo,i)=>{const figure=node('figure',i<3?'jdc-pro__featured':''),button=node('button','jdc-pro__photo'),img=node('img'),label=photo.teacher||'Formation professionnelle CORE';button.type='button';button.setAttribute('aria-label','Agrandir : '+label);img.src=photo.variants['480'].src;img.srcset=Object.values(photo.variants).map(v=>v.src+' '+v.width+'w').filter((v,k,a)=>a.indexOf(v)===k).join(', ');img.sizes='(max-width: 700px) 88vw, (max-width: 1050px) 44vw, 30vw';img.alt=photo.alt;img.width=photo.variants['480'].width;img.height=photo.variants['480'].height;img.loading='lazy';img.decoding='async';button.append(img);button.onclick=()=>open(photo);figure.append(button);if(photo.teacher){const caption=node('figcaption','',photo.teacher);caption.append(node('span','jdc-pro__discipline',photo.discipline));figure.append(caption);}grid.append(figure)});}
+ photos.forEach((photo,i)=>{const figure=node('figure',i<3?'jdc-pro__featured':''),button=node('button','jdc-pro__photo'),img=node('img'),label=photo.teacher||'Formation professionnelle CORE';button.type='button';button.setAttribute('aria-label','Agrandir : '+label);img.src=photo.variants['480'].src;img.srcset=Object.values(photo.variants).map(v=>v.src+' '+v.width+'w').filter((v,k,a)=>a.indexOf(v)===k).join(', ');img.sizes='(max-width: 700px) 88vw, (max-width: 1050px) 44vw, 30vw';img.alt=photo.alt;img.width=photo.variants['480'].width;img.height=photo.variants['480'].height;img.loading='lazy';img.decoding='async';button.append(img);button.onclick=()=>open(photo);figure.append(button);if(photo.teacher){const caption=node('figcaption','',photo.teacher);caption.append(node('span','jdc-pro__discipline',photo.discipline));const link=instagramLink(photo.teacher,photo.instagram);if(link)caption.append(link);figure.append(caption);}grid.append(figure)});}
+ if(full&&data.other_teachers?.length){
+  const section=node('section','jdc-pro__additional'),list=node('ul','jdc-pro__grid');
+  section.append(node('h2','','Autres professeurs de la formation CORE'),list);
+  for(const teacher of data.other_teachers){
+   const item=node('li');item.append(node('strong','',teacher.name),node('span','jdc-pro__discipline',teacher.discipline));
+   const link=instagramLink(teacher.name,teacher.instagram);if(link)item.append(link);
+   list.append(item);
+  }
+  host.append(section);
+ }
  if(!full){const more=node('a','jdc-pro__more','Découvrir tous les professeurs CORE ↗');more.href='/core-formation.html';host.append(more)}
 }
 let request;const load=()=>request??=fetch(catalogue,{credentials:'omit'}).then(r=>{if(!r.ok)throw Error('catalogue');return r.json()});
