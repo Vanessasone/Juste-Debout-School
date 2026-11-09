@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Gestion des plannings · Juste Debout School</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#f7f5f0;color:#18181c;font:16px/1.5 system-ui,sans-serif}
+    main{width:min(100% - 32px,960px);margin:32px auto 64px}a{color:#303fac}h1,h2{line-height:1.12}
+    .controls,.fields{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:16px 0}
+    label{display:grid;gap:4px;flex:1 1 190px;font-weight:600}input,textarea,button,select{font:inherit;padding:9px 12px;border:1px solid #aaa;border-radius:8px;color:inherit;background:white;min-width:0}
+    button{cursor:pointer}button[aria-pressed=true],button[type=submit]{color:white;background:#303fac;border-color:#303fac}button:disabled{opacity:.55;cursor:wait}
+    section,article,form{padding:16px;border:1px solid #ddd8cf;border-radius:12px;background:white;margin:12px 0}article p{margin:4px 0}
+    textarea{min-height:85px;resize:vertical}fieldset{border:0;padding:0;margin:0;min-width:0}legend{font-weight:700}
+    [hidden]{display:none!important}.error{color:#a21a1a}
+  </style>
+  <script defer src="/app/assets/schedule-editor.js"></script>
+</head>
+<body>
+<main>
+  <a href="/app/">← Mon espace School</a>
+  <h1>Gestion des plannings</h1>
+  <p>CORE et INDUSTRY · Les heures sont celles de Paris.</p>
+  <p id="status" role="status" aria-live="polite">Vérification de la connexion School…</p>
+  <p id="signin" hidden><a href="/app/login">Se connecter ou créer un compte School</a>. Une fois ton adresse confirmée, reviens sur cette page.</p>
+  <div id="editor" hidden>
+    <div class="controls" aria-label="Type de planning">
+      <button id="public-mode" type="button" aria-pressed="true">Cours open et stages</button>
+      <button id="training-mode" type="button" aria-pressed="false">Formation</button>
+    </div>
+    <p id="scope-note"></p>
+    <form id="entry">
+      <h2 id="form-title">Ajouter un créneau</h2>
+      <fieldset id="fields">
+        <div class="fields" id="public-fields">
+          <label>Campus <select name="campus"><option>CORE</option><option>INDUSTRY</option></select></label>
+          <label>Type <select name="kind"><option value="weekly">Cours open hebdomadaire</option><option value="open">Cours open ponctuel</option><option value="workshop">Stage / workshop</option><option value="camp">Camp</option><option value="spectacle">Spectacle</option></select></label>
+        </div>
+        <div class="fields" id="training-fields" hidden>
+          <label>Promotion <select name="group_id"></select></label>
+          <label>Début <input name="starts_at" type="datetime-local"></label>
+          <label>Fin <input name="ends_at" type="datetime-local"></label>
+        </div>
+        <div class="fields" id="weekly-fields">
+          <label>Jour <select name="weekday"><option value="1">Lundi</option><option value="2">Mardi</option><option value="3">Mercredi</option><option value="4">Jeudi</option><option value="5">Vendredi</option><option value="6">Samedi</option><option value="7">Dimanche</option></select></label>
+        </div>
+        <div class="fields" id="date-fields" hidden>
+          <label>Premier jour <input name="starts_on" type="date"></label>
+          <label>Dernier jour (facultatif) <input name="ends_on" type="date"></label>
+        </div>
+        <div class="fields">
+          <label>Intitulé <input name="title" required maxlength="200"></label>
+          <label>Intervenant <input name="teacher" maxlength="200"></label>
+          <label>Lieu / salle <input name="room" maxlength="200"></label>
+          <label id="hours-field">Horaires <input name="hours" maxlength="160" placeholder="Ex. 19 h–20 h 30"></label>
+        </div>
+        <label id="notes-field">Informations publiques <textarea name="notes" maxlength="2000"></textarea></label>
+        <div class="controls">
+          <label>Statut <select name="status"><option value="draft">Brouillon</option><option value="published">Publié</option><option value="cancelled">Annulé</option></select></label>
+          <button type="submit">Enregistrer</button>
+          <button type="button" id="reset" hidden>Quitter la modification</button>
+        </div>
+      </fieldset>
+      <p id="save-status" role="status" aria-live="polite"></p>
+    </form>
+    <h2>Créneaux enregistrés</h2>
+    <div class="controls">
+      <label>Filtrer par campus <select id="campus-filter"><option value="">Tous</option><option>CORE</option><option>INDUSTRY</option></select></label>
+      <label>Rechercher <input id="search" type="search"></label>
+    </div>
+    <div id="entries"></div>
+  </div>
+</main>
+</body>
+</html>
