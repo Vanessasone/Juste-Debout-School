@@ -18,7 +18,7 @@ export default function SchoolCockpit(){
  useFocusEffect(useCallback(()=>{let live=true;setLoading(true);setError('');if(initializing)return()=>{live=false};if(!session){setLoading(false);setData(null);return()=>{live=false};}
   getSchoolCockpit(campus,group,term,shownDate).then(r=>{if(live)setData(r);}).catch(e=>{if(live){setData(null);setError(e instanceof Error?e.message:'Chargement impossible.');}}).finally(()=>{if(live)setLoading(false);});return()=>{live=false};
  },[session?.user.id,initializing,campus,group,term,shownDate,revision]));
- function open(path:string){if(path.split('?')[0].endsWith('.html'))void Linking.openURL(schoolWebUrl(path));else router.push(path as never);}
+ function open(path:string){if(path.split(/[?#]/)[0].endsWith('.html'))void Linking.openURL(schoolWebUrl(path));else router.push(path as never);}
  function actionTitle(a:CockpitAction){return cockpitActionLabels[a.key]||a.key;}
  const visibleGroups=data?.groups.filter(g=>!campus||g.campus===campus)??[];
  const total=(key:string)=>data?.actions.filter(a=>a.key===key).reduce((n,a)=>n+Number(a.count),0)??0;
@@ -44,6 +44,7 @@ export default function SchoolCockpit(){
    <View style={s.modules}>{[
     {title:'Élèves et promotions',sub:'Dossiers, rattachements, plannings et documents',path:'/admin-training'},
     {title:'Professeurs et équipe',sub:'Comptes, fonctions et demandes d’accès',path:'/school-role.html'},
+    {title:'Clients des cours open',sub:'Comptes et demandes CORE / INDUSTRY',path:'/school-role.html#clients-open'},
     {title:'Bulletins et matières',sub:'Coefficients, cours réalisés, évaluations et publications',path:'/bulletins.html?term='+term},
     {title:'Absences et justificatifs',sub:'Déclarations à examiner dans leur espace protégé',path:'/absences'},
     {title:'Assiduité',sub:'Appels, cumul pondéré et seuil de 15',path:'/attendance-ranking'},

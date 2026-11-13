@@ -24,11 +24,11 @@ const MOCK: Record<CampusCode, RentalRate[]> = {
       { slot: 'Journée sem. (10h-19h)', priceCents: 3000 }, { slot: 'Soir sem. (19h-22h)', priceCents: 4500 }, { slot: 'Week-end (avant 19h)', priceCents: 3000 }] },
   ],
   INDUSTRY: [
-    { id: 'd1', label: 'Salle 1', areaM2: 98, combo: null, prices: [
+    { id: 'd1', label: 'Salle 1', areaM2: 100, combo: null, prices: [
       { slot: '9h-18h30', priceCents: 5000 }, { slot: '18h30-23h', priceCents: 8000 }, { slot: 'Après 23h', priceCents: 11000 }] },
-    { id: 'd2', label: 'Salle 2', areaM2: 61, combo: null, prices: [
+    { id: 'd2', label: 'Salle 2', areaM2: 55, combo: null, prices: [
       { slot: '9h-18h30', priceCents: 4500 }, { slot: '18h30-23h', priceCents: 6000 }, { slot: 'Après 23h', priceCents: 9500 }] },
-    { id: 'd3', label: 'Salle 3', areaM2: 53, combo: null, prices: [
+    { id: 'd3', label: 'Salle 3', areaM2: 50, combo: null, prices: [
       { slot: '9h-18h30', priceCents: 4000 }, { slot: '18h30-23h', priceCents: 5500 }, { slot: 'Après 23h', priceCents: 8500 }] },
     { id: 'd23', label: 'Salles 2 + 3', areaM2: 110, combo: '2+3', prices: [
       { slot: '9h-18h30', priceCents: 8500 }, { slot: '18h30-23h', priceCents: 11500 }, { slot: 'Après 23h', priceCents: 14500 }] },
