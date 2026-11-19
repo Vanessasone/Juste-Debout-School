@@ -1,3 +1,4 @@
+import {renderArchives,downloadSheet} from './bulletin-archives.js';
 import {renderSheets} from './bulletin-sheets.js';
 import {createClient} from '@supabase/supabase-js';
 import {key} from './config.js';
@@ -30,7 +31,16 @@ function render(){host.replaceChildren();
  if(!context.groups.length){const s=area('Accès à la formation');s.append(el('p','Les professeurs accèdent à leurs classes après validation de leur fonction et attribution de leurs matières. Les élèves retrouvent leurs bulletins après validation de leur rattachement.'),Object.assign(el('a','Vérifier mes accès →'),{href:appPath('/school-role.html')}));return;}
  const scope=area('Espace pédagogique');const grid=el('div',undefined,'grid');grid.append(select('Classe',context.groups.map(g=>[g.id,`${g.campus} · ${g.name} · ${g.season}`]),groupId,v=>action(async()=>{groupId=v;term=context.groups.find(g=>g.id===v)?.available_terms?.[0]||1;await load();}))[0],select('Période',(context.groups.find(g=>g.id===groupId)?.available_terms||[1,2,3]).map(t=>[String(t),`Trimestre ${t}`]),String(term),v=>action(async()=>{term=Number(v);await load();}))[0]);scope.append(grid,btn('Actualiser',load));
  if(!data)return;
- if(data.can_manage)renderConfig();
+ if(data.can_manage){
+  renderArchives({data:{...data,term},area,el,btn,field,rpc,checked,storage:sb.storage.from('jds-school-archives'),
+   downloadReport:async id=>{const report=await checked(sb.from('jds_bulletin_reports').select('snapshot').eq('id',id).single());downloadReport(report.snapshot);},
+   downloadAssessment:async(id,subject)=>{
+     const sheet=subject.kind==='roll'?await rpc('jds_get_archived_roll_call',{lesson_key:id}):await rpc('jds_get_archived_assessment',{sheet_key:id});
+     if(!sheet)throw Error('Feuille indisponible.');
+     downloadSheet(sheet,subject,data.group,data.members);
+   }});
+  renderConfig();
+ }
  if(!data.subjects.length){scope.append(el('p','Aucune matière attribuée pour ce trimestre. L’administration doit renseigner les matières, les professeurs et les coefficients.'));return;}
  if(!data.members.length){scope.append(el('p','Aucun élève rattaché à cette classe.'));return;}
  renderSheets({data,area,el,btn,select,field,rpc,action});if(data.can_manage)renderDirection();

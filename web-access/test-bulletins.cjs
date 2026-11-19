@@ -1,13 +1,14 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),{JSDOM}=require('jsdom');
 let source=fs.readFileSync(__dirname+'/bulletins.js','utf8').replace(/^import .*;$/mg,'').replace('export function parseScores','function parseScores');
 source=fs.readFileSync(__dirname+'/bulletin-sheets.js','utf8').replace('export function','function')+'\n'+source;
+source=fs.readFileSync(__dirname+'/bulletin-archives.js','utf8').replace(/^import .*;$/mg,'').replace(/export function/g,'function')+'\n'+source;
 const wait=()=>new Promise(r=>setTimeout(r,30));
 async function run({manager=false,publisher=false,own=false,session=true,campus='INDUSTRY',base=''}={}){
  const dom=new JSDOM('<p id="status"></p><div id="bulletins"></div>',{url:'https://school.test'+base+'/bulletins.html',runScripts:'outside-only'}),w=dom.window,calls=[];
  const group={id:'group',campus,name:'P2',season:'2026-2027'};
  const ctx={groups:own?[]:[group],teachers:[{id:'teacher',campus:'INDUSTRY',name:'Prof Test'}],reports:own?[{id:'report',term:1,version:1,published_at:'2026-10-22',school_name:'Industry',class_name:'P2'}]:[]};
  const data={group,can_manage:manager,can_publish:publisher,subjects:[{id:'subject',subject:'Hip-Hop',teacher_profile:'teacher',teacher_name:'Prof Test',cc_coefficient:1,evaluation_coefficient:2}],members:[{id:'member',name:'Élève Test',linked:true}],grades:[],drafts:[],reports:[],archived_subjects:[{id:'archived',subject:'House',teacher_name:'Prof retiré'}]};
- w.createClient=()=>({auth:{getSession:async()=>({data:{session:session?{user:{id:'user'}}:null}}),onAuthStateChange:()=>{}},rpc:async(name,args)=>{calls.push([name,args]);return{data:name==='jds_bulletin_context'?ctx:name==='jds_bulletin_group'?data:name==='jds_get_bulletin_sheets'?{sheets:[],can_review:manager}:{rows:[]}};}});w.key='test';w.downloadReport=()=>{};w.score=v=>v??'—';w.confirm=()=>false;
+ w.createClient=()=>({storage:{from:()=>({})},auth:{getSession:async()=>({data:{session:session?{user:{id:'user'}}:null}}),onAuthStateChange:()=>{}},rpc:async(name,args)=>{calls.push([name,args]);return{data:name==='jds_bulletin_context'?ctx:name==='jds_bulletin_group'?data:name==='jds_get_bulletin_sheets'?{sheets:[],can_review:manager}:{rows:[]}};}});w.key='test';w.downloadReport=()=>{};w.score=v=>v??'—';w.confirm=()=>false;
  w.coefficientCategories=JSON.parse(fs.readFileSync(__dirname+'/subject-coefficient-categories.json','utf8'));w.coreCatalogue=JSON.parse(fs.readFileSync(__dirname+'/core-subject-catalogue.json','utf8'));w.eval(source);await wait();return{w,calls,dom};
 }
 (async()=>{
