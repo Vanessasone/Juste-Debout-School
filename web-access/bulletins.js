@@ -1,3 +1,4 @@
+import {renderSheets} from './bulletin-sheets.js';
 import {createClient} from '@supabase/supabase-js';
 import {key} from './config.js';
 const appBase=location.pathname==='/app'||location.pathname.startsWith('/app/')?'/app':'';
@@ -32,7 +33,7 @@ function render(){host.replaceChildren();
  if(data.can_manage)renderConfig();
  if(!data.subjects.length){scope.append(el('p','Aucune matière attribuée pour ce trimestre. L’administration doit renseigner les matières, les professeurs et les coefficients.'));return;}
  if(!data.members.length){scope.append(el('p','Aucun élève rattaché à cette classe.'));return;}
- renderGrades();if(data.can_manage)renderDirection();
+ renderSheets({data,area,el,btn,select,field,rpc,action});if(data.can_manage)renderDirection();
 }
 function renderConfig(){const details=el('details');details.append(el('summary',`Configurer les matières · ${data.subjects.length} matière(s)`),el('p','Barème CORE et INDUSTRY : Street dance 4, autres danses 2, théorie 1. Avec 0, 1 ou 2 cours réellement dispensés dans le trimestre : coefficient 0, hors moyennes et classement des notes. La catégorie et le nombre de cours sont confirmés par l’administration ; les professeurs saisissent leurs évaluations.','muted'));host.append(details);
  const subjectLabel=s=>`${s.subject}${s.teacher_name?' · '+s.teacher_name:''}`;
@@ -64,21 +65,6 @@ function renderConfig(){const details=el('details');details.append(el('summary',
  const archived=data.archived_subjects||[];
  if(archived.length){const removed=el('details');removed.append(el('summary',`Lignes retirées de ce trimestre · ${archived.length}`),el('p','Les évaluations sont conservées. Réintégrer une ligne la remet dans les prochains calculs et contrôles du bulletin.','muted'));
  for(const s of archived){const row=el('div',undefined,'report-row');row.append(el('strong',subjectLabel(s)),btn('Réintégrer dans ce trimestre',async()=>{await rpc('jds_set_bulletin_subject_active',{subject_key:s.id,enabled:true});await load();}));removed.append(row);}details.append(removed);}
-}
-function renderGrades(){const section=area(data.can_manage?'Suivi et saisie des évaluations':'Mes évaluations');
- const grid=el('div',undefined,'grid');grid.append(select('Élève',data.members.map(m=>[m.id,m.name]),memberId,v=>{memberId=v;render();})[0],select('Matière',data.subjects.map(s=>[s.id,`${s.subject}${s.teacher_name?' · '+s.teacher_name:''}`]),subjectId,v=>{subjectId=v;render();})[0]);section.append(grid);
- const g=data.grades.find(g=>g.member_id===memberId&&g.subject_id===subjectId)||{},s=data.subjects.find(s=>s.id===subjectId);
- section.append(el('p',s.taught_course_count==null?'Nombre de cours du trimestre à vérifier par l’administration.':s.taught_course_count<=2?`${s.taught_course_count} cours dispensé(s) · coefficient 0, hors moyennes et classement des notes.`:`${s.taught_course_count} cours dispensés · coefficient CC ${s.cc_coefficient??'à classer'} · évaluation ${s.evaluation_coefficient??'à classer'}.`,'muted'));
- section.append(el('p',`${s.teacher_name||'Professeur à attribuer'} · ${g.submitted?'Évaluation transmise':'Brouillon'}`,'muted'));
- if(g.submitted&&!data.can_manage){section.append(el('p',`Contrôle continu /5 : ${g.cc_exempt?'Non évalué':(g.cc_scores||[]).join(' ; ')} · Évaluation /20 : ${g.evaluation_exempt?'Non évaluée':(g.evaluation_scores||[]).join(' ; ')}`),el('p',g.appreciation),el('p','Évaluation transmise à l’administration. Pour corriger, demande une réouverture.'));return;}
- const [cl,cc]=field('Notes de contrôle continu /5 · séparées par ;',(g.cc_scores||[]).join(' ; '));cc.placeholder='Exemple : 4 ; 3,5 ; 5';
- const [vl,ev]=field('Notes d’évaluation /20 · séparées par ;',(g.evaluation_scores||[]).join(' ; '));ev.placeholder='Exemple : 14 ; 16';
- const [cn,ce]=check('Contrôle continu non évalué / dispensé',g.cc_exempt),[en,ee]=check('Évaluation non évaluée / dispensée',g.evaluation_exempt);
- const toggle=(input,checkbox)=>{input.disabled=checkbox.checked;checkbox.onchange=()=>{input.disabled=checkbox.checked;};};toggle(cc,ce);toggle(ev,ee);
- const [al,app]=field('Appréciation du professeur',g.appreciation,'textarea');app.maxLength=3000;
- section.append(cl,cn,vl,en,al,el('p','Une note manquante ne devient jamais un zéro. Indique explicitement « non évalué » si nécessaire.','muted'));
- async function save(send){await rpc('jds_save_bulletin_grade',{subject_key:subjectId,student_member:memberId,cc:ce.checked?[]:parseScores(cc.value,5),evaluations:ee.checked?[]:parseScores(ev.value,20),no_cc:ce.checked,no_evaluations:ee.checked,comment:app.value,send,expected_revision:g.revision||0});await load();}
- section.append(btn(g.submitted?'Enregistrer et rouvrir le brouillon':'Enregistrer le brouillon',()=>save(false)),btn('Transmettre à l’administration',()=>save(true),true));
 }
 function renderDirection(){const progress=area('Avancement de la classe');const wrap=el('div',undefined,'table-wrap'),table=el('table'),head=el('thead'),tr=el('tr');['Élève','Évaluations transmises','Compte lié'].forEach(v=>tr.append(el('th',v)));head.append(tr);table.append(head);const body=el('tbody');for(const m of data.members){const tr=el('tr');[m.name,`${data.grades.filter(g=>g.member_id===m.id&&g.submitted&&data.subjects.some(s=>s.id===g.subject_id&&(s.taught_course_count==null||s.taught_course_count>=3))).length} / ${data.subjects.filter(s=>s.taught_course_count==null||s.taught_course_count>=3).length}`,m.linked?'Oui':'À rattacher'].forEach(v=>tr.append(el('td',v)));body.append(tr);}table.append(body);wrap.append(table);progress.append(wrap);
  const section=area(`Synthèse · ${data.members.find(m=>m.id===memberId)?.name}`),d=data.drafts.find(d=>d.member_id===memberId)||{};

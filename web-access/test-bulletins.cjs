@@ -1,20 +1,29 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),{JSDOM}=require('jsdom');
 let source=fs.readFileSync(__dirname+'/bulletins.js','utf8').replace(/^import .*;$/mg,'').replace('export function parseScores','function parseScores');
+source=fs.readFileSync(__dirname+'/bulletin-sheets.js','utf8').replace('export function','function')+'\n'+source;
 const wait=()=>new Promise(r=>setTimeout(r,30));
 async function run({manager=false,publisher=false,own=false,session=true,campus='INDUSTRY',base=''}={}){
  const dom=new JSDOM('<p id="status"></p><div id="bulletins"></div>',{url:'https://school.test'+base+'/bulletins.html',runScripts:'outside-only'}),w=dom.window,calls=[];
  const group={id:'group',campus,name:'P2',season:'2026-2027'};
  const ctx={groups:own?[]:[group],teachers:[{id:'teacher',campus:'INDUSTRY',name:'Prof Test'}],reports:own?[{id:'report',term:1,version:1,published_at:'2026-10-22',school_name:'Industry',class_name:'P2'}]:[]};
  const data={group,can_manage:manager,can_publish:publisher,subjects:[{id:'subject',subject:'Hip-Hop',teacher_profile:'teacher',teacher_name:'Prof Test',cc_coefficient:1,evaluation_coefficient:2}],members:[{id:'member',name:'Élève Test',linked:true}],grades:[],drafts:[],reports:[],archived_subjects:[{id:'archived',subject:'House',teacher_name:'Prof retiré'}]};
- w.createClient=()=>({auth:{getSession:async()=>({data:{session:session?{user:{id:'user'}}:null}}),onAuthStateChange:()=>{}},rpc:async(name,args)=>{calls.push([name,args]);return{data:name==='jds_bulletin_context'?ctx:name==='jds_bulletin_group'?data:{rows:[]}};}});w.key='test';w.downloadReport=()=>{};w.score=v=>v??'—';w.confirm=()=>false;
+ w.createClient=()=>({auth:{getSession:async()=>({data:{session:session?{user:{id:'user'}}:null}}),onAuthStateChange:()=>{}},rpc:async(name,args)=>{calls.push([name,args]);return{data:name==='jds_bulletin_context'?ctx:name==='jds_bulletin_group'?data:name==='jds_get_bulletin_sheets'?{sheets:[],can_review:manager}:{rows:[]}};}});w.key='test';w.downloadReport=()=>{};w.score=v=>v??'—';w.confirm=()=>false;
  w.coefficientCategories=JSON.parse(fs.readFileSync(__dirname+'/subject-coefficient-categories.json','utf8'));w.coreCatalogue=JSON.parse(fs.readFileSync(__dirname+'/core-subject-catalogue.json','utf8'));w.eval(source);await wait();return{w,calls,dom};
 }
 (async()=>{
  let t=await run({session:false});assert.match(t.w.document.body.textContent,/Me connecter/);assert.equal(t.calls.length,0);assert.equal(t.w.document.querySelector('a').getAttribute('href'),'/login');t.dom.window.close();
  t=await run({session:false,base:'/app'});assert.equal(t.w.document.querySelector('a').getAttribute('href'),'/app/login');assert.equal(t.calls.length,0);t.dom.window.close();
- t=await run();assert.match(t.w.document.body.textContent,/Mes évaluations/);assert.doesNotMatch(t.w.document.body.textContent,/Configurer les matières|Publier le bulletin|Synthèse ·/);
- const labels=[...t.w.document.querySelectorAll('label')];labels.find(l=>l.textContent.includes('contrôle continu /5')).querySelector('input').value='4 ; 3,5 ; 5';labels.find(l=>l.textContent.includes('évaluation /20')).querySelector('input').value='14 ; 16';labels.find(l=>l.textContent.includes('Appréciation')).querySelector('textarea').value='Bon travail';
- [...t.w.document.querySelectorAll('button')].find(b=>b.textContent==='Transmettre à l’administration').click();await wait();const save=t.calls.find(c=>c[0]==='jds_save_bulletin_grade')[1];assert.deepEqual(Array.from(save.cc),[4,3.5,5]);assert.deepEqual(Array.from(save.evaluations),[14,16]);assert.equal(save.send,true);assert.equal(save.expected_revision,0);t.dom.window.close();
+ t=await run();assert.match(t.w.document.body.textContent,/Feuilles d’évaluation de la classe/);assert.doesNotMatch(t.w.document.body.textContent,/Configurer les matières|Publier le bulletin|Synthèse ·/);
+ const click=label=>[...t.w.document.querySelectorAll('button')].find(b=>b.textContent===label).click();
+ click('Afficher les feuilles');await wait();click('Nouvelle séance de contrôle continu');await wait();
+ const presence=t.w.document.querySelector('select[aria-label="Présence · Élève Test"]');
+ const grade=t.w.document.querySelector('input[aria-label="Note · Élève Test"]');
+ assert.equal(grade.disabled,true);
+ presence.value='present';presence.dispatchEvent(new t.w.Event('change'));grade.value='4.5';
+ presence.value='absent';presence.dispatchEvent(new t.w.Event('change'));assert.equal(grade.value,'');
+ click('Envoyer pour validation');await wait();
+ const save=t.calls.find(c=>c[0]==='jds_write_bulletin_sheet')[1];
+ assert.equal(save.roster[0].grade,null);assert.equal(save.roster[0].presence,'absent');assert.equal(save.send,true);t.dom.window.close();
  t=await run({manager:true});assert.match(t.w.document.body.textContent,/Configurer les matières/);assert.match(t.w.document.body.textContent,/publication est réservée/);assert.doesNotMatch(t.w.document.body.textContent,/Publier le bulletin/);t.dom.window.close();
  t=await run({manager:true,publisher:true});assert.match(t.w.document.body.textContent,/Publier le bulletin/);assert.equal(t.w.document.querySelectorAll('label input[type=number]')[0].value,'');assert.match(t.w.document.body.textContent,/nombre de cours à vérifier/);t.dom.window.close();
  t=await run({manager:true});
