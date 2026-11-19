@@ -2,7 +2,7 @@ export function renderSheets({data,area,el,btn,select,field,rpc,action}) {
   const panel=area('Feuilles d’évaluation de la classe');
   const [subjectLabel,subject]=select('Matière',data.subjects.map(s=>[s.id,[s.subject,s.teacher_name].filter(Boolean).join(' · ')]),data.subjects[0].id,()=>action(refresh));
   const queue=el('div'),content=el('div');
-  panel.append(queue,subjectLabel,btn('Afficher les feuilles',()=>refresh(),true),content);
+  panel.append(queue,subjectLabel,btn('Faire l’appel',()=>refresh(undefined,true),true),btn('Afficher les feuilles',()=>refresh()),content);
   if(data.can_manage)queue.append(btn('Voir les feuilles à valider',refreshQueue));
   const states={draft:'Brouillon',pending:'À vérifier',returned:'À corriger',approved:'Validée'};
   const kinds={cc:'Contrôle continu /5',exam:'Évaluation trimestrielle /20'};
@@ -15,14 +15,13 @@ export function renderSheets({data,area,el,btn,select,field,rpc,action}) {
       subject.value=sheet.subject_id;await refresh(sheet.id);
     }));
   }
-  async function refresh(openSheetId) {
+  async function refresh(openSheetId,openRollCall=false) {
     const key=subject.value;
     const {sheets,can_review:canReview}=await rpc('jds_get_bulletin_sheets',{subject_key:key});
     if(subject.value!==key)return;
     content.replaceChildren();
     const edit=el('div');
     const create=kind=>draw({kind,entries:[]});
-    content.append(btn('Faire l’appel',async()=>drawRollCall(),true));
     content.append(btn('Nouvelle séance de contrôle continu',async()=>create('cc'),true));
     if(!sheets.some(s=>s.kind==='exam'))content.append(btn('Nouvelle évaluation trimestrielle',async()=>create('exam')));
     const list=el('div');
@@ -54,26 +53,55 @@ export function renderSheets({data,area,el,btn,select,field,rpc,action}) {
     content.append(summary);
     const opened=sheets.find(sheet=>sheet.id===openSheetId);
     if(opened)draw(opened);
+    if(openRollCall){drawRollCall();edit.scrollIntoView?.({block:'start'});}
 
     function drawRollCall(){
       edit.replaceChildren(el('h3','Appel du cours'));
       const [dl,date]=field('Date',today(),'date');
       const [bl,begins]=field('Début du cours','','time');
       const [fl,ends]=field('Fin du cours','','time');
-      const [wrap,body]=table(['Élève','Statut']);
+      const call=el('div',undefined,'quick-roll-call');
+      const timing=el('div',undefined,'grid');
+      timing.append(dl,bl,fl);
+      const count=el('p');
+      count.setAttribute('aria-live','polite');
+      const list=el('ul',undefined,'roll-list');
       const entries=data.members.map(member=>{
-        const row=el('tr'),cell=el('td');
-        const [label,status]=select('',[['','À renseigner'],['present','Présent'],['absent','Absent'],['late','En retard']],'');
-        status.setAttribute('aria-label',`Statut · ${member.name}`);
-        cell.append(label);row.append(el('th',member.name),cell);body.append(row);
-        return {member,status};
+        const row=el('li',undefined,'roll-row');
+        const choices=el('div',undefined,'roll-choices');
+        choices.setAttribute('role','group');
+        choices.setAttribute('aria-label',member.name);
+        const entry={member,status:''};
+        const buttons=[['present','Présent'],['absent','Absent']].map(([value,label])=>{
+          const button=el('button',label,'roll-choice');
+          button.type='button';
+          button.dataset.presence=value;
+          button.setAttribute('aria-pressed','false');
+          button.onclick=()=>{set(value);updateCount();};
+          choices.append(button);
+          return button;
+        });
+        function set(value){
+          entry.status=value;
+          for(const button of buttons)button.setAttribute('aria-pressed',String(button.dataset.presence===value));
+        }
+        row.append(el('strong',member.name),choices);list.append(row);
+        return {...entry,get status(){return entry.status;},set};
       });
-      edit.append(dl,bl,fl,btn('Tous présents',async()=>{for(const entry of entries)entry.status.value='present';}),wrap,
+      function updateCount(){
+        const remaining=entries.filter(entry=>!entry.status).length;
+        count.textContent=remaining?`${remaining} élève(s) à cocher`:`${entries.filter(e=>e.status==='present').length} présent(s) · ${entries.filter(e=>e.status==='absent').length} absent(s)`;
+      }
+      updateCount();
+      call.append(timing,btn('Tous présents',async()=>{for(const entry of entries)entry.set('present');updateCount();}),count,list,
         btn('Enregistrer l’appel',async()=>{
+          if(entries.some(entry=>!entry.status))throw Error('Coche Présent ou Absent pour chaque élève.');
+          if(!date.value||!begins.value||!ends.value)throw Error('Renseigne la date et les horaires du cours.');
           await rpc('jds_record_quick_roll_call',{subject_key:key,day:date.value,begins:begins.value,ends:ends.value,
-            roster:entries.map(({member,status})=>({member_id:member.id,status:status.value}))});
-          edit.replaceChildren(el('p','Appel enregistré. Tu peux maintenant reprendre les présences dans la feuille de notes.'));
+            roster:entries.map(({member,status})=>({member_id:member.id,status}))});
+          edit.replaceChildren(el('p','Appel enregistré.'));
         },true));
+      edit.append(call);
     }
     function draw(sheet){
       edit.replaceChildren(el('h3',kinds[sheet.kind]));

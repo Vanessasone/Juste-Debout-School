@@ -16,6 +16,15 @@ async function run({manager=false,publisher=false,own=false,session=true,campus=
  t=await run({session:false,base:'/app'});assert.equal(t.w.document.querySelector('a').getAttribute('href'),'/app/login');assert.equal(t.calls.length,0);t.dom.window.close();
  t=await run();assert.match(t.w.document.body.textContent,/Feuilles d’évaluation de la classe/);assert.doesNotMatch(t.w.document.body.textContent,/Configurer les matières|Publier le bulletin|Synthèse ·/);
  const click=label=>[...t.w.document.querySelectorAll('button')].find(b=>b.textContent===label).click();
+ click('Faire l’appel');await wait();
+ const call=t.w.document.querySelector('.quick-roll-call');
+ const present=call.querySelector('[data-presence="present"]'),absent=call.querySelector('[data-presence="absent"]');
+ assert.match(call.textContent,/Élève Test/);
+ click('Tous présents');await wait();assert.equal(present.getAttribute('aria-pressed'),'true');
+ absent.click();assert.equal(present.getAttribute('aria-pressed'),'false');assert.equal(absent.getAttribute('aria-pressed'),'true');
+ const times=call.querySelectorAll('input[type=time]');times[0].value='15:00';times[1].value='16:30';
+ click('Enregistrer l’appel');await wait();
+ assert.equal(t.calls.find(c=>c[0]==='jds_record_quick_roll_call')[1].roster[0].status,'absent');
  click('Afficher les feuilles');await wait();click('Nouvelle séance de contrôle continu');await wait();
  const presence=t.w.document.querySelector('select[aria-label="Présence · Élève Test"]');
  const grade=t.w.document.querySelector('input[aria-label="Note · Élève Test"]');
