@@ -6,11 +6,15 @@
   <meta name="robots" content="noindex,nofollow">
   <title>Pilotage Communication · Juste Debout School</title>
   <style>
+    :root{--accent:#303fac;--accent-ink:#fff}
+    :root[data-communication-campus="CORE"]{--accent:#FF6A16;--accent-ink:#18181c}
+    :root[data-communication-campus="INDUSTRY"]{--accent:#2F40E6}
+    #communication-campus{display:inline-block;background:var(--accent);color:var(--accent-ink);font-weight:750;padding:4px 10px;border-radius:6px}
     *{box-sizing:border-box}body{margin:0;background:#f7f5f0;color:#18181c;font:16px/1.5 system-ui,sans-serif}
     main{width:min(100% - 32px,960px);margin:32px auto 64px}a{color:#303fac}h1,h2{line-height:1.12}
     .controls,.fields{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:16px 0}
     label{display:grid;gap:4px;flex:1 1 190px;font-weight:600}input,textarea,button,select{font:inherit;padding:9px 12px;border:1px solid #aaa;border-radius:8px;color:inherit;background:white;min-width:0}
-    button{cursor:pointer}button[aria-pressed=true],button[type=submit]{color:white;background:#303fac;border-color:#303fac}button:disabled{opacity:.55;cursor:wait}
+    button{cursor:pointer}button[aria-pressed=true],button[type=submit]{color:var(--accent-ink);background:var(--accent);border-color:var(--accent)}button:disabled{opacity:.55;cursor:wait}
     section,article,form{padding:16px;border:1px solid #ddd8cf;border-radius:12px;background:white;margin:12px 0}article p{margin:4px 0}
     textarea{min-height:85px;resize:vertical}fieldset{border:0;padding:0;margin:0;min-width:0}legend{font-weight:700}
     [hidden]{display:none!important}.error{color:#a21a1a}
@@ -21,6 +25,7 @@
 <main>
   <a href="/app/">← Mon espace School</a>
   <h1>Pilotage Communication</h1>
+  <p id="communication-campus" hidden></p>
   <p>CORE et INDUSTRY · Les heures sont celles de Paris.</p>
   <p id="status" role="status" aria-live="polite">Vérification de la connexion School…</p>
   <p id="signin" hidden><a href="/app/login">Se connecter ou créer un compte School</a>. Une fois ton adresse confirmée, reviens sur cette page.</p>

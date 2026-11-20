@@ -15,6 +15,7 @@ const paris = new Intl.DateTimeFormat('sv-SE', {
   timeZone:'Europe/Paris',dateStyle:'short',timeStyle:'short',hourCycle:'h23',
 });
 let mode = 'public';
+let homeCampus = '';
 let current = null;
 let rows = [];
 let groups = new Map();
@@ -43,6 +44,7 @@ function visibleFields() {
 function edit(row = null) {
   current = row;
   form.reset();
+  if(homeCampus) fields.campus.value=homeCampus;
   if (row) {
     for (const name of ['campus','kind','weekday','starts_on','ends_on','title','teacher','room','hours','notes','status','group_id']) {
       if (row[name] != null) fields[name].value = row[name];
@@ -200,6 +202,14 @@ async function init() {
   }
   const {data:trainingAllowed,error:scopeError}=await sb.rpc('jds_training_schedule_access');
   if(scopeError) throw scopeError;
+  const {data:campus,error:campusError}=await sb.rpc('jds_communication_campus');
+  if(campusError)throw campusError;
+  if(campus==='CORE'||campus==='INDUSTRY'){
+    homeCampus=campus;
+    document.documentElement.dataset.communicationCampus=campus;
+    byId('communication-campus').textContent=campus;
+    byId('communication-campus').hidden=false;
+  }
   byId('training-mode').hidden=!trainingAllowed;
   if(trainingAllowed){
   const {data,error:groupsError} = await sb.from('jds_training_groups').select('id,campus,name,season').order('campus').order('name');
