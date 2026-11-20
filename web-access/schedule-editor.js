@@ -9,7 +9,7 @@ const byId = id => document.getElementById(id);
 const form = byId('entry');
 const fields = form.elements;
 const weekdays = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
-const kinds = {weekly:'Cours hebdomadaire',open:'Cours ponctuel',workshop:'Stage',camp:'Camp',spectacle:'Spectacle'};
+const kinds = {weekly:'Cours hebdomadaire',open:'Cours ponctuel',workshop:'Stage',camp:'Camp',spectacle:'Spectacle',event:'Événement',teacher:'Nouveau professeur',news:'Actualité'};
 const statuses = {draft:'Brouillon',published:'Publié',cancelled:'Annulé'};
 const paris = new Intl.DateTimeFormat('sv-SE', {
   timeZone:'Europe/Paris',dateStyle:'short',timeStyle:'short',hourCycle:'h23',
@@ -32,9 +32,9 @@ function visibleFields() {
   for (const [id, hidden] of [
     ['public-fields',training],['training-fields',!training],
     ['weekly-fields',training || !weekly],['date-fields',training || weekly],
-    ['hours-field',training],['notes-field',training],
+    ['visual-fields',training],['hours-field',training],['notes-field',training],
   ]) byId(id).hidden = hidden;
-  fields.hours.required = !training;
+  fields.hours.required = !training && !['teacher','news'].includes(fields.kind.value);
   fields.starts_on.required = !training && !weekly;
   fields.group_id.required = fields.starts_at.required = fields.ends_at.required = training;
   fields.group_id.disabled = training && !!current;
@@ -52,6 +52,7 @@ function edit(row = null) {
       fields.ends_at.value = paris.format(new Date(row.ends_at)).replace(' ','T');
     }
   }
+  fields.remove_visual.disabled = !row?.visual_path;
   byId('form-title').textContent = row ? 'Modifier le créneau' : 'Ajouter un créneau';
   byId('reset').hidden = !row;
   visibleFields();
@@ -86,6 +87,7 @@ function renderRows() {
       fields.title.focus();
     };
     card.append(title,detail,button);
+    if(row.visual_path) card.append(document.createTextNode(' · Visuel joint'));
     host.append(card);
   }
   if (!host.childElementCount) host.textContent = 'Aucun créneau correspondant.';
@@ -144,9 +146,20 @@ form.onsubmit = async event => {
       Object.assign(row,{campus:fields.campus.value,kind:fields.kind.value,weekday:weekly ? Number(fields.weekday.value) : null,
         starts_on:weekly ? null : fields.starts_on.value,
         ends_on:weekly ? null : fields.ends_on.value || fields.starts_on.value,
-        hours:fields.hours.value.trim(),notes:fields.notes.value.trim()});
+        hours:fields.hours.value.trim() || (['teacher','news'].includes(fields.kind.value)?'—':''),notes:fields.notes.value.trim()});
       if (!row.hours) throw new Error('Renseigne les horaires.');
       if (!weekly && row.ends_on < row.starts_on) throw new Error('La dernière date doit suivre la première.');
+    }
+    if (!training) {
+      const visual = fields.visual.files[0];
+      if (visual) {
+        const ext = {'image/jpeg':'jpg','image/png':'png','image/webp':'webp'}[visual.type];
+        if (!ext || visual.size > 8388608) throw new Error('Choisis une image JPG, PNG ou WebP de 8 Mo maximum.');
+        const path = crypto.randomUUID()+'.'+ext;
+        const {error} = await sb.storage.from('jds-communication').upload(path,visual,{contentType:visual.type});
+        if (error) throw error;
+        row.visual_path=path;
+      } else if (fields.remove_visual.checked) row.visual_path=null;
     }
     const table = sb.from(training ? 'jds_training_lessons' : 'jds_public_schedule');
     const request = current ? table.update(row).eq('id',current.id) : table.insert(row);
@@ -185,11 +198,16 @@ async function init() {
     showStatus('status','Ce compte School n’a pas accès à la gestion des plannings.',true);
     return;
   }
+  const {data:trainingAllowed,error:scopeError}=await sb.rpc('jds_training_schedule_access');
+  if(scopeError) throw scopeError;
+  byId('training-mode').hidden=!trainingAllowed;
+  if(trainingAllowed){
   const {data,error:groupsError} = await sb.from('jds_training_groups').select('id,campus,name,season').order('campus').order('name');
   if (groupsError) throw groupsError;
   groups = new Map(data.map(group => [group.id,group]));
   fields.group_id.replaceChildren(...data.map(group => new Option([group.campus,group.name,group.season].join(' · '),group.id)));
-  showStatus('status','Accès au planning activé.');
+  }
+  showStatus('status','Espace Communication ouvert.');
   byId('editor').hidden = false;
   await switchMode('public');
 }

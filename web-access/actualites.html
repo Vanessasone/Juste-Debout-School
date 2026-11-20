@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="fr">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Actualités · Juste Debout School</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#141719;color:#fff;font:16px/1.5 system-ui,sans-serif}main{width:min(100% - 32px,980px);margin:2rem auto}h1{line-height:1.1}a{color:inherit}select{font:inherit;margin:.5rem;padding:.4rem}section{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:1rem}article{border:1px solid #41454a;border-left:4px solid var(--campus);border-radius:10px;padding:1rem;background:#222529}h2{font-size:1.35rem}.campus-core{--campus:#FF6A16}.campus-industry{--campus:#2F40E6}
+</style>
+<script defer src="/assets/schedule-public.js"></script>
+<main>
+<a href="/app/">Retour à l’application</a>
+<h1>Actualités et événements</h1>
+<label>Campus <select id="news-campus"><option value="">Tous</option><option>CORE</option><option>INDUSTRY</option></select></label>
+<section id="app-news" aria-live="polite"><p>Chargement du calendrier…</p></section>
+</main>
+</html>

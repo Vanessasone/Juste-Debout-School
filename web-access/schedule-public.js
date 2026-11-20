@@ -5,7 +5,7 @@ const sb = createClient('https://zmzunjphubbdumowcurk.supabase.co', key, {
   auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false},
 });
 const weekdays = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
-const kinds = {open:'Cours open',workshop:'Stage',camp:'Camp',spectacle:'Spectacle'};
+const kinds = {open:'Cours open',workshop:'Stage',camp:'Camp',spectacle:'Spectacle',event:'Événement',teacher:'Nouveau professeur',news:'Actualité'};
 const dates = new Intl.DateTimeFormat('fr-FR',{dateStyle:'long',timeZone:'UTC'});
 const day = value => new Date(value+'T12:00:00Z');
 const find = selector => document.querySelector(selector);
@@ -17,6 +17,17 @@ function el(tag, text, className) {
   return node;
 }
 
+function attachVisual(card,row){
+  if(row.visual_path){
+    sb.storage.from('jds-communication').createSignedUrl(row.visual_path,3600).then(({data})=>{
+      if(!data?.signedUrl)return;
+      const image=el('img');
+      image.src=data.signedUrl;image.alt='';image.loading='lazy';image.style.cssText='display:block;width:100%;max-height:420px;object-fit:contain;margin-bottom:12px';
+      card.prepend(image);
+    }).catch(()=>{});
+  }
+}
+
 function eventCard(row, heading = 'h2') {
   const card = el('article');
   card.dataset.kind = row.kind;
@@ -26,7 +37,9 @@ function eventCard(row, heading = 'h2') {
       ?? [row.starts_on,row.ends_on].map(value => dates.format(day(value))).join(' – ');
   const link = el('a','Demander les informations ↗');
   link.href = '/#demande';
-  card.append(el('small',date+' · '+kinds[row.kind]),el(heading,row.title),el('p',row.hours));
+  attachVisual(card,row);
+  card.append(el('small',date+' · '+kinds[row.kind]),el(heading,row.title));
+  if(row.hours!=='—')card.append(el('p',row.hours));
   const details = [row.teacher,row.room].filter(Boolean).join(' · ');
   if (details) card.append(el('p',details));
   if (row.notes) card.append(el('p',row.notes,'note'));
@@ -54,6 +67,7 @@ function renderCore(rows) {
       const content = el('span');
       const note = [course.teacher,course.room,course.notes].filter(Boolean).join(' · ');
       content.append(el('strong',course.title),note ? ' · '+note : '');
+      attachVisual(content,course);
       item.append(time,content);
       list.append(item);
     }
@@ -63,6 +77,8 @@ function renderCore(rows) {
   week.replaceChildren(...days);
   if (!days.length) week.textContent = 'Aucun cours hebdomadaire annoncé.';
   find('#season-events').replaceChildren(...events.map(row => eventCard(row)));
+  const filter=find('#kind');
+  for(const kind of ['event','teacher','news'])if(![...filter.options].some(option=>option.value===kind))filter.add(new Option(kinds[kind],kind));
   find('#kind').dispatchEvent(new Event('change'));
   const december = events.filter(row => row.starts_on <= '2026-12-31' && row.ends_on >= '2026-12-01');
   const decemberCards = find('.december-cards');
@@ -85,6 +101,7 @@ function renderIndustry(rows) {
     card.dataset.room = row.room;
     card.append(el('small',[weekdays[row.weekday-1],row.room].filter(Boolean).join(' · ')),
       el('h2',row.title),el('p',row.teacher,'teacher'),el('p',row.hours),el('p',row.notes,'note'));
+    attachVisual(card,row);
     return card;
   }));
   room.dispatchEvent(new Event('change'));
@@ -94,9 +111,22 @@ function renderIndustry(rows) {
 }
 
 async function load() {
+  const feed=find('#app-news');
+  if(feed){
+    const campus=find('#news-campus').value;
+    let request=sb.from('jds_public_schedule').select('kind,campus,title,teacher,room,starts_on,ends_on,hours,notes,visual_path')
+      .eq('status','published').neq('kind','weekly').gte('ends_on',new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Paris'}).format(new Date())).order('starts_on');
+    if(campus)request=request.eq('campus',campus);
+    const {data,error}=await request;
+    if(find('#news-campus').value!==campus)return;
+    feed.replaceChildren(...(error?[el('p','Le calendrier est temporairement indisponible.')]:data.length?data.map(row=>{
+      const card=eventCard(row);card.className='campus-'+row.campus.toLowerCase();card.prepend(el('strong',row.campus));return card;
+    }):[el('p','Aucune publication à venir pour ce campus.')]));
+    return;
+  }
   const industry = !!find('#industry-programme');
   const {data,error} = await sb.from('jds_public_schedule')
-    .select('kind,title,teacher,room,weekday,starts_on,ends_on,hours,notes')
+    .select('kind,title,teacher,room,weekday,starts_on,ends_on,hours,notes,visual_path')
     .eq('campus',industry ? 'INDUSTRY' : 'CORE').eq('status','published')
     .order('weekday').order('starts_on').order('hours').order('title');
   if (error) return;
@@ -104,4 +134,5 @@ async function load() {
   else renderCore(data);
 }
 
+find('#news-campus')?.addEventListener('change',()=>load().catch(()=>{}));
 load().catch(() => {});

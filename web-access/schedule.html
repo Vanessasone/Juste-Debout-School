@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
-  <title>Gestion des plannings · Juste Debout School</title>
+  <title>Pilotage Communication · Juste Debout School</title>
   <style>
     *{box-sizing:border-box}body{margin:0;background:#f7f5f0;color:#18181c;font:16px/1.5 system-ui,sans-serif}
     main{width:min(100% - 32px,960px);margin:32px auto 64px}a{color:#303fac}h1,h2{line-height:1.12}
@@ -20,13 +20,13 @@
 <body>
 <main>
   <a href="/app/">← Mon espace School</a>
-  <h1>Gestion des plannings</h1>
+  <h1>Pilotage Communication</h1>
   <p>CORE et INDUSTRY · Les heures sont celles de Paris.</p>
   <p id="status" role="status" aria-live="polite">Vérification de la connexion School…</p>
   <p id="signin" hidden><a href="/app/login">Se connecter ou créer un compte School</a>. Une fois ton adresse confirmée, reviens sur cette page.</p>
   <div id="editor" hidden>
     <div class="controls" aria-label="Type de planning">
-      <button id="public-mode" type="button" aria-pressed="true">Cours open et stages</button>
+      <button id="public-mode" type="button" aria-pressed="true">Publications et calendrier</button>
       <button id="training-mode" type="button" aria-pressed="false">Formation</button>
     </div>
     <p id="scope-note"></p>
@@ -35,7 +35,7 @@
       <fieldset id="fields">
         <div class="fields" id="public-fields">
           <label>Campus <select name="campus"><option>CORE</option><option>INDUSTRY</option></select></label>
-          <label>Type <select name="kind"><option value="weekly">Cours open hebdomadaire</option><option value="open">Cours open ponctuel</option><option value="workshop">Stage / workshop</option><option value="camp">Camp</option><option value="spectacle">Spectacle</option></select></label>
+          <label>Type <select name="kind"><option value="weekly">Cours open hebdomadaire</option><option value="open">Cours open ponctuel</option><option value="workshop">Stage / workshop</option><option value="camp">Camp</option><option value="spectacle">Spectacle</option><option value="event">Événement</option><option value="teacher">Nouveau professeur</option><option value="news">Actualité / nouveau visuel</option></select></label>
         </div>
         <div class="fields" id="training-fields" hidden>
           <label>Promotion <select name="group_id"></select></label>
@@ -55,7 +55,7 @@
           <label>Lieu / salle <input name="room" maxlength="200"></label>
           <label id="hours-field">Horaires <input name="hours" maxlength="160" placeholder="Ex. 19 h–20 h 30"></label>
         </div>
-        <label id="notes-field">Informations publiques <textarea name="notes" maxlength="2000"></textarea></label>
+        <div class="fields" id="visual-fields"><label>Visuel facultatif <input name="visual" type="file" accept="image/jpeg,image/png,image/webp"></label><label><span>Retirer le visuel actuel</span><input name="remove_visual" type="checkbox"></label></div><label id="notes-field">Informations publiques <textarea name="notes" maxlength="2000"></textarea></label>
         <div class="controls">
           <label>Statut <select name="status"><option value="draft">Brouillon</option><option value="published">Publié</option><option value="cancelled">Annulé</option></select></label>
           <button type="submit">Enregistrer</button>
