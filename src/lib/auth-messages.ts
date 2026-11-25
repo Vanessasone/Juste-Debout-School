@@ -1,6 +1,7 @@
 /** Human-readable messages, without disclosing whether an address has an account. */
 export function schoolAuthError(error:unknown):string{
  const value=error as {code?:string;status?:number;message?:string}|null;
+ if(value?.status && value.status>=500)return 'Le service de connexion est momentanément indisponible. Réessaie dans quelques minutes.';
  switch(value?.code){
   case 'invalid_credentials':return 'Email ou mot de passe incorrect. Utilise les identifiants de ton compte School.';
   case 'email_not_confirmed':return 'Confirme ton adresse email avant de te connecter. Tu peux demander un nouveau lien ci-dessous.';
@@ -12,7 +13,7 @@ export function schoolAuthError(error:unknown):string{
   case 'signup_disabled':return 'Les inscriptions sont temporairement fermées. Contacte l’école.';
  }
  if(value?.status===429)return 'Trop de demandes rapprochées. Patiente quelques minutes avant de réessayer.';
- if(value?.message&&/network|fetch|connection/i.test(value.message))return 'Connexion au service impossible. Vérifie ta connexion internet puis réessaie.';
+ if(value?.message&&/network|fetch|connection/i.test(value.message))return 'Le service de connexion n’a pas répondu. Réessaie dans quelques instants. Si le problème continue, ouvre ce lien dans Safari ou Chrome.';
  // Keep local validation errors readable; do not expose backend internals.
  if(error instanceof Error&&!value?.code&&!value?.status&&!/Auth|fetch|network/i.test(error.name))return error.message;
  return 'L’opération n’a pas abouti. Réessaie dans quelques instants ou contacte l’école.';
